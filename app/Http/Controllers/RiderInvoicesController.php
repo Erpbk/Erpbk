@@ -7,9 +7,11 @@ use App\Http\Requests\CreateRiderInvoicesRequest;
 use App\Http\Requests\UpdateRiderInvoicesRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Imports\ImportRiderInvoice;
+use App\Models\RiderInvoices;
 use App\Repositories\RiderInvoicesRepository;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class RiderInvoicesController extends AppBaseController
@@ -58,15 +60,15 @@ class RiderInvoicesController extends AppBaseController
    */
   public function show($id)
   {
-    $riderInvoices = $this->riderInvoicesRepository->find($id);
+    $riderInvoice = $this->riderInvoicesRepository->find($id);
 
-    if (empty($riderInvoices)) {
+    if (empty($riderInvoice)) {
       Flash::error('Rider Invoices not found');
 
       return redirect(route('riderInvoices.index'));
     }
 
-    return view('rider_invoices.show')->with('riderInvoices', $riderInvoices);
+    return view('rider_invoices.show')->with('riderInvoice', $riderInvoice);
   }
 
   /**
@@ -142,4 +144,29 @@ class RiderInvoicesController extends AppBaseController
 
     return view('rider_invoices.import');
   }
+
+  public function sendEmail($id, Request $request)
+  {
+
+    if ($request->isMethod('post')) {
+
+      $data = [
+        'html' => $request->email_message
+      ];
+      $res = RiderInvoices::with(['riderInv_item'])->where('id', $id)->get();
+      $pdf = \PDF::loadView('invoices.rider_invoices.show', ['res' => $res]);
+
+      Mail::send('emails.general', $data, function ($message) use ($request, $pdf) {
+        $message->to([$request->email_to]);
+        //$message->replyTo([$request->email]);
+        $message->subject($request->email_subject);
+        $message->attachData($pdf->output(), $request->email_subject . '.pdf');
+        $message->priority(3);
+      });
+
+    }
+    $invoice = RiderInvoices::find($id);
+    return view('rider_invoices.send_email', compact('invoice'));
+  }
+
 }

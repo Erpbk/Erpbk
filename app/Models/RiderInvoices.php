@@ -65,5 +65,8 @@ class RiderInvoices extends Model
   {
     return $this->hasOne(Riders::class, 'id', 'rider_id');
   }
-
+  public function items()
+  {
+    return $this->hasMany(RiderInvoiceItem::class, 'inv_id', 'id');
+  }
 }

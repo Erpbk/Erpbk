@@ -759,6 +759,7 @@ class General
   {
     $result = [
       'JV' => 'Journal Voucher',
+      'LV' => 'Loan Voucher',
       /* 5 => 'Invoice Voucher',
       9 => 'Vendor Voucher',
       10 => 'Bike Rent Voucher',

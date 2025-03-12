@@ -56,10 +56,11 @@
 
         </div>
         <div class="scrollbar">
-            @if($voucherType == 'JV')
-            <h5>Journal Voucher</h5>
+
+            <h5>{{\App\Helpers\General::voucherType($voucherType)}} Voucher</h5>
             @php($accounts = \App\Models\Accounts::dropdown(null))
-            @endif
+
+
 
             @include("vouchers.default_fields")
             {{-- @if($voucherType == 5)

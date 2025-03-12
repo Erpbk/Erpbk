@@ -1,9 +1,9 @@
 {!! Form::open(['route' => ['riderInvoices.destroy', $id], 'method' => 'delete']) !!}
 <div class='btn-group'>
-    <a href="{{ route('riderInvoices.show', $id) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('riderInvoices.show', $id) }}" class='btn btn-default btn-sm' target="_blank">
         <i class="fa fa-eye"></i>
     </a>
-    <a href="{{ route('riderInvoices.edit', $id) }}" class='btn btn-default btn-xs'>
+    {{-- <a href="{{ route('riderInvoices.edit', $id) }}" class='btn btn-default btn-xs'>
         <i class="fa fa-edit"></i>
     </a>
     {!! Form::button('<i class="fa fa-trash"></i>', [
@@ -11,6 +11,6 @@
         'class' => 'btn btn-danger btn-xs',
         'onclick' => 'return confirm("'.__('crud.are_you_sure').'")'
 
-    ]) !!}
+    ]) !!} --}}
 </div>
 {!! Form::close() !!}
