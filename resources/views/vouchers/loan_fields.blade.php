@@ -17,9 +17,9 @@
               <input type="number" step="any" name="dr_amount[]" value="{{$entry->debit}}" class="form-control  dr_amount" onchange="getTotal();" placeholder="Paid Amount">
           </div>
 
-          <div class="form-group col-md-1 d-flex align-items-end">
+         {{--  <div class="form-group col-md-1 d-flex align-items-end">
             <a href="javascript:void(0);" class="text-danger btn-remove-row"><i class="fa fa-trash"></i></a>
-        </div>
+        </div> --}}
          {{--  <div class="form-group col-md-1">
               <label style="visibility: hidden">plus</label>
               <button type="button" class="btn btn-primary btn-xs new_line"><i class="fa fa-plus"></i> </button>
@@ -45,9 +45,9 @@
             <label>Cr Amount</label>
             <input type="number" step="any" name="cr_amount[]" class="form-control cr_amount" placeholder="Paid Amount" onchange="getTotal();">
         </div> --}}
-        <div class="form-group col-md-1 d-flex align-items-end">
+        {{-- <div class="form-group col-md-1 d-flex align-items-end">
             <a href="javascript:void(0);" class="text-danger btn-remove-row"><i class="fa fa-trash"></i></a>
-        </div>
+        </div> --}}
     </div>
 
 
@@ -55,4 +55,5 @@
 
   </div>
 
-  <button type="button" id="add-new-row" class="btn btn-success btn-sm mt-3 mb-3">Add New</button>
+{{--   <button type="button" id="add-new-row" class="btn btn-success btn-sm mt-3 mb-3">Add New</button>
+ --}}

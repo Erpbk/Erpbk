@@ -657,6 +657,7 @@ class VoucherService
     }
 
     //dr cr to rider
+
     foreach ($request->account_id as $key => $val) {
       if (!empty($request['account_id'][$key]) && $request['dr_amount'][$key] > 0) {
         //  transaction recording
@@ -688,7 +689,7 @@ class VoucherService
       'reference_type' => 'Voucher',
       'trans_code' => $trans_code,
       'trans_date' => $data['trans_date'],
-      'narration' => '',
+      'narration' => $request['narration'][0],
       'billing_month' => $data['billing_month'] ?? date('Y-m-01'),
     ];
     if ($payment_dr_cr == 'debit') {
