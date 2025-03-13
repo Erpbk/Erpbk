@@ -1,12 +1,12 @@
 <script src="{{ asset('js/modal_custom.js') }}"></script>
 
-
-@isset($vouchers->voucher_type)
-    @php($voucherType = $vouchers->voucher_type)
-@else
-    @php($voucherType = request("vt"))
-@endisset
-
+@php
+    if(isset($vouchers->voucher_type)){
+      $voucherType = $vouchers->voucher_type;
+    }else{
+      $voucherType = request("vt");
+    }
+@endphp
 <input type="hidden" name="v_trans_code" value="{{@$vouchers->trans_code??0}}">
 <input type="hidden" name="voucher_type" id="voucher_type" value="{{$voucherType}}">
 
@@ -17,31 +17,22 @@
 
                 <input type="date"  name="trans_date" class="form-control " placeholder="Transaction Date" value="@isset($vouchers->trans_date){{date('Y-m-d',strtotime($vouchers->trans_date)) }}@else{{date('Y-m-d')}}@endisset" >
             </div>
+
            {{--  <div class="form-group col-md-3">
                 <label for="exampleInputEmail1">Posting Date</label>
                 <input  name="posting_date" class="form-control  date" placeholder="Posting Date" value="{{ date('Y-m-d') }}">
             </div> --}}
-           {{--  @if(in_array($voucherType,[5,12,13,14,16]))
+
+            {{-- @if(in_array($voucherType,['LV']))
             <div class="form-group col-md-3">
                 <label for="exampleInputEmail1">Bank/Cash A/C</label>
-                {!! Form::select('payment_from',App\Models\Accounts\TransactionAccount::bank_cash_list(),null ,['class' => 'form-control  select2 ','id'=>'payment_from']) !!}
+                {!! Form::select('payment_from',\App\Models\Accounts::dropdown(\App\Helpers\HeadAccount::BANK),null ,['class' => 'form-control  select2 ','id'=>'payment_from']) !!}
             </div>
             @endif --}}
            {{--  @if($voucherType==9)
             <input type="hidden" name="payment_from" value="811" /><!--Sim Bike and Vendor Charges Account ID-->
             @endif
-            @if($voucherType==11)
-            <input type="hidden" name="payment_from" value="617" /><!--Fuel Charges Account ID-->
-            @endif
-            @if($voucherType==8)
-            <input type="hidden" name="payment_from" value="425" /><!--RTA FINE Charges Account ID-->
-            @endif
-            @if($voucherType==10)
-            <input type="hidden" name="payment_from" value="441" /><!--Bike Rent Charges Account ID-->
-            @endif
-            @if($voucherType==15)
-            <input type="hidden" name="payment_from" value="767" /><!--Bike Maintenance Charges Account ID-->
-            @endif --}}
+           --}}
             <div class="form-group col-md-2">
                 <label for="exampleInputEmail1">Payment Type</label>
                 {!! Form::select('payment_type',App\Helpers\Account::payment_type_list(),null ,['class' => 'form-select form-select-sm select2 ','id'=>'payment_type']) !!}
@@ -57,12 +48,17 @@
         </div>
         <div class="scrollbar">
 
-            <h5>{{\App\Helpers\General::voucherType($voucherType)}} Voucher</h5>
-            @php($accounts = \App\Models\Accounts::dropdown(null))
+            <h5>{{\App\Helpers\General::voucherType($voucherType)}}</h5>
+            @if($voucherType == 'JV')
+              @php($accounts = \App\Models\Accounts::dropdown(null))
+              @include("vouchers.default_fields")
+            @endif
 
+            @if($voucherType == 'LV')
+              @php($accounts = \App\Models\Accounts::dropdown(null))
+              @include("vouchers.loan_fields")
+            @endif
 
-
-            @include("vouchers.default_fields")
             {{-- @if($voucherType == 5)
             <h5>Invoice Voucher</h5>
             @include("vouchers.invoice_fields")

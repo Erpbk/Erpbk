@@ -73,12 +73,12 @@ class VouchersController extends Controller
     if ($request->voucher_type == 'JV') {
       $result = $voucherService->JournalVoucher($request);
     }
-    if ($request->voucher_type == 5) {
+    /* if ($request->voucher_type == 5) {
       $result = $voucherService->InvoiceVoucher($request);
     }
     if ($request->voucher_type == 9) {
       $result = $voucherService->SimVoucher($request);
-    }
+    } */
     /*  if ($request->voucher_type == 11) {
          $result = $voucherService->FuelVoucher($request);
      }
@@ -88,14 +88,14 @@ class VouchersController extends Controller
      if ($request->voucher_type == 8) {
          $result = $voucherService->RtaVoucher($request);
      } */
-    if (in_array($request->voucher_type, [8, 10, 11, 12, 14, 15, 16])) {
-      $result = $voucherService->DefaultVoucher($request, 1);
+    if (in_array($request->voucher_type, ['LV'])) {
+      $result = $voucherService->DefaultVoucher($request, 'debit');
 
     }
-    if (in_array($request->voucher_type, [13])) {
+    /* if (in_array($request->voucher_type, [13])) {
       $result = $voucherService->DefaultVoucher($request, 2);
 
-    }
+    } */
 
     //$vouchers = Vouchers::create($input);
     return $result;
@@ -141,8 +141,12 @@ class VouchersController extends Controller
   {
     /** @var Vouchers $vouchers */
     $vouchers = Vouchers::where('trans_code', $id)->first();
+    if ($vouchers->voucher_type == 'JV') {
+      $data = Transactions::where('trans_code', $id)->get();
+    } else {
+      $data = Transactions::where('trans_code', $id)->where('debit', '>', 0)->get();
 
-    $data = Transactions::where('trans_code', $id)->get();
+    }
 
     if (empty($vouchers)) {
       Flash::error('Vouchers not found');
@@ -181,20 +185,15 @@ class VouchersController extends Controller
     if ($request->voucher_type == 'JV') {
       $voucherService->JournalVoucher($request);
     }
-    if ($request->voucher_type == 5) {
-      $voucherService->InvoiceVoucher($request);
-    }
-    if ($request->voucher_type == 9) {
-      $result = $voucherService->SimVoucher($request);
-    }
-    if (in_array($request->voucher_type, [8, 10, 11, 12, 14, 15, 16])) {
-      $result = $voucherService->DefaultVoucher($request, 1);
+
+    if (in_array($request->voucher_type, ['LV'])) {
+      $result = $voucherService->DefaultVoucher($request, 'debit');
 
     }
-    if (in_array($request->voucher_type, [13])) {
-      $result = $voucherService->DefaultVoucher($request, 2);
+    /*  if (in_array($request->voucher_type, [13])) {
+       $result = $voucherService->DefaultVoucher($request, 2);
 
-    }
+     } */
     /*   if ($request->voucher_type == 11) {
           $result = $voucherService->FuelVoucher($request);
       }
@@ -209,7 +208,7 @@ class VouchersController extends Controller
 
      Flash::success('Vouchers updated successfully.'); */
 
-    return redirect(route('vouchers.index'));
+    return response()->json(['message' => 'Voucher updated successfully.']);
   }
 
   /**

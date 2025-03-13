@@ -90,7 +90,7 @@ class VouchersDataTable extends DataTable
         'dom' => 'Bfrtip',
         'stateSave' => false,
         'order' => [[0, 'desc']],
-        'pageLength' => 100,
+        'pageLength' => 50,
         'responsive' => true,
         'buttons' => [
           // Enable Buttons as per your need

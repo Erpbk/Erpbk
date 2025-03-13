@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Helpers\Account;
 use App\Helpers\General;
+use App\Helpers\HeadAccount;
 use App\Models\Items;
 use App\Models\RiderInvoiceItem;
 use App\Models\RiderInvoices;
@@ -157,7 +158,7 @@ class ImportRiderInvoice implements ToCollection
 
 
               $transactionData = [
-                'account_id' => 1103, //Salary Account asked to set by Adnan 08-03-2025
+                'account_id' => HeadAccount::SALARY_ACCOUNT, //Salary Account asked to set by Adnan 08-03-2025
                 'reference_id' => $ret->id,
                 'reference_type' => 'Invoice',
                 'trans_code' => $trans_code,

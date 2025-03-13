@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\RidersDataTable;
 use App\Helpers\Account;
 use App\Helpers\General;
+use App\Helpers\HeadAccount;
 use App\Http\Requests\CreateAccountsRequest;
 use App\Http\Requests\CreateRidersRequest;
 use App\Http\Requests\UpdateRidersRequest;
@@ -61,17 +62,17 @@ class RidersController extends AppBaseController
     $riders = $this->ridersRepository->create($input);
     if ($riders) {
 
-      $parentAccount = Accounts::firstOrCreate(
+      /* $parentAccount = Accounts::firstOrCreate(
         ['name' => 'Riders', 'account_type' => 'Liability', 'parent_id' => null],
         ['name' => 'Riders', 'account_type' => 'Liability', 'account_code' => Account::code()]
-      );
+      ); */
 
       $account = new Accounts();
       $account->account_code = 'RD' . str_pad($riders->rider_id, 4, "0", STR_PAD_LEFT);
       $account->name = $riders->name;
       $account->account_type = 'Liability';
       $account->ref_name = 'Rider';
-      $account->parent_id = $parentAccount->id;
+      $account->parent_id = HeadAccount::RIDER;
       $account->ref_id = $riders->id;
       $account->save();
 
