@@ -8,7 +8,9 @@ use App\Http\Requests\UpdateRiderInvoicesRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Imports\ImportRiderInvoice;
 use App\Models\RiderInvoices;
+use App\Models\Transactions;
 use App\Repositories\RiderInvoicesRepository;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use Flash;
 use Illuminate\Support\Facades\Mail;
@@ -121,6 +123,10 @@ class RiderInvoicesController extends AppBaseController
 
       return redirect(route('riderInvoices.index'));
     }
+
+    $trans_code = Transactions::where('reference_type', 'Invoice')->where('reference_id', $id)->value('trans_code');
+    $transactions = new TransactionService();
+    $transactions->deleteTransaction($trans_code);
 
     $this->riderInvoicesRepository->delete($id);
 
