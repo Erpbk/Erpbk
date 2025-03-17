@@ -18,7 +18,15 @@ class RiderInvoicesDataTable extends DataTable
   {
     $dataTable = new EloquentDataTable($query);
 
-    return $dataTable->addColumn('action', 'rider_invoices.datatables_actions');
+    $dataTable->addColumn('action', 'rider_invoices.datatables_actions');
+
+    $dataTable
+      ->addColumn('rider_id', function (RiderInvoices $riderInvoices) {
+        return $riderInvoices->rider->rider_id . '-' . $riderInvoices->rider->name;
+      })
+      ->toJson();
+    $dataTable->rawColumns(['rider_id', 'action']);
+    return $dataTable;
   }
 
   /**
@@ -66,8 +74,9 @@ class RiderInvoicesDataTable extends DataTable
   protected function getColumns()
   {
     return [
+      'id',
       'inv_date',
-      'rider_id' => ['title' => 'Rider', 'data' => 'rider.name'],
+      'rider_id' => ['title' => 'Rider'],
       'descriptions',
       'total_amount',
       'billing_month'
