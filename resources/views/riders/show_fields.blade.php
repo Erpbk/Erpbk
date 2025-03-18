@@ -259,8 +259,11 @@
 @php
 $item = \App\Models\Items::find($riderItemId->item_id);
 @endphp
-<td width="250"><label>{{$item->name}}</label></td>
-<td width="240">{{$riderItemId->price}}</td>
+@if($item)
+<td width="250"><label>{{@$item->name}}</label></td>
+<td width="240">{{@$riderItemId->price}}</td>
+@endif
+
 </tr>
 @endforeach
 @endisset
