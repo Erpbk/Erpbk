@@ -29,8 +29,8 @@
       <div>Riders</div>
   </a>
 </li>
-<li class="menu-item">
-  <a href="{{ route('riderInvoices.index') }}" class="menu-link {{ Request::is('riderInvoices*') ? 'active' : '' }}">
+<li class="menu-item {{ Request::is('riderInvoices*') ? 'active' : '' }}">
+  <a href="{{ route('riderInvoices.index') }}" class="menu-link ">
       <i class="menu-icon tf-icons ti ti-file"></i>
       <div>Rider Invoices</div>
   </a>

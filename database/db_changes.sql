@@ -111,6 +111,9 @@ ADD COLUMN `code`  varchar(50) NULL AFTER `status`,
 ADD COLUMN `barcode`  varchar(50) NULL AFTER `code`;
 ------------
 
+ALTER TABLE `rider_invoices`
+MODIFY COLUMN `vendor_id`  bigint(20) UNSIGNED NULL AFTER `rider_id`;
+
 
 
 

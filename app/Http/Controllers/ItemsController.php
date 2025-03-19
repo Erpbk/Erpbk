@@ -6,6 +6,8 @@ use App\DataTables\ItemsDataTable;
 use App\Http\Requests\CreateItemsRequest;
 use App\Http\Requests\UpdateItemsRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Items;
+use App\Models\RiderItemPrice;
 use App\Repositories\ItemsRepository;
 use Illuminate\Http\Request;
 use Flash;
@@ -120,6 +122,24 @@ class ItemsController extends AppBaseController
     $this->itemsRepository->delete($id);
 
     return response()->json(['message' => 'Item deleted successfully.']);
+
+  }
+
+  public function search_item_price($rider_id, $item_id)
+  {
+    $result = RiderItemPrice::where('item_id', $item_id)->where('RID', $rider_id)->first();
+    if ($result && $result->price > 0) {
+      return $result;
+    } else {
+      $result = Items::where('id', $item_id)->first();
+      return $result;
+    }
+  }
+  public function get_item_price($item_id)
+  {
+
+    $result = Items::where('id', $item_id)->first();
+    return $result;
 
   }
 }

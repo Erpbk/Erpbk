@@ -184,6 +184,10 @@ class Riders extends Model
   {
     return $this->hasOne(Accounts::class, 'id', 'account_id');
   }
+  function sim()
+  {
+    return $this->hasOne(Sims::class, 'id', 'assign_to');
+  }
 
   function transactions()
   {

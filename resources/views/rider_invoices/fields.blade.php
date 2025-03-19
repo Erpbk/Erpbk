@@ -1,107 +1,136 @@
-<!-- Inv Date Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('inv_date', 'Inv Date:') !!}
-    {!! Form::text('inv_date', null, ['class' => 'form-control','id'=>'inv_date']) !!}
+<script src="{{ asset('js/modal_custom.js') }}"></script>
+
+<div class="row">
+  <div class="col-md-2 form-group">
+      <label>Invoice Date</label>
+      <input type="date" class="form-control form-control" value="{{ date('Y-m-d') }}" name="inv_date" placeholder="Invoice Date">
+  </div>
+  <!--col-->
+  <div class="col-md-4 form-group">
+      <label>Rider</label>
+      {!! Form::select('rider_id', $riders, null, ['class' => 'form-select form-select-sm select2','id'=>'rider_id']) !!}
+
+  </div>
+  <!--col-->
+  <div class="col-md-2 form-group">
+      <label>Zone</label>
+      <input type="text" class="form-control form-control" name="zone" placeholder="Zone">
+  </div>
+  <!--col-->
+  <div class="col-md-2 form-group">
+      <label>Login Hours</label>
+      <input type="text" class="form-control form-control" name="login_hours" placeholder="Login Hours">
+  </div>
+  <!--col-->
+  <div class="col-md-2 form-group">
+      <label>Working Days</label>
+      <input type="text" class="form-control form-control" name="working_days" placeholder="Working Days">
+  </div>
+  <!--col-->
+  <div class="col-md-2 form-group">
+      <label>Perfect Attendance</label>
+      <input type="text" class="form-control form-control" name="perfect_attendance" placeholder="Perfect Attendance">
+  </div>
+  <!--col-->
+  <div class="col-md-2 form-group">
+      <label>Rejection</label>
+      <input type="text" class="form-control form-control" name="rejection" placeholder="Rejection">
+  </div>
+  <!--col-->
+  <div class="col-md-2 form-group">
+      <label>Performance</label>
+      <input type="text" class="form-control form-control" name="performance" placeholder="Performance">
+  </div>
+  <!--col-->
+  <div class="col-md-2 form-group">
+      <label>Off</label>
+      <input type="text" class="form-control form-control" name="off" placeholder="Performance">
+  </div>
+  <!--col-->
+ {{--  <div class="col-md-3 form-group">
+      <label>Month of Invoice</label>
+      <select class="form-control form-control" name="month_invoice">
+          @for($i=1; $i<=12; $i++)
+              <option value="{{ $i }}">{{ date('F',mktime(0, 0, 0, $i, 10)) }}</option>
+          @endfor
+      </select>
+  </div> --}}
+  <div class="form-group col-md-2">
+      <label for="exampleInputEmail1">Billing Month</label>
+      <input type="month" name="billing_month"  class="form-control form-control" id="billing_month" />
+
+{{--                         {!! Form::select('billing_month',App\Helpers\CommonHelper::BillingMonth(),null ,['class' => 'form-control form-control select2 ','id'=>'billing_month']) !!}
+--}}                    </div>
+  <!--col-->
+  <div class="col-md-6 form-group">
+      <label>Descriptions</label>
+      <textarea class="form-control form-control" name="descriptions" placeholder="Descriptions"></textarea>
+  </div>
+  <div class="col-md-6 form-group">
+      <label>Notes</label>
+      <textarea class="form-control form-control" name="notes" placeholder="Notes"></textarea>
+  </div>
+  <!--col-->
 </div>
+<!--row-->
+<div class="">
+  <div class="card-header bg-blue mt-3">
+      <b class="card-title ">Item Details</b>
+  </div>
+  <!-- /.card-header -->
+  <div class="" id="rows-container">
 
-@push('page_scripts')
-    <script type="text/javascript">
-        $('#inv_date').datepicker()
-    </script>
-@endpush
+      <div class="row">
+          <div class="col-md-3 form-group">
+              <label>Item Description</label>
+              {!! Form::select('item_id[]', $items, null, ['class' => 'form-select form-select-sm select2','onchange'=>'rider_price(this);']) !!}
+          </div>
+          <!--col-->
+          <div class="col-md-1 form-group">
+              <label>Qty</label>
+              <input type="text" class="form-control form-control qty" name="qty[]" placeholder="0" value="1" onchange="calculate_price(this);">
+          </div>
+          <!--col-->
+          <div class="col-md-2 form-group">
+              <label>Rate</label>
+              <input type="text" class="form-control form-control rate" name="rate[]" placeholder="0" value="0" onchange="calculate_price(this);">
+          </div>
+          <!--col-->
+          <div class="col-md-2 form-group">
+              <label>Discount</label>
+              <input type="text" class="form-control form-control discount" name="discount[]" placeholder="0" value="0" onchange="calculate_price(this);">
+          </div>
+          <!--col-->
+          <div class="col-md-1 form-group">
+              <label>Tax</label>
+              <input type="text" class="form-control form-control tax" name="tax[]" placeholder="0" value="0" onchange="calculate_price(this);">
+          </div>
+          <!--col-->
+          <div class="col-md-2 form-group">
+              <label>Amount</label>
+              <input type="text" class="form-control form-control amount" readonly name="amount[]" placeholder="0" value="0" onkeyup="getTotal();">
+          </div>
+          <!--col-->
+          <div class="form-group col-md-1 d-flex align-items-end">
+            <a href="javascript:void(0);" class="text-danger btn-remove-row"><i class="fa fa-trash"></i></a>
+        </div>
+          <!--col-->
+      </div>
+  </div>
 
-<!-- Rider Id Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('rider_id', 'Rider Id:') !!}
-    {!! Form::number('rider_id', null, ['class' => 'form-control', 'required']) !!}
-</div>
+      <!--row-->
+      <div class="append-line"></div>
+      <div class="col-md-1 form-group">
+          <label style="visibility: hidden">Assign Price</label>
+{{--           <button type="button" class="btn btn-sm btn-primary new_line_item"><i class="fa fa-plus"></i> </button>
+ --}}          <button type="button" id="add-new-row" class="btn btn-success btn-sm mt-3 mb-3">Add New</button>
 
-<!-- Vendor Id Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('vendor_id', 'Vendor Id:') !!}
-    {!! Form::number('vendor_id', null, ['class' => 'form-control', 'required']) !!}
-</div>
-
-<!-- Zone Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('zone', 'Zone:') !!}
-    {!! Form::text('zone', null, ['class' => 'form-control', 'maxlength' => 191, 'maxlength' => 191]) !!}
-</div>
-
-<!-- Login Hours Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('login_hours', 'Login Hours:') !!}
-    {!! Form::number('login_hours', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Working Days Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('working_days', 'Working Days:') !!}
-    {!! Form::number('working_days', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Perfect Attendance Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('perfect_attendance', 'Perfect Attendance:') !!}
-    {!! Form::number('perfect_attendance', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Rejection Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('rejection', 'Rejection:') !!}
-    {!! Form::number('rejection', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Performance Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('performance', 'Performance:') !!}
-    {!! Form::text('performance', null, ['class' => 'form-control', 'maxlength' => 20, 'maxlength' => 20]) !!}
-</div>
-
-<!-- Off Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('off', 'Off:') !!}
-    {!! Form::text('off', null, ['class' => 'form-control', 'maxlength' => 20, 'maxlength' => 20]) !!}
-</div>
-
-<!-- Month Invoice Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('month_invoice', 'Month Invoice:') !!}
-    {!! Form::number('month_invoice', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Descriptions Field -->
-<div class="form-group col-sm-12 col-lg-12">
-    {!! Form::label('descriptions', 'Descriptions:') !!}
-    {!! Form::textarea('descriptions', null, ['class' => 'form-control', 'maxlength' => 65535, 'maxlength' => 65535]) !!}
-</div>
-
-<!-- Total Amount Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('total_amount', 'Total Amount:') !!}
-    {!! Form::number('total_amount', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Billing Month Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('billing_month', 'Billing Month:') !!}
-    {!! Form::text('billing_month', null, ['class' => 'form-control','id'=>'billing_month']) !!}
-</div>
-
-@push('page_scripts')
-    <script type="text/javascript">
-        $('#billing_month').datepicker()
-    </script>
-@endpush
-
-<!-- Gaurantee Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('gaurantee', 'Gaurantee:') !!}
-    {!! Form::text('gaurantee', null, ['class' => 'form-control', 'maxlength' => 255, 'maxlength' => 255]) !!}
-</div>
-
-<!-- Notes Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('notes', 'Notes:') !!}
-    {!! Form::text('notes', null, ['class' => 'form-control', 'maxlength' => 500, 'maxlength' => 500]) !!}
-</div>
+      </div>
+      <div class="row">
+          <div class="col-md-2 offset-7 form-group text-right">
+              <label><strong>Sub Total</strong>:</label>
+          </div>
+          <div class="col-md-2 form-group text-left">
+              <input type="text" name="total_amount" class="form-control form-control" id="sub_total" placeholder="0.00" value="0.00" readonly>
+          </div>
+      </div>

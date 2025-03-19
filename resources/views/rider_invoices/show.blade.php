@@ -99,7 +99,7 @@
                     </tr>
                     <tr>
                         <th>Rider Name:</th>
-                        <td>{{ \Illuminate\Support\Facades\DB::table("riders")->selectRaw('CONCAT(name," (",rider_id,")") AS rider_name')->where('id',$riderInvoice->RID)->value('rider_name') }}</td>
+                        <td>{{$riderInvoice->rider->name}}</td>
                     </tr>
 
                     <tr>
@@ -108,7 +108,7 @@
                     </tr>
                     <tr>
                         <th>Rider Contact:</th>
-                        <td>{{@$riderInvoice->sim->sim_number }}</td>
+                        <td>{{@$riderInvoice->rider->sim->number }}</td>
                     </tr>
                     <tr>
                         <th>Fleet Supervisor:</th>

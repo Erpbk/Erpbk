@@ -22,7 +22,7 @@ class RiderInvoicesDataTable extends DataTable
 
     $dataTable
       ->addColumn('rider_id', function (RiderInvoices $riderInvoices) {
-        return $riderInvoices->rider->rider_id . '-' . $riderInvoices->rider->name;
+        return @$riderInvoices->rider->rider_id . '-' . @$riderInvoices->rider->name;
       })
       ->toJson();
     $dataTable->rawColumns(['rider_id', 'action']);

@@ -40,5 +40,10 @@ class Items extends Model
     'updated_at' => 'nullable'
   ];
 
+  public static function dropdown()
+  {
+    $query = self::select('id', 'name')->pluck('name', 'id')->prepend('Select', '');
+    return $query;
 
+  }
 }

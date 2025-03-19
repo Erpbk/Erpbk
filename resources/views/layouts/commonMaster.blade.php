@@ -42,7 +42,7 @@ $contentLayout = (isset($container) ? (($container === 'container-xxl') ? "layou
 
 <body>
 
-<input type="hidden" name="base_url" id="base_url" value="{{ url("/home")}}" />
+<input type="hidden" name="base_url" id="base_url" value="{{ url("/")}}" />
   <!-- Layout Content -->
   @yield('layoutContent')
   <!--/ Layout Content -->

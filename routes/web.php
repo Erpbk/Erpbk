@@ -58,6 +58,7 @@ Route::middleware(['auth', 'web'])->group(function () {
 
   Route::resource('riderInvoices', App\Http\Controllers\RiderInvoicesController::class);
   Route::any('rider/invoice-import', [\App\Http\Controllers\RiderInvoicesController::class, 'import'])->name('rider.invoice_import');
+  Route::get('search_item_price/{RID}/{itemID}', [\App\Http\Controllers\ItemsController::class, 'search_item_price']);
 
 
   Route::resource('leasingCompanies', App\Http\Controllers\LeasingCompaniesController::class);
