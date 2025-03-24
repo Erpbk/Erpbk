@@ -112,7 +112,7 @@ class RiderInvoicesController extends AppBaseController
       return redirect(route('riderInvoices.index'));
     }
 
-    $riderInvoices = $this->riderInvoicesRepository->update($request->all(), $id);
+    $riderInvoices = $this->riderInvoicesRepository->record($request, $id);
 
     Flash::success('Rider Invoices updated successfully.');
 

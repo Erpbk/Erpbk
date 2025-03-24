@@ -6,6 +6,7 @@ use App\Helpers\Account;
 use App\Helpers\HeadAccount;
 use App\Models\RiderInvoiceItem;
 use App\Models\RiderInvoices;
+use App\Models\Transactions;
 use App\Repositories\BaseRepository;
 use App\Services\TransactionService;
 
@@ -40,13 +41,23 @@ class RiderInvoicesRepository extends BaseRepository
     return RiderInvoices::class;
   }
 
-  public function record($request)
+  public function record($request, $id = null)
   {
-    $input = $request->all();
+    //$request = $request->except(['_method', '_token']);
+    //$input = $request->all();
+
+    $input = $request->except(['item_id', '_method', '_token', 'qty', 'rate', 'amount', 'discount', 'tax']);
 
     $input['billing_month'] = $request->billing_month . "-01";
+    if ($id) {
 
-    $invoice = RiderInvoices::create($input);
+      $invoice = RiderInvoices::where('id', $id)->first();
+      $invoice->update($input);
+      RiderInvoiceItem::where('inv_id', $id)->delete();
+
+    } else {
+      $invoice = RiderInvoices::create($input);
+    }
 
     foreach ($request['item_id'] as $key => $val) {
 
@@ -56,6 +67,8 @@ class RiderInvoicesRepository extends BaseRepository
         $dta['qty'] = $request['qty'][$key] ?? 0;
         $dta['rate'] = $request['rate'][$key];
         $dta['amount'] = $request['amount'][$key];
+        $dta['tax'] = $request['tax'][$key];
+        $dta['discount'] = $request['discount'][$key];
         $dta['inv_id'] = $invoice->id;
         RiderInvoiceItem::create($dta);
 
@@ -65,6 +78,11 @@ class RiderInvoicesRepository extends BaseRepository
 
     $trans_code = Account::trans_code();
     $transactionService = new TransactionService();
+
+    if ($id) {
+      $trans_code = Transactions::where('reference_type', 'Invoice')->where('reference_id', $id)->value('trans_code');
+      $transactionService->deleteTransaction($trans_code);
+    }
 
     $transactionData = [
       'account_id' => $invoice->rider->account_id,
