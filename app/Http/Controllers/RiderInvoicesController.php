@@ -93,7 +93,7 @@ class RiderInvoicesController extends AppBaseController
 
       return redirect(route('riderInvoices.index'));
     }
-    $riders = Accounts::dropdown(HeadAccount::RIDER);
+    $riders = Riders::dropdown();
     $items = Items::dropdown();
 
     return view('rider_invoices.edit', compact('riders', 'items', 'invoice'));

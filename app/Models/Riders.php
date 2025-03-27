@@ -174,8 +174,8 @@ class Riders extends Model
 
   public static function dropdown()
   {
-    //return self::select('id', \DB::raw("CONCAT(id, '-', name) as full_name"))->pluck('full_name', 'id')->prepend('Select', '');
-    return self::select('id', 'name')->pluck('name', 'id')->prepend('Select', '');
+    return self::select('id', \DB::raw("CONCAT(rider_id, '-', name) as full_name"))->pluck('full_name', 'id')->prepend('Select', '');
+    //return self::select('id', 'name')->pluck('name', 'id')->prepend('Select', '');
 
 
   }
