@@ -2,11 +2,12 @@
 
 namespace App\DataTables;
 
-use App\Models\Bikes;
+use App\Helpers\Common;
+use App\Models\BikeHistory;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class BikesDataTable extends DataTable
+class BikeHistoryDataTable extends DataTable
 {
   /**
    * Build DataTable class.
@@ -17,19 +18,30 @@ class BikesDataTable extends DataTable
   public function dataTable($query)
   {
     $dataTable = new EloquentDataTable($query);
-    $dataTable->addColumn('rider_id', function (Bikes $row) {
-      return @$row->rider->rider_id . '-' . @$row->rider->name;
+
+    $dataTable->addColumn('note_date', function (BikeHistory $row) {
+      return Common::DateFormat($row->note_date);
     })->toJson();
-    return $dataTable->addColumn('action', 'bikes.datatables_actions');
+
+    $dataTable->addColumn('bike_id', function (BikeHistory $row) {
+      return @$row->bike->plate ?? '';
+    })->toJson();
+
+    $dataTable->addColumn('rider_id', function (BikeHistory $row) {
+      return @$row->rider->name ?? '';
+    })->toJson();
+
+
+    return $dataTable->addColumn('action', 'bike_histories.datatables_actions');
   }
 
   /**
    * Get query source of dataTable.
    *
-   * @param \App\Models\Bikes $model
+   * @param \App\Models\BikeHistory $model
    * @return \Illuminate\Database\Eloquent\Builder
    */
-  public function query(Bikes $model)
+  public function query(BikeHistory $model)
   {
     return $model->newQuery();
   }
@@ -47,10 +59,8 @@ class BikesDataTable extends DataTable
       ->addAction(['width' => '120px', 'printable' => false])
       ->parameters([
         'dom' => 'Bfrtip',
-        'stateSave' => false,
+        'stateSave' => true,
         'order' => [[0, 'desc']],
-        'pageLength' => 100,
-        'responsive' => true,
         'buttons' => [
           // Enable Buttons as per your need
 //                    ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
@@ -70,13 +80,12 @@ class BikesDataTable extends DataTable
   protected function getColumns()
   {
     return [
-      'id',
-      'plate',
+      'bike_id' => ['title' => 'Bike'],
       'rider_id' => ['title' => 'Rider'],
-      'chassis_number',
-      'color',
-      'model'
-
+      'notes',
+      'note_date',
+      'warehouse',
+      'contract'
     ];
   }
 
@@ -87,6 +96,6 @@ class BikesDataTable extends DataTable
    */
   protected function filename(): string
   {
-    return 'bikes_datatable_' . time();
+    return 'bike_histories_datatable_' . time();
   }
 }

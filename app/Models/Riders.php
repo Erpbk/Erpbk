@@ -179,7 +179,14 @@ class Riders extends Model
 
 
   }
-
+  public function bikes()
+  {
+    return $this->hasOne(Bikes::class, 'rider_id', 'id');
+  }
+  public function jobstatus()
+  {
+    return $this->hasOne(JobStatus::class, 'RID', 'id')->orderByDesc('id');
+  }
   function account()
   {
     return $this->hasOne(Accounts::class, 'id', 'account_id');

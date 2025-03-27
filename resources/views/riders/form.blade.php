@@ -77,7 +77,7 @@
                             <b>Rider ID</b> <span class="float-right">@isset($result){{$result['rider_id']??'not-set'}}@endisset</span>
                          </li>
                          <li class="list-group-item">
-                            <b>Bike Number</b> <span class="float-right">@isset($result){{$rider->bikes->plate??'not-set'}}@endisset</span>
+                            <b>Bike Number</b> <span class="float-right">@isset($result){{$riders->bikes->plate??'not-set'}}@endisset</span>
                          </li>
                          <li class="list-group-item">
                             <b>Date Of Joining</b> <a class="float-right">@isset($result){{App\Helpers\CommonHelper::DateFormat($result['doj'])??'not-set'}}@endisset</a>

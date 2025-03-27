@@ -110,7 +110,7 @@ if(is_numeric(request()->segment(3))){
                             <b>Rider ID</b> <span class="float-right">@isset($result){{$result['rider_id']??'not-set'}}@endisset</span>
                          </li>
                          <li class="list-group-item pb-1">
-                            <b>Bike Number</b> <span class="float-right">@isset($result){{$rider->bikes->plate??'not-set'}}@endisset</span>
+                            <b>Bike Number</b> <span class="float-right">@isset($result){{$riders->bikes->plate??'not-set'}}@endisset</span>
                          </li>
                          <li class="list-group-item pb-1">
                             <b>Date Of Joining</b> <span class="float-right">@isset($result){{App\Helpers\General::DateFormat($result['doj'])??'not-set'}}@endisset</span>

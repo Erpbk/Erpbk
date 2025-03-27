@@ -75,6 +75,12 @@
       <div>Bikes</div>
   </a>
 </li>
+{{-- <li class="menu-item {{ Request::is('bikeHistories*') ? 'active' : '' }}">
+  <a href="{{ route('bikeHistories.index') }}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-bike-off"></i>
+      <div>Bike History</div>
+  </a>
+</li> --}}
 @endcan
 @can('sim_view')
 <li class="menu-item {{ Request::is('sims*') ? 'active' : '' }}">
@@ -200,7 +206,4 @@
   </ul>
 </li>
 @endcan
-
-
-
 

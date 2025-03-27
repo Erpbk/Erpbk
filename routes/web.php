@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BikesController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LedgerController;
@@ -43,6 +44,8 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::resource('permissions', App\Http\Controllers\PermissionsController::class);
   Route::resource('roles', App\Http\Controllers\RolesController::class);
   Route::resource('bikes', App\Http\Controllers\BikesController::class);
+  Route::any('bikes/assign_rider/{id?}', [BikesController::class, 'assign_rider'])->name('bikes.assign_rider');
+
   Route::resource('customers', App\Http\Controllers\CustomersController::class);
   Route::resource('sims', App\Http\Controllers\SimsController::class);
 
@@ -60,6 +63,7 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::any('rider/invoice-import', [\App\Http\Controllers\RiderInvoicesController::class, 'import'])->name('rider.invoice_import');
   Route::get('search_item_price/{RID}/{itemID}', [\App\Http\Controllers\ItemsController::class, 'search_item_price']);
 
+  Route::resource('bikeHistories', App\Http\Controllers\BikeHistoryController::class);
 
   Route::resource('leasingCompanies', App\Http\Controllers\LeasingCompaniesController::class);
   Route::resource('garages', App\Http\Controllers\GaragesController::class);
@@ -140,6 +144,7 @@ Route::get('/artisan-storage-unlink', function () {
         'create' => 'calculations.create',
         'edit' => 'calculations.edit'
     ]); */
+
 
 
 

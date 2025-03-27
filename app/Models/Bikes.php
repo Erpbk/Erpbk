@@ -79,5 +79,9 @@ class Bikes extends Model
   {
     return self::select('id', 'plate')->pluck('plate', 'id')->prepend('Select', '');
   }
+  public function rider()
+  {
+    return $this->belongsTo(Riders::class, 'rider_id', 'id');
+  }
 
 }

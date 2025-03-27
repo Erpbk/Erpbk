@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\BikeHistoryDataTable;
 use App\DataTables\BikesDataTable;
+use App\DataTables\BikesHistoryDataTable;
 use App\Http\Requests\CreateBikesRequest;
 use App\Http\Requests\UpdateBikesRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Models\BikeHistory;
+use App\Models\Bikes;
+use App\Models\Riders;
 use App\Repositories\BikesRepository;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Flash;
 
@@ -123,5 +129,45 @@ class BikesController extends AppBaseController
 
     return response()->json(['message' => 'Bike deleted successfully.']);
 
+  }
+
+  public function assign_rider(Request $request, $id)
+  {
+    if (request()->isMethod('post')) {
+      $rules = [
+        'bike_id' => 'required',
+        'rider_id' => 'nullable|unique:bikes',
+      ];
+      $message = [
+        'bike_id.required' => 'ID Required',
+        'rider_id.unique' => 'Rider has already assigned.',
+      ];
+      $this->validate($request, $rules, $message);
+      $data = $request->all();
+      \DB::beginTransaction();
+      try {
+        $ret = BikeHistory::create($data);
+        $bike = Bikes::where('id', $request->bike_id)->first();
+
+        if ($request->warehouse == 'Active') {
+          Riders::where('id', $request->rider_id)->update(['status' => 1]);
+        } else {
+          Riders::where('id', $bike->rider_id)->update(['status' => 3]);
+        }
+        $bike->update(['rider_id' => $request->rider_id, 'warehouse' => $request->warehouse]);
+
+        \DB::commit();
+        return response()->json(['message' => 'Rider assigned successfully.']);
+
+      } catch (QueryException $e) {
+        \DB::rollback();
+        return response()->json([
+          'success' => 'false',
+          'errors' => $e->getMessage(),
+        ], 400);
+      }
+    }
+
+    return view('bikes.assign_rider', compact('id'));
   }
 }
