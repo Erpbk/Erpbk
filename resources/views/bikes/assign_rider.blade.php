@@ -36,3 +36,15 @@
               </div>
             </form>
               <!--row-->
+
+              <script>
+                function bike_status() {
+       var status = $('.warehouse').find(":selected").val();
+       if(status == 'Active'){
+        $("#rider_select").show("fast");
+       }else{
+        $("#rider_select").hide("fast");
+       }
+    }
+
+              </script>
