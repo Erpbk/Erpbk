@@ -93,6 +93,9 @@ class LedgerDataTable extends DataTable
     if (request('account')) {
       $query->where('account_id', request('account'));
     }
+    if ($this->account_id) {
+      $query->where('account_id', $this->account_id);
+    }
 
     if (request('month')) {
       $query->where('billing_month', request('month') . '-01');

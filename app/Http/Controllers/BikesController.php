@@ -170,4 +170,32 @@ class BikesController extends AppBaseController
 
     return view('bikes.assign_rider', compact('id'));
   }
+
+  public function contract($id)
+  {
+    $contract = BikeHistory::find($id);
+
+
+    return view('bikes.contract', compact('contract'));
+  }
+  public function contract_upload(Request $request)
+  {
+    $contract = BikeHistory::find($request->id);
+    if (isset($request->contract)) {
+
+      $doc = $request->contract;
+      $extension = $doc->extension();
+      $name = time() . '.' . $extension;
+      $doc->storeAs('contract', $name);
+
+
+      $contract->contract = $name;
+      $contract->save();
+
+      return response()->json(['message' => $contract->rider->name . '( ' . $contract->rider->rider_id . ' ) Bike Plate # ' . $contract->bike->plate . ' Contract uploaded.']);
+      //return redirect(url('bikes'))->with('success', $contract->rider->name . '( ' . $contract->rider->rider_id . ' ) Bike Plate # ' . $contract->bike->plate . ' Contract uploaded.');
+    }
+
+    return view('bikes.contract-modal', compact('contract'));
+  }
 }

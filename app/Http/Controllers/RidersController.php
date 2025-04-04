@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\LedgerDataTable;
 use App\DataTables\RidersDataTable;
 use App\Helpers\Account;
 use App\Helpers\General;
@@ -15,6 +16,7 @@ use App\Models\RiderItemPrice;
 use App\Models\JobStatus;
 use App\Models\Riders;
 use App\Models\Files;
+use App\Models\Transactions;
 use App\Repositories\RidersRepository;
 use Illuminate\Http\Request;
 use Flash;
@@ -347,6 +349,15 @@ class RidersController extends AppBaseController
       $rider->save();
     }
 
+  }
+
+  public function ledger($rider_id, LedgerDataTable $ledgerDataTable)
+  {
+    $rider = Riders::find($rider_id);
+    $files = Transactions::where('account_id', $rider->account_id)->get();
+    $account_id = $rider->account_id;
+
+    return $ledgerDataTable->with(['account_id' => $account_id])->render('riders.ledger', compact('files', 'rider'));
   }
 
 }

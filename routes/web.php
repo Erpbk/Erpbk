@@ -43,8 +43,12 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::any('/user/services/{id}', [App\Http\Controllers\UserController::class, 'services'])->name('user_services');
   Route::resource('permissions', App\Http\Controllers\PermissionsController::class);
   Route::resource('roles', App\Http\Controllers\RolesController::class);
+
   Route::resource('bikes', App\Http\Controllers\BikesController::class);
   Route::any('bikes/assign_rider/{id?}', [BikesController::class, 'assign_rider'])->name('bikes.assign_rider');
+  Route::get('bikes/contract/{id?}', [\App\Http\Controllers\BikesController::class, 'contract'])->name('bike.contract');
+  Route::any('bikes/contract_upload/{id?}', [\App\Http\Controllers\BikesController::class, 'contract_upload'])->name('bike_contract_upload');
+
 
   Route::resource('customers', App\Http\Controllers\CustomersController::class);
   Route::resource('sims', App\Http\Controllers\SimsController::class);
@@ -58,6 +62,7 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::any('riders/picture_upload/{id?}', [\App\Http\Controllers\RidersController::class, 'picture_upload'])->name('rider_picture_upload');
   Route::any('riders/rider-document/{id}', [\App\Http\Controllers\RidersController::class, 'document'])->name('rider.document');
   Route::get('rider/updateRider', [\App\Http\Controllers\RidersController::class, 'updateRider'])->name('rider.updateRider');
+  Route::get('riders/ledger/{id}', [\App\Http\Controllers\RidersController::class, 'ledger'])->name('rider.ledger');
 
   Route::resource('riderInvoices', App\Http\Controllers\RiderInvoicesController::class);
   Route::any('rider/invoice-import', [\App\Http\Controllers\RiderInvoicesController::class, 'import'])->name('rider.invoice_import');

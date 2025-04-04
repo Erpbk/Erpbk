@@ -2,7 +2,7 @@
 
 @section('title','Ledger')
 @section('content')
-<div class="container">
+<div class="">
     <h2>Ledger</h2>
 <form action="" method="get">
     <div class="row mb-3">

@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Helpers\Common;
 use App\Models\BikeHistory;
+use Storage;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -30,8 +31,16 @@ class BikeHistoryDataTable extends DataTable
     $dataTable->addColumn('rider_id', function (BikeHistory $row) {
       return @$row->rider->name ?? '';
     })->toJson();
+    $dataTable->addColumn('contract', function (BikeHistory $row) {
+      if ($row->contract) {
+        return '<a href="' . Storage::url('app/contract/' . $row->contract) . '" data-toggle="tooltip" class="file btn btn-success  btn-sm mr-1" data-modalID="modal-new" target="_blank"><i class="fas fa-file"></i>&nbsp; Signed Contract</a>';
+      } else {
+        return 'N/A';
+      }
 
+    })->toJson();
 
+    $dataTable->rawColumns(['contract', 'action']);
     return $dataTable->addColumn('action', 'bike_histories.datatables_actions');
   }
 
@@ -43,7 +52,14 @@ class BikeHistoryDataTable extends DataTable
    */
   public function query(BikeHistory $model)
   {
-    return $model->newQuery();
+    $query = $model->newQuery();
+
+    if (request('bike_id')) {
+      $query->where('bike_id', request('bike_id'));
+    }
+
+
+    return $query->orderByDesc('id');
   }
 
   /**

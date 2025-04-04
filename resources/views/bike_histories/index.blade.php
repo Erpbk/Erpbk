@@ -9,9 +9,13 @@
                     <h4>Bike History</h4>
                 </div>
                 <div class="col-sm-6">
-                    <a class="btn btn-primary action-btn"
+                   {{--  <a class="btn btn-primary action-btn"
                        href="{{ route('bikeHistories.create') }}">
                         Add New
+                    </a> --}}
+                    <a class="btn btn-default action-btn"
+                       href="{{url()->previous() }}">
+                       <i class="fa fa-arrow-left"></i> &nbsp;Back
                     </a>
                 </div>
             </div>
