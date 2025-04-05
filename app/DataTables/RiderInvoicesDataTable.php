@@ -23,8 +23,21 @@ class RiderInvoicesDataTable extends DataTable
     $dataTable
       ->addColumn('rider_id', function (RiderInvoices $riderInvoices) {
         return @$riderInvoices->rider->rider_id . '-' . @$riderInvoices->rider->name;
-      })
-      ->toJson();
+      });
+    $dataTable
+      ->addColumn('billing_month', function (RiderInvoices $riderInvoices) {
+        return date('M Y', strtotime($riderInvoices->billing_month));
+      });
+
+    // 👇 Add custom filter for searchable rider column
+    $dataTable->filterColumn('rider_id', function ($query, $keyword) {
+
+      $query->whereHas('rider', function ($q) use ($keyword) {
+        $q->where('rider_id', 'like', "%{$keyword}%")
+          ->orWhere('name', 'like', "%{$keyword}%");
+      });
+    });
+
     $dataTable->rawColumns(['rider_id', 'action']);
     return $dataTable;
   }
@@ -76,10 +89,11 @@ class RiderInvoicesDataTable extends DataTable
     return [
       'id',
       'inv_date',
+      'billing_month',
       'rider_id' => ['title' => 'Rider'],
       'descriptions',
-      'total_amount',
-      'billing_month'
+      'total_amount'
+
 
     ];
   }

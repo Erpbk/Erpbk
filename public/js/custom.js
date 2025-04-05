@@ -81,6 +81,9 @@ $(document).on('submit', '#formajax', function (e) {
       if ($('#reload_page').val() == 1) {
         location.reload();
       }
+      if ($('#redirect_url').length != 0) {
+        window.location = $('#redirect_url').val();
+      }
       $('#modalTop').modal('hide');
       $('#dataTableBuilder').DataTable().ajax.reload(null, false);
     },

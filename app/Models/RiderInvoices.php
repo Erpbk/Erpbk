@@ -63,7 +63,8 @@ class RiderInvoices extends Model
 
   public function rider()
   {
-    return $this->hasOne(Riders::class, 'id', 'rider_id');
+    return $this->belongsTo(Riders::class);
+    //return $this->hasOne(Riders::class, 'id', 'rider_id');
   }
   public function items()
   {

@@ -3,7 +3,7 @@
 @section('page_content')
 
             {!! Form::open(['route' => 'riders.store','id'=>'formajax']) !!}
-
+            <input type="hidden" id="redirect_url" value="{{route('riders.index')}}" />
             <div class="card-body">
 
                 <div class="row">
