@@ -11,7 +11,7 @@
                 <div class="col-sm-6">
                   @can('item_create')
                     <a class="btn btn-primary action-btn show-modal"
-                    href="javascript:void(0);" data-size="lg" data-title="New Bike" data-action="{{ route('bikes.create') }}">
+                    href="javascript:void(0);" data-size="xl" data-title="New Bike" data-action="{{ route('bikes.create') }}">
                         Add New
                     </a>
                     @endcan

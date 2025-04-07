@@ -11,7 +11,7 @@
   </a>
 
     @can('item_edit')
-    <a  href="javascript:void(0);" data-size="lg" data-title="Update Bike" data-action="{{ route('bikes.edit', $id) }}" class='btn btn-info btn-sm show-modal'>
+    <a  href="javascript:void(0);" data-size="xl" data-title="Update Bike" data-action="{{ route('bikes.edit', $id) }}" class='btn btn-info btn-sm show-modal'>
         <i class="fa fa-edit"></i>
     </a>
     @endcan

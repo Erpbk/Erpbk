@@ -243,7 +243,9 @@ class General
        'Easy Lease Garage' => 'Easy Lease Garage',
        'Theft' => 'Theft',
        'Total Loss' => 'Total Loss',*/
-      'Return' => 'Return'
+      'Return' => 'Return',
+      'Absconded' => 'Absconded',
+      'Vacation' => 'Vacation'
     ];
     $list = '';
     foreach ($array as $key => $value) {

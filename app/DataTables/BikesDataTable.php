@@ -18,9 +18,43 @@ class BikesDataTable extends DataTable
   {
     $dataTable = new EloquentDataTable($query);
     $dataTable->addColumn('rider_id', function (Bikes $row) {
-      return @$row->rider->rider_id . '-' . @$row->rider->name;
-    })->toJson();
-    return $dataTable->addColumn('action', 'bikes.datatables_actions');
+      return $row->rider?->rider_id ?? '-';
+    });
+
+    $dataTable->addColumn('rider_name', function (Bikes $row) {
+      if ($row->rider_id) {
+        return '<a href="' . route('riders.show', $row->rider_id) . '">' . $row->rider?->name . '</a>' ?? '-';
+      } else {
+        return '-';
+      }
+    });
+
+    $dataTable->addColumn('company', function (Bikes $row) {
+      return $row->company?->name ?? '-';
+    });
+
+    $dataTable->filterColumn('rider_id', function ($query, $keyword) {
+      $query->whereHas('rider', function ($q) use ($keyword) {
+        $q->where('rider_id', 'like', "%{$keyword}%");
+      });
+    });
+
+    $dataTable->filterColumn('rider_name', function ($query, $keyword) {
+      $query->whereHas('rider', function ($q) use ($keyword) {
+        $q->where('name', 'like', "%{$keyword}%");
+      });
+    });
+
+    $dataTable->filterColumn('company', function ($query, $keyword) {
+      $query->whereHas('company', function ($q) use ($keyword) {
+        $q->where('name', 'like', "%{$keyword}%");
+      });
+    });
+
+    $dataTable->rawColumns(['action', 'rider_name']);
+    $dataTable->addColumn('action', 'bikes.datatables_actions');
+
+    return $dataTable;
   }
 
   /**
@@ -31,7 +65,7 @@ class BikesDataTable extends DataTable
    */
   public function query(Bikes $model)
   {
-    return $model->newQuery();
+    return $model->newQuery()->with(['company', 'rider']);
   }
 
   /**
@@ -71,12 +105,13 @@ class BikesDataTable extends DataTable
   {
     return [
       'id',
+      'bike_code',
       'plate',
-      'rider_id' => ['title' => 'Rider'],
-      'chassis_number',
-      'color',
-      'model'
-
+      'rider_id' => ['title' => 'Rider ID'],
+      'rider_name' => ['title' => 'Rider Name'],
+      'contract_number',
+      'emirates',
+      'company' => ['title' => 'Company'],
     ];
   }
 

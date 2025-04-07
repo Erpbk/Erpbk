@@ -29,6 +29,7 @@ class Bikes extends Model
     'insurance_expiry',
     'status',
     'insurance_co',
+    'contract_number',
     'policy_no'
   ];
 
@@ -82,6 +83,10 @@ class Bikes extends Model
   public function rider()
   {
     return $this->belongsTo(Riders::class, 'rider_id', 'id');
+  }
+  public function company()
+  {
+    return $this->belongsTo(LeasingCompanies::class, 'company', 'id');
   }
 
 }

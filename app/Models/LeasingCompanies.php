@@ -35,6 +35,11 @@ class LeasingCompanies extends Model
     'updated_at' => 'nullable'
   ];
 
+
+  public static function dropdown()
+  {
+    return self::select('id', 'name')->pluck('name', 'id')->prepend('Select', '');
+  }
   function account()
   {
     return $this->hasOne(Accounts::class, 'id', 'account_id');

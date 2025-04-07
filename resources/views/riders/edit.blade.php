@@ -4,7 +4,7 @@
 
 
             {!! Form::model($riders, ['route' => ['riders.update', $riders->id], 'method' => 'patch','id'=>'formajax']) !!}
-
+            <input type="hidden" id="redirect_url" value="{{route('riders.index')}}" />
             <div class="card-body">
                 <div class="row">
                     @include('riders.fields')

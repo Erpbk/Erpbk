@@ -1,3 +1,4 @@
+<script src="{{ asset('js/modal_custom.js') }}"></script>
 <!-- Plate Field -->
 <div class="form-group col-sm-4">
     {!! Form::label('plate', 'Number Plate:',['class'=>'required']) !!}
@@ -34,12 +35,12 @@
     {!! Form::text('engine', null, ['class' => 'form-control', 'required', 'maxlength' => 100, 'maxlength' => 100]) !!}
 </div>
 
-{{-- <!-- Company Field -->
+ <!-- Company Field -->
 <div class="form-group col-sm-4">
     {!! Form::label('company', 'Company:',['class'=>'required']) !!}
-    {!! Form::number('company', null, ['class' => 'form-control', 'required']) !!}
+    {!! Form::select('company', App\Models\LeasingCompanies::dropdown(),null, ['class' => 'form-control select2', 'required']) !!}
 </div>
-
+{{--
 <!-- Warehouse Field -->
 <div class="form-group col-sm-4">
     {!! Form::label('warehouse', 'Warehouse:') !!}
@@ -90,6 +91,11 @@
 <div class="form-group col-sm-4">
     {!! Form::label('policy_no', 'Policy No:') !!}
     {!! Form::text('policy_no', null, ['class' => 'form-control', 'maxlength' => 100, 'maxlength' => 100]) !!}
+</div>
+
+<div class="form-group col-sm-4">
+  {!! Form::label('contract_number', 'Contract No:') !!}
+  {!! Form::text('contract_number', null, ['class' => 'form-control', 'maxlength' => 100, 'maxlength' => 100]) !!}
 </div>
 
 <!-- Notes Field -->

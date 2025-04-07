@@ -144,17 +144,34 @@ class BikesController extends AppBaseController
       ];
       $this->validate($request, $rules, $message);
       $data = $request->all();
+
       \DB::beginTransaction();
       try {
-        $ret = BikeHistory::create($data);
-        $bike = Bikes::where('id', $request->bike_id)->first();
+
+        $bike = Bikes::where('id', $request->bike_id)->orderByDesc('id')->first();
 
         if ($request->warehouse == 'Active') {
+
           Riders::where('id', $request->rider_id)->update(['status' => 1]);
-        } else {
+          $bike->update(['rider_id' => $request->rider_id, 'warehouse' => $request->warehouse]);
+
+        } else if ($request->warehouse == 'Absconded') {
+          //updating bike history
+          $data['rider_id'] = $bike->rider_id;
+          // updating rider ID and setting status inactive
           Riders::where('id', $bike->rider_id)->update(['status' => 3]);
+          //updating bike with same rider but change the status absconded
+          $bike->update(['rider_id' => $bike->rider_id, 'warehouse' => $request->warehouse]);
+        } else {
+
+          Riders::where('id', $bike->rider_id)->update(['status' => 3]);
+          $bike->update(['rider_id' => $request->rider_id, 'warehouse' => $request->warehouse]);
+
         }
-        $bike->update(['rider_id' => $request->rider_id, 'warehouse' => $request->warehouse]);
+
+        //creating bike hostory
+        $ret = BikeHistory::create($data);
+
 
         \DB::commit();
         return response()->json(['message' => 'Rider assigned successfully.']);
