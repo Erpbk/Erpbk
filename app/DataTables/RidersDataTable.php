@@ -28,6 +28,9 @@ class RidersDataTable extends DataTable
       ->addColumn('name', function (Riders $rider) {
         return '<a href="' . route('riders.show', $rider->id) . '">' . $rider->name . '</a>';
       })
+      ->addColumn('bike', function (Riders $rider) {
+        return $rider->bikes->plate ?? '-';
+      })
       ->addColumn('company_contact', function (Riders $rider) {
         if (!$rider->company_contact)
           return 'N/A';
@@ -148,6 +151,12 @@ class RidersDataTable extends DataTable
       [
         'data' => 'emirate_hub',
         'title' => 'Emirate Hub',
+        'searchable' => true,
+        'orderable' => true
+      ],
+      [
+        'data' => 'bike',
+        'title' => 'Bike',
         'searchable' => true,
         'orderable' => true
       ],
