@@ -63,10 +63,14 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::any('riders/rider-document/{id}', [\App\Http\Controllers\RidersController::class, 'document'])->name('rider.document');
   Route::get('rider/updateRider', [\App\Http\Controllers\RidersController::class, 'updateRider'])->name('rider.updateRider');
   Route::get('riders/ledger/{id}', [\App\Http\Controllers\RidersController::class, 'ledger'])->name('rider.ledger');
+  Route::get('riders/attendance/{id}', [\App\Http\Controllers\RidersController::class, 'attendance'])->name('rider.attendance');
 
   Route::resource('riderInvoices', App\Http\Controllers\RiderInvoicesController::class);
   Route::any('rider/invoice-import', [\App\Http\Controllers\RiderInvoicesController::class, 'import'])->name('rider.invoice_import');
   Route::get('search_item_price/{RID}/{itemID}', [\App\Http\Controllers\ItemsController::class, 'search_item_price']);
+
+  Route::resource('riderAttendances', App\Http\Controllers\RiderAttendanceController::class);
+  Route::any('rider/attendance-import', [\App\Http\Controllers\RiderAttendanceController::class, 'import'])->name('rider.attendance_import');
 
   Route::resource('bikeHistories', App\Http\Controllers\BikeHistoryController::class);
 
@@ -149,6 +153,7 @@ Route::get('/artisan-storage-unlink', function () {
         'create' => 'calculations.create',
         'edit' => 'calculations.edit'
     ]); */
+
 
 
 

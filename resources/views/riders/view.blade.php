@@ -107,20 +107,20 @@ if(is_numeric(request()->segment(3))){
 
                       <ul class="p-0 mb-3" >
                         <li class="list-group-item pb-1" >
-                            <b>Rider ID</b> <span class="float-right">@isset($result){{$result['rider_id']??'not-set'}}@endisset</span>
+                            <b>Rider ID:</b> <span class="float-right">@isset($result){{$result['rider_id']??'not-set'}}@endisset</span>
                          </li>
                          <li class="list-group-item pb-1">
-                            <b>Bike Number</b> <span class="float-right">@isset($result){{$riders->bikes->plate??'not-set'}}@endisset</span>
+                            <b>Bike Number:</b> <span class="float-right">@isset($result){{$riders->bikes->plate??'not-set'}}@endisset</span>
                          </li>
                          <li class="list-group-item pb-1">
-                            <b>Date Of Joining</b> <span class="float-right">@isset($result){{App\Helpers\General::DateFormat($result['doj'])??'not-set'}}@endisset</span>
+                            <b>Date Of Joining:</b> <span class="float-right">@isset($result){{App\Helpers\General::DateFormat($result['doj'])??'not-set'}}@endisset</span>
                          </li>
                          <li class="list-group-item pb-1 @if(@$result['status'] == 1) text-success @else text-danger @endif">
-                            <b>Status</b> <span class="float-right">@isset($result){{App\Helpers\General::RiderStatus($result['status'])??'not-set'}}@endisset</span>
+                            <b>Status:</b> <span class="float-right">@isset($result){{App\Helpers\General::RiderStatus($result['status'])??'not-set'}}@endisset</span>
                          </li>
                          <li class="list-group-item pb-1 @if(@$result['job_status'] == 1) text-success @else text-danger @endif" >
-                            <b>Job Status</b> <span class="float-right">
-                                @isset($result)<a href="javascript:void(0);" data-action="{{url('riders/job_status/'.$result['id'])}}" data-title="Change Job Status" class="btn btn-light btn-sm show-modal">Change Status</a>@endisset
+                            <b>Job Status:</b> <span class="float-right">
+                               {{--  @isset($result)<a href="javascript:void(0);" data-action="{{url('riders/job_status/'.$result['id'])}}" data-title="Change Job Status" class="btn btn-light btn-sm show-modal">Change Status</a>@endisset --}}
                                  @isset($result['job_status']){{App\Helpers\General::JobStatus($result['job_status'])??'not-set'}}@endisset</span>
                                @isset($rider->jobstatus)
                                 <hr/>
@@ -129,7 +129,7 @@ if(is_numeric(request()->segment(3))){
                                 @endisset
                          </li>
                          <li class="list-group-item pb-1 ">
-                            <b>Balance</b> <span class="float-right">{{-- @isset($rider->account->id){{App\Helpers\Account::show_bal(App\Helpers\Account::Monthly_ob(date('y-m-d'), $rider->account->id))??'not-set'}}@endisset --}}</span>
+                            <b>Balance:</b> <span class="float-right">{{-- @isset($rider->account->id){{App\Helpers\Account::show_bal(App\Helpers\Account::Monthly_ob(date('y-m-d'), $rider->account->id))??'not-set'}}@endisset --}}</span>
                          </li>
                       </ul>
 
@@ -155,6 +155,7 @@ if(is_numeric(request()->segment(3))){
         <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='timeline') active @endif" href="{{route('rider.timeline',$result['id'])}}"><i class="ti ti-timeline ti-sm me-1_5"></i>Timeline</a></li>
         <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='rider-document') active @endif" href="{{route('rider.document',$result['id'])}}"><i class="ti ti-file ti-sm me-1_5"></i>Documents</a></li>
         <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='ledger') active @endif" href="{{route('rider.ledger',$result['id'])}}"><i class="ti ti-file ti-sm me-1_5"></i>Ledger</a></li>
+        <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='attendance') active @endif" href="{{route('rider.attendance',$result['id'])}}"><i class="ti ti-calendar-check ti-sm me-1_5"></i>Attendance</a></li>
         @endisset
 
       </ul>

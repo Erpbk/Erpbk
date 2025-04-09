@@ -152,19 +152,24 @@ class BikesController extends AppBaseController
 
         if ($request->warehouse == 'Active') {
 
-          Riders::where('id', $request->rider_id)->update(['status' => 1]);
+          Riders::where('id', $request->rider_id)->update(['status' => 1, 'job_status' => 1]);
           $bike->update(['rider_id' => $request->rider_id, 'warehouse' => $request->warehouse]);
 
         } else if ($request->warehouse == 'Absconded') {
-          //updating bike history
+
           $data['rider_id'] = $bike->rider_id;
-          // updating rider ID and setting status inactive
-          Riders::where('id', $bike->rider_id)->update(['status' => 3]);
-          //updating bike with same rider but change the status absconded
+          Riders::where('id', $bike->rider_id)->update(['status' => 3, 'job_status' => 5]);
           $bike->update(['rider_id' => $bike->rider_id, 'warehouse' => $request->warehouse]);
+
+        } else if ($request->warehouse == 'Vacation') {
+
+          $data['rider_id'] = $bike->rider_id;
+          Riders::where('id', $bike->rider_id)->update(['status' => 3, 'job_status' => 2]);
+          $bike->update(['rider_id' => $bike->rider_id, 'warehouse' => $request->warehouse]);
+
         } else {
 
-          Riders::where('id', $bike->rider_id)->update(['status' => 3]);
+          Riders::where('id', $bike->rider_id)->update(['status' => 3, 'job_status' => 9]);
           $bike->update(['rider_id' => $request->rider_id, 'warehouse' => $request->warehouse]);
 
         }

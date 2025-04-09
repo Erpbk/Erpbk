@@ -723,7 +723,8 @@ class General
       5 => 'Absconded',
       6 => 'Stop Salary',
       7 => 'Coming',
-      8 => 'Absent'
+      8 => 'Absent',
+      9 => 'Inactive'
 
     ];
 

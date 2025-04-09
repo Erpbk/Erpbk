@@ -207,3 +207,10 @@
 </li>
 @endcan
 
+
+{{-- <li class="nav-item">
+    <a href="{{ route('riderAttendances.index') }}" class="nav-link {{ Request::is('riderAttendances*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-home"></i>
+        <p>Rider Attendances</p>
+    </a>
+</li> --}}
