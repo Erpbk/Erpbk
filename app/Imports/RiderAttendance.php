@@ -66,20 +66,20 @@ class RiderAttendance implements ToCollection
             $rider = Riders::where('rider_id', $rider_id)->first();
             if (!$rider) {
               throw ValidationException::withMessages(['file' => 'Row(' . $i . ') - Rider ID ' . $this->extractValue($row[1]) . ' do not match.']);
+            } else {
+              $RID = $rider->id;
+
+              $ret = \App\Models\RiderAttendance::create([
+                'rider_id' => $RID,
+                'd_rider_id' => $rider_id,
+                'date' => $attendance_date,
+                'shift' => $this->extractValue($row[2]),
+                'attendance' => $this->extractValue($row[8]) ?? 'Present',
+                'cdm_id' => $this->extractValue($row[7]),
+                'day' => $this->extractValue($row[3])
+
+              ]);
             }
-            $RID = $rider->id;
-
-            $ret = \App\Models\RiderAttendance::create([
-              'rider_id' => $RID,
-              'd_rider_id' => $rider_id,
-              'date' => $attendance_date,
-              'shift' => $this->extractValue($row[2]),
-              'attendance' => $this->extractValue($row[8]),
-              'cdm_id' => $this->extractValue($row[7]),
-              'day' => $this->extractValue($row[3])
-
-            ]);
-
 
           }
         }
