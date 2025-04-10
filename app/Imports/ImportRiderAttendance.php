@@ -69,7 +69,7 @@ class ImportRiderAttendance implements ToCollection
               } else {
 
                 $rider->shift = $this->extractValue($row[2]);
-                $rider->attendance = $this->extractValue($row[8]);
+                $rider->attendance = $this->extractValue($row[8]) ?? '';
                 $rider->save();
                 /* $RID = $rider->id;
                 $ret = \App\Models\RiderAttendance::create([
