@@ -702,8 +702,11 @@ class General
   public static function RiderStatus($status = null)
   {
     $result = [
+      1 => 'Active',
+      /* 2 => 'Terminated', */
       3 => 'Inactive',
-      1 => 'Active'
+      4 => 'Vacation',
+      5 => 'Absconded'
     ];
 
     if ($status != null) {

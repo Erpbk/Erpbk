@@ -6,6 +6,7 @@ use App\DataTables\RiderAttendanceDataTable;
 use App\Http\Requests\CreateRiderAttendanceRequest;
 use App\Http\Requests\UpdateRiderAttendanceRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Imports\ImportRiderAttendance;
 use App\Imports\RiderAttendance;
 use App\Repositories\RiderAttendanceRepository;
 use Illuminate\Http\Request;
@@ -137,7 +138,7 @@ class RiderAttendanceController extends AppBaseController
         'file.required' => 'Excel File Required'
       ];
       $this->validate($request, $rules, $message);
-      Excel::import(new RiderAttendance(), $request->file('file'));
+      Excel::import(new ImportRiderAttendance(), $request->file('file'));
     }
 
     return view('riders.import');

@@ -21,7 +21,7 @@ use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Carbon\Carbon;
 
-class RiderAttendance implements ToCollection
+class ImportRiderAttendance implements ToCollection
 {
   /**
    * @param array $row
@@ -53,40 +53,44 @@ class RiderAttendance implements ToCollection
         $attendance_date = date('Y-m-d');
       }
     }
+    if ($attendance_date == date('Y-m-d')) {
+      $i = 1;
+      foreach ($rows as $row) {
 
-    $i = 1;
-    foreach ($rows as $row) {
+        $i++;
+        try {
+          DB::beginTransaction();
+          if ($i > 2) {
+            $rider_id = $this->extractValue($row[0]);
+            if ($rider_id) {
+              $rider = Riders::where('rider_id', $rider_id)->first();
+              if (!$rider) {
+                throw ValidationException::withMessages(['file' => 'Row(' . $i . ') - Rider ID ' . $this->extractValue($row[1]) . ' do not match.']);
+              } else {
 
-      $i++;
-      try {
-        DB::beginTransaction();
-        if ($i > 2) {
-          $rider_id = $this->extractValue($row[0]);
-          if ($rider_id) {
-            $rider = Riders::where('rider_id', $rider_id)->first();
-            if (!$rider) {
-              throw ValidationException::withMessages(['file' => 'Row(' . $i . ') - Rider ID ' . $this->extractValue($row[1]) . ' do not match.']);
-            } else {
-              $RID = $rider->id;
+                $rider->shift = $this->extractValue($row[2]);
+                $rider->attendance = $this->extractValue($row[8]) ?? 'Present';
+                $rider->save();
+                /* $RID = $rider->id;
+                $ret = \App\Models\RiderAttendance::create([
+                  'rider_id' => $RID,
+                  'd_rider_id' => $rider_id,
+                  'date' => $attendance_date,
+                  'shift' => $this->extractValue($row[2]),
+                  'attendance' => $this->extractValue($row[8]) ?? 'Present',
+                  'cdm_id' => $this->extractValue($row[7]),
+                  'day' => $this->extractValue($row[3])
 
-              $ret = \App\Models\RiderAttendance::create([
-                'rider_id' => $RID,
-                'd_rider_id' => $rider_id,
-                'date' => $attendance_date,
-                'shift' => $this->extractValue($row[2]),
-                'attendance' => $this->extractValue($row[8]) ?? 'Present',
-                'cdm_id' => $this->extractValue($row[7]),
-                'day' => $this->extractValue($row[3])
+                ]); */
+              }
 
-              ]);
             }
-
           }
+          DB::commit();
+        } catch (QueryException $e) {
+          DB::rollBack();
+          throw $e;
         }
-        DB::commit();
-      } catch (QueryException $e) {
-        DB::rollBack();
-        throw $e;
       }
     }
   }

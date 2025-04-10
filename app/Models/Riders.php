@@ -60,7 +60,9 @@ class Riders extends Model
     'labor_card_expiry',
     'insurance',
     'insurance_expiry',
-    'policy_no'
+    'policy_no',
+    'shift',
+    'attendance'
   ];
 
   protected $casts = [
@@ -107,6 +109,8 @@ class Riders extends Model
     'labor_card_expiry' => 'string',
     'insurance' => 'string',
     'insurance_expiry' => 'string',
+    'shift' => 'string',
+    'attendance' => 'string',
     'policy_no' => 'string'
   ];
 

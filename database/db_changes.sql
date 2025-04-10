@@ -117,6 +117,11 @@ MODIFY COLUMN `vendor_id`  bigint(20) UNSIGNED NULL AFTER `rider_id`;
 
 ALTER TABLE `bikes`
 ADD COLUMN `contract_number`  varchar(50) NULL AFTER `status`;
+-------------
+
+ALTER TABLE `riders`
+ADD COLUMN `shift`  varchar(100) NULL AFTER `policy_no`,
+ADD COLUMN `attendance`  varchar(50) NULL AFTER `shift`;
 
 
 

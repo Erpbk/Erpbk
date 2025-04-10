@@ -20,11 +20,11 @@ class RidersDataTable extends DataTable
         $badgeClass = ($rider->status == 1) ? 'bg-label-success' : 'bg-label-danger';
         return '<span class="badge ' . $badgeClass . '">' . $statusText . '</span>';
       })
-      ->addColumn('job_status', function (Riders $rider) {
+      /* ->addColumn('job_status', function (Riders $rider) {
         $statusText = General::JobStatus($rider->job_status);
         $badgeClass = ($rider->job_status == 1) ? 'bg-label-success' : 'bg-label-info';
         return '<span class="badge ' . $badgeClass . '">' . $statusText . '</span>';
-      })
+      }) */
       ->addColumn('name', function (Riders $rider) {
         return '<a href="' . route('riders.show', $rider->id) . '">' . $rider->name . '</a>';
       })
@@ -73,7 +73,7 @@ class RidersDataTable extends DataTable
       ->filterColumn('emirate_hub', function ($query, $keyword) {
         $query->where('emirate_hub', 'LIKE', "%{$keyword}%");
       })
-      ->rawColumns(['name', 'status', 'action', 'company_contact', 'job_status']);
+      ->rawColumns(['name', 'status', 'action', 'company_contact']);
 
     return $dataTable;
   }
@@ -87,7 +87,9 @@ class RidersDataTable extends DataTable
       'fleet_supervisor',
       'emirate_hub',
       'status',
-      'job_status'
+      'shift',
+      'attendance'
+
     ]);
   }
 
@@ -167,8 +169,14 @@ class RidersDataTable extends DataTable
         'orderable' => true
       ],
       [
-        'data' => 'job_status',
-        'title' => 'Job Status',
+        'data' => 'shift',
+        'title' => 'Shift',
+        'searchable' => true,
+        'orderable' => true
+      ],
+      [
+        'data' => 'attendance',
+        'title' => 'Attendance',
         'searchable' => true,
         'orderable' => true
       ]
