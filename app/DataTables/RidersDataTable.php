@@ -26,7 +26,22 @@ class RidersDataTable extends DataTable
         return '<span class="badge ' . $badgeClass . '">' . $statusText . '</span>';
       }) */
       ->addColumn('name', function (Riders $rider) {
-        return '<a href="' . route('riders.show', $rider->id) . '">' . $rider->name . '</a>';
+        $phone = preg_replace('/[^0-9]/', '', $rider->company_contact);
+        $whatsappNumber = '+971' . ltrim($phone, '0');
+        $name = '<a href="' . route('riders.show', $rider->id) . '">' . $rider->name . '</a><br/>';
+        if (!$rider->company_contact) {
+          $name .= 'Contact: N/A<br/>';
+        } else {
+          $phone = preg_replace('/[^0-9]/', '', $rider->company_contact);
+          $whatsappNumber = '+971' . ltrim($phone, '0');
+
+          $name .= 'Contact: <a href="https://wa.me/' . $whatsappNumber . '" target="_blank" class="text-success">
+                        <i class="fab fa-whatsapp"></i> ' . $rider->company_contact . '
+                    </a><br/>';
+        }
+        $name .= 'HUB: ' . $rider->emirate_hub;
+
+        return $name;
       })
       ->addColumn('bike', function (Riders $rider) {
         return $rider->bikes->plate ?? '-';
@@ -37,7 +52,10 @@ class RidersDataTable extends DataTable
       ->addColumn('hr', function (Riders $rider) {
         return $rider->activity->sum('login_hr') ?? '-';
       })
-      ->addColumn('company_contact', function (Riders $rider) {
+      ->addColumn('days', function (Riders $rider) {
+        return $rider->activity->count('date') ?? '-';
+      })
+      /* ->addColumn('company_contact', function (Riders $rider) {
         if (!$rider->company_contact)
           return 'N/A';
 
@@ -47,7 +65,7 @@ class RidersDataTable extends DataTable
         return '<a href="https://wa.me/' . $whatsappNumber . '" target="_blank" class="text-success">
                         <i class="fab fa-whatsapp"></i> ' . $rider->company_contact . '
                     </a>';
-      })
+      }) */
       // Status filter
       ->filterColumn('status', function ($query, $keyword) {
         $searchTerm = strtolower(trim($keyword));
@@ -144,24 +162,24 @@ class RidersDataTable extends DataTable
         'searchable' => true,
         'orderable' => true
       ],
-      [
+      /* [
         'data' => 'company_contact',
         'title' => 'Contact',
         'searchable' => true,
         'orderable' => true
-      ],
+      ], */
       [
         'data' => 'fleet_supervisor',
-        'title' => 'Fleet Supervisor',
+        'title' => 'Fleet Supv',
         'searchable' => true,
         'orderable' => true
       ],
-      [
-        'data' => 'emirate_hub',
-        'title' => 'Emirate Hub',
-        'searchable' => true,
-        'orderable' => true
-      ],
+      /*  [
+         'data' => 'emirate_hub',
+         'title' => 'Emirate Hub',
+         'searchable' => true,
+         'orderable' => true
+       ], */
       [
         'data' => 'bike',
         'title' => 'Bike',
@@ -182,7 +200,7 @@ class RidersDataTable extends DataTable
       ],
       [
         'data' => 'attendance',
-        'title' => 'Attendance',
+        'title' => 'ATTN',
         'searchable' => true,
         'orderable' => true
       ],
@@ -195,6 +213,12 @@ class RidersDataTable extends DataTable
       [
         'data' => 'hr',
         'title' => 'HR',
+        'searchable' => true,
+        'orderable' => true
+      ],
+      [
+        'data' => 'days',
+        'title' => 'Days',
         'searchable' => true,
         'orderable' => true
       ]
