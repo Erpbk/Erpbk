@@ -215,9 +215,9 @@
     </a>
 </li> --}}
 
-<li class="nav-item">
+{{-- <li class="nav-item">
     <a href="{{ route('riderActivities.index') }}" class="nav-link {{ Request::is('riderActivities*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
         <p>Rider Activities</p>
     </a>
-</li>
+</li> --}}
