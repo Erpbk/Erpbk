@@ -6,6 +6,7 @@ use App\Helpers\Account;
 use App\Helpers\General;
 use App\Helpers\HeadAccount;
 use App\Models\Items;
+use App\Models\RiderActivities;
 use App\Models\RiderInvoiceItem;
 use App\Models\RiderInvoices;
 use App\Models\Riders;
@@ -64,6 +65,7 @@ class ImportRiderActivities implements ToCollection
         if ($i > 2) {
 
           $rider = Riders::where('rider_id', $row[1])->first();
+
           if (!$rider) {
             //throw ValidationException::withMessages(['file' => 'Row(' . $i . ') - Rider ID ' . $row[1] . ' do not match.']);
           } else {
@@ -73,21 +75,24 @@ class ImportRiderActivities implements ToCollection
             $rider->save(); */
 
             $RID = $rider->id;
+            $activity_exist = RiderActivities::where('rider_id', $rider->id)->where('date', $row[0])->first();
 
-            $ret = \App\Models\RiderActivities::create([
-              'rider_id' => $RID,
-              'd_rider_id' => $row[1],
-              'date' => $row[0],
-              'payout_type' => $row[5],
-              'delivered_orders' => $row[6],
-              'ontime_orders' => $row[7],
-              'ontime_orders_percentage' => $row[8],
-              'avg_time' => $row[9],
-              'rejected_orders' => $row[10],
-              'rejected_orders_percentage' => $row[11],
-              'login_hr' => $row[12],
+            if (!$activity_exist) {
+              $ret = \App\Models\RiderActivities::create([
+                'rider_id' => $RID,
+                'd_rider_id' => $row[1],
+                'date' => $row[0],
+                'payout_type' => $row[5],
+                'delivered_orders' => $row[6],
+                'ontime_orders' => $row[7],
+                'ontime_orders_percentage' => $row[8],
+                'avg_time' => $row[9],
+                'rejected_orders' => $row[10],
+                'rejected_orders_percentage' => $row[11],
+                'login_hr' => $row[12],
 
-            ]);
+              ]);
+            }
           }
 
 
