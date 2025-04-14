@@ -141,6 +141,6 @@ class RiderAttendanceController extends AppBaseController
       Excel::import(new ImportRiderAttendance(), $request->file('file'));
     }
 
-    return view('riders.import');
+    return view('rider_attendances.import');
   }
 }

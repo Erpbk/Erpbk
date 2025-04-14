@@ -1,9 +1,9 @@
 
 
-<form action="{{route('rider.attendance_import')}}" method="POST" enctype="multipart/form-data" id="formajax">
+<form action="{{route('rider.activities_import')}}" method="POST" enctype="multipart/form-data" id="formajax">
   <div class="row">
       <div class="col-12">
-        <a href="{{url('sample/rider_attendance_sample.xlsx')}}" class="text-success w-100" download="Rider Attendance Sample">
+        <a href="{{url('sample/rider_activities_sample.xlsx')}}" class="text-success w-100" download="Rider Activities Sample">
           <i class="fa fa-file-download text-success"></i> &nbsp; Download Sample File
       </a>
       </div>

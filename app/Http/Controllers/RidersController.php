@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\LedgerDataTable;
+use App\DataTables\RiderActivitiesDataTable;
 use App\DataTables\RiderAttendanceDataTable;
 use App\DataTables\RidersDataTable;
 use App\Helpers\Account;
@@ -364,6 +365,10 @@ class RidersController extends AppBaseController
   public function attendance($rider_id, RiderAttendanceDataTable $riderAttendanceDataTable)
   {
     return $riderAttendanceDataTable->with(['rider_id' => $rider_id])->render('riders.attendance');
+  }
+  public function activities($rider_id, RiderActivitiesDataTable $riderActivitiesDataTable)
+  {
+    return $riderActivitiesDataTable->with(['rider_id' => $rider_id])->render('riders.activities');
   }
 
 }

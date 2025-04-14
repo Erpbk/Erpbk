@@ -52,7 +52,7 @@ Route::middleware(['auth', 'web'])->group(function () {
 
   Route::resource('customers', App\Http\Controllers\CustomersController::class);
   Route::resource('sims', App\Http\Controllers\SimsController::class);
-
+  /* Rider section starts from here */
 
   Route::resource('riders', App\Http\Controllers\RidersController::class);
   Route::any('riders/job_status/{id?}', [\App\Http\Controllers\RidersController::class, 'job_status'])->name('rider.job_status');
@@ -64,6 +64,7 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::get('rider/updateRider', [\App\Http\Controllers\RidersController::class, 'updateRider'])->name('rider.updateRider');
   Route::get('riders/ledger/{id}', [\App\Http\Controllers\RidersController::class, 'ledger'])->name('rider.ledger');
   Route::get('riders/attendance/{id}', [\App\Http\Controllers\RidersController::class, 'attendance'])->name('rider.attendance');
+  Route::get('riders/activities/{id}', [\App\Http\Controllers\RidersController::class, 'activities'])->name('rider.activities');
 
   Route::resource('riderInvoices', App\Http\Controllers\RiderInvoicesController::class);
   Route::any('rider/invoice-import', [\App\Http\Controllers\RiderInvoicesController::class, 'import'])->name('rider.invoice_import');
@@ -71,6 +72,11 @@ Route::middleware(['auth', 'web'])->group(function () {
 
   Route::resource('riderAttendances', App\Http\Controllers\RiderAttendanceController::class);
   Route::any('rider/attendance-import', [\App\Http\Controllers\RiderAttendanceController::class, 'import'])->name('rider.attendance_import');
+
+  Route::resource('riderActivities', App\Http\Controllers\RiderActivitiesController::class);
+  Route::any('rider/activities-import', [\App\Http\Controllers\RiderActivitiesController::class, 'import'])->name('rider.activities_import');
+
+  /* Rider section end here */
 
   Route::resource('bikeHistories', App\Http\Controllers\BikeHistoryController::class);
 
@@ -162,3 +168,5 @@ Route::get('/artisan-storage-unlink', function () {
 
 
 
+
+Route::resource('riderActivities', App\Http\Controllers\RiderActivitiesController::class);

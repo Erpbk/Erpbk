@@ -31,6 +31,12 @@ class RidersDataTable extends DataTable
       ->addColumn('bike', function (Riders $rider) {
         return $rider->bikes->plate ?? '-';
       })
+      ->addColumn('orders', function (Riders $rider) {
+        return $rider->activity->sum('delivered_orders') ?? '-';
+      })
+      ->addColumn('hr', function (Riders $rider) {
+        return $rider->activity->sum('login_hr') ?? '-';
+      })
       ->addColumn('company_contact', function (Riders $rider) {
         if (!$rider->company_contact)
           return 'N/A';
@@ -177,6 +183,18 @@ class RidersDataTable extends DataTable
       [
         'data' => 'attendance',
         'title' => 'Attendance',
+        'searchable' => true,
+        'orderable' => true
+      ],
+      [
+        'data' => 'orders',
+        'title' => 'Orders',
+        'searchable' => true,
+        'orderable' => true
+      ],
+      [
+        'data' => 'hr',
+        'title' => 'HR',
         'searchable' => true,
         'orderable' => true
       ]

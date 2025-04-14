@@ -162,6 +162,7 @@ if(is_numeric(request()->segment(3))){
         <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='rider-document') active @endif" href="{{route('rider.document',$result['id'])}}"><i class="ti ti-file ti-sm me-1_5"></i>Documents</a></li>
         <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='ledger') active @endif" href="{{route('rider.ledger',$result['id'])}}"><i class="ti ti-file ti-sm me-1_5"></i>Ledger</a></li>
         {{-- <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='attendance') active @endif" href="{{route('rider.attendance',$result['id'])}}"><i class="ti ti-calendar-check ti-sm me-1_5"></i>Attendance</a></li> --}}
+        <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='activities') active @endif" href="{{route('rider.activities',$result['id'])}}"><i class="ti ti-motorbike ti-sm me-1_5"></i>Activities</a></li>
         @endisset
 
       </ul>

@@ -204,4 +204,8 @@ class Riders extends Model
   {
     return $this->hasMany(Transactions::class, 'account_id', 'account_id');
   }
+  function activity()
+  {
+    return $this->hasMany(RiderActivities::class, 'rider_id', 'id')->where(\DB::raw('DATE_FORMAT(date, "%Y-%m")'), '=', date('Y-m'));
+  }
 }
