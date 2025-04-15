@@ -26,20 +26,20 @@ class RidersDataTable extends DataTable
         return '<span class="badge ' . $badgeClass . '">' . $statusText . '</span>';
       }) */
       ->addColumn('name', function (Riders $rider) {
-        $phone = preg_replace('/[^0-9]/', '', $rider->company_contact);
-        $whatsappNumber = '+971' . ltrim($phone, '0');
+        /* $phone = preg_replace('/[^0-9]/', '', $rider->company_contact);
+        $whatsappNumber = '+971' . ltrim($phone, '0'); */
         $name = '<a href="' . route('riders.show', $rider->id) . '">' . $rider->name . '</a><br/>';
-        if (!$rider->company_contact) {
-          $name .= 'Contact: N/A<br/>';
-        } else {
-          $phone = preg_replace('/[^0-9]/', '', $rider->company_contact);
-          $whatsappNumber = '+971' . ltrim($phone, '0');
+        /*  if (!$rider->company_contact) {
+           $name .= 'Contact: N/A<br/>';
+         } else {
+           $phone = preg_replace('/[^0-9]/', '', $rider->company_contact);
+           $whatsappNumber = '+971' . ltrim($phone, '0');
 
-          $name .= 'Contact: <a href="https://wa.me/' . $whatsappNumber . '" target="_blank" class="text-success">
-                        <i class="fab fa-whatsapp"></i> ' . $rider->company_contact . '
-                    </a><br/>';
-        }
-        $name .= 'HUB: ' . $rider->emirate_hub;
+           $name .= 'Contact: <a href="https://wa.me/' . $whatsappNumber . '" target="_blank" class="text-success">
+                         <i class="fab fa-whatsapp"></i> ' . $rider->company_contact . '
+                     </a><br/>';
+         }
+         $name .= 'HUB: ' . $rider->emirate_hub; */
 
         return $name;
       })
@@ -55,7 +55,7 @@ class RidersDataTable extends DataTable
       ->addColumn('days', function (Riders $rider) {
         return $rider->activity->count('date') ?? '-';
       })
-      /* ->addColumn('company_contact', function (Riders $rider) {
+      ->addColumn('company_contact', function (Riders $rider) {
         if (!$rider->company_contact)
           return 'N/A';
 
@@ -65,7 +65,7 @@ class RidersDataTable extends DataTable
         return '<a href="https://wa.me/' . $whatsappNumber . '" target="_blank" class="text-success">
                         <i class="fab fa-whatsapp"></i> ' . $rider->company_contact . '
                     </a>';
-      }) */
+      })
       // Status filter
       ->filterColumn('status', function ($query, $keyword) {
         $searchTerm = strtolower(trim($keyword));
@@ -162,24 +162,24 @@ class RidersDataTable extends DataTable
         'searchable' => true,
         'orderable' => true
       ],
-      /* [
+      [
         'data' => 'company_contact',
         'title' => 'Contact',
         'searchable' => true,
         'orderable' => true
-      ], */
+      ],
       [
         'data' => 'fleet_supervisor',
         'title' => 'Fleet Supv',
         'searchable' => true,
         'orderable' => true
       ],
-      /*  [
-         'data' => 'emirate_hub',
-         'title' => 'Emirate Hub',
-         'searchable' => true,
-         'orderable' => true
-       ], */
+      [
+        'data' => 'emirate_hub',
+        'title' => 'Emirate Hub',
+        'searchable' => true,
+        'orderable' => true
+      ],
       [
         'data' => 'bike',
         'title' => 'Bike',
