@@ -656,7 +656,7 @@
                 <span style="font-weight:bold;text-decoration: underline;padding-right:30px;">b.</span> Rate Changes:
               </h2>
               <p style="padding-top: 8pt;padding-left: 5pt;text-indent: 2pt;line-height: 112%;text-align: left;">
-                If there are any changes in rates from the employer, the rider/driver will continue to work under the same compensation previously offered.
+                If there are any change in rates from the vendor, the rider/driver will continue to work under the new rates and compensation offered by the vendor till the completion of the contract period.
               </p>
             </li>
           </ol>
