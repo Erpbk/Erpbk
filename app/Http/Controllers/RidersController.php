@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\LedgerDataTable;
 use App\DataTables\RiderActivitiesDataTable;
 use App\DataTables\RiderAttendanceDataTable;
+use App\DataTables\RiderInvoicesDataTable;
 use App\DataTables\RidersDataTable;
 use App\Helpers\Account;
 use App\Helpers\General;
@@ -369,6 +370,10 @@ class RidersController extends AppBaseController
   public function activities($rider_id, RiderActivitiesDataTable $riderActivitiesDataTable)
   {
     return $riderActivitiesDataTable->with(['rider_id' => $rider_id])->render('riders.activities');
+  }
+  public function invoices($rider_id, RiderInvoicesDataTable $riderInvoicesDataTable)
+  {
+    return $riderInvoicesDataTable->with(['rider_id' => $rider_id])->render('riders.invoices');
   }
 
 }

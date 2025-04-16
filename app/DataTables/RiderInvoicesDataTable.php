@@ -50,7 +50,15 @@ class RiderInvoicesDataTable extends DataTable
    */
   public function query(RiderInvoices $model)
   {
-    return $model->newQuery()->with(['rider']);
+    $query = $model->newQuery()->with(['rider']);
+
+    if ($this->rider_id) {
+      $query->where('rider_id', $this->rider_id);
+    }
+
+    $query->where(\DB::raw('DATE_FORMAT(billing_month, "%Y-%m")'), '=', request('month') ?? date('Y-m'));
+
+    return $query;
   }
 
   /**

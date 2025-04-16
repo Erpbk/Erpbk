@@ -1,17 +1,30 @@
-<table class="table table-hover data-table text-nowrap" style="width:100%;">
-    <thead>
-    <tr>
-        <th>#inv</th>
-        <th>Date</th>
-        <th>Billing Month</th>
-        <th>Rider</th>
-        <th>Rider amount</th>
-        <th>Total Qty</th>
-        <th>Descriptions</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-{{--  --}}
+@extends('riders.view')
+
+@section('page_content')
+
+<div class="card card-action mb-1">
+  <div class="card-header align-items-center">
+    <h5 class="card-action-title mb-0"><i class="ti ti-file-invoice ti-lg text-body me-2"></i>Invoices</h5>
+    <form action="" method="get">
+      <input type="month" name="month" value="{{request('month')??date('Y-m')}}" class="form-control" onchange="form.submit();"/>
+    </form>
+  </div>
+  <div class="card-body pt-0 px-2">
+    @push('third_party_stylesheets')
+    @include('layouts.datatables_css')
+@endpush
+
+<div class="card-body px-0" >
+    {!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped dataTable']) !!}
+</div>
+
+@push('third_party_scripts')
+    @include('layouts.datatables_js')
+    {!! $dataTable->scripts() !!}
+@endpush
+  </div>
+</div>
+
+    @endsection
+
+
