@@ -6,7 +6,7 @@
   <div class="card-header align-items-center">
     <h5 class="card-action-title mb-0"><i class="ti ti-file-invoice ti-lg text-body me-2"></i>Invoices</h5>
     <form action="" method="get">
-      <input type="month" name="month" value="{{request('month')??date('Y-m')}}" class="form-control" onchange="form.submit();"/>
+      <input type="month" name="month" value="{{request('month')}}" class="form-control" onchange="form.submit();"/>
     </form>
   </div>
   <div class="card-body pt-0 px-2">
