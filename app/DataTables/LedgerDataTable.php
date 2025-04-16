@@ -88,12 +88,6 @@ class LedgerDataTable extends DataTable
    */
   public function query(Transactions $model)
   {
-
-    if (request('month')) {
-      $month = request('month') . '-01';
-    } else {
-      $month = date('Y-m-01');
-    }
     $query = $model->newQuery()->with(['account']);
 
     if (request('account')) {
@@ -103,8 +97,9 @@ class LedgerDataTable extends DataTable
       $query->where('account_id', $this->account_id);
     }
 
-    $query->where('billing_month', $month);
-
+    if (request('month')) {
+      $query->where('billing_month', request('month') . '-01');
+    }
     $query = $query->orderBy('trans_date', 'ASC');
     return $query;
   }

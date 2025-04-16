@@ -10,7 +10,7 @@
           {!! Form::select('account', App\Models\Accounts::dropdown(null), request('account'), ['class' => 'form-select form-select-sm select2']) !!}
         </div>
         <div class="col-md-3">
-            <input type="month" name="month" value="{{request('month')??date('Y-m')}}" class="form-control" placeholder="Billing Month">
+            <input type="month" name="month" value="{{request('month')}}" class="form-control" placeholder="Billing Month">
         </div>
         <div class="col-md-3">
             <button id="filter" class="btn btn-primary">Generate Ledger</button>
