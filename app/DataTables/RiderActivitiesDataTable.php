@@ -69,8 +69,10 @@ class RiderActivitiesDataTable extends DataTable
       //->addAction(['width' => '120px', 'printable' => false])
       ->parameters([
         'dom' => 'Bfrtip',
-        'stateSave' => true,
+        'stateSave' => false,
         'ordering' => false,
+        'pageLength' => 50,
+        'responsive' => true,
         'order' => [[0, 'desc']],
         'buttons' => [
           // Enable Buttons as per your need
@@ -96,12 +98,13 @@ class RiderActivitiesDataTable extends DataTable
       'rider_id' => ['title' => 'Name'],
       'payout_type' => ['title' => 'Payout'],
       'delivered_orders' => ['title' => 'Delivered'],
-      'ontime_orders' => ['title' => 'Ontime'],
+      /*  'ontime_orders' => ['title' => 'Ontime'], */
       'ontime_orders_percentage' => ['title' => 'Ontime%'],
-      'avg_time' => ['title' => 'AVG'],
+      /*  'avg_time' => ['title' => 'AVG'], */
       'rejected_orders' => ['title' => 'Rejected'],
-      'rejected_orders_percentage' => ['title' => 'Rejected%'],
+      /* 'rejected_orders_percentage' => ['title' => 'Rejected%'], */
       'login_hr' => ['title' => 'HR'],
+      'delivery_rating' => ['title' => 'Rating'],
     ];
   }
 

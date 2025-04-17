@@ -3,7 +3,7 @@
 @endpush
 
 <div class="card-body px-4">
-    {!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered']) !!}
+    {!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped dataTable']) !!}
 </div>
 
 @push('third_party_scripts')

@@ -122,6 +122,14 @@ ADD COLUMN `contract_number`  varchar(50) NULL AFTER `status`;
 ALTER TABLE `riders`
 ADD COLUMN `shift`  varchar(100) NULL AFTER `policy_no`,
 ADD COLUMN `attendance`  varchar(50) NULL AFTER `shift`;
+-------
+ALTER TABLE `rider_activities`
+ADD COLUMN `delivery_rating`  decimal(2,1) NULL DEFAULT NULL AFTER `updated_at`;
+
+ALTER TABLE `rider_activities`
+MODIFY COLUMN `payout_type`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' AFTER `d_rider_id`;
+
+
 
 
 

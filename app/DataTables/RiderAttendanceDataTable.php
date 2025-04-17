@@ -65,7 +65,9 @@ class RiderAttendanceDataTable extends DataTable
       ->parameters([
         'dom' => 'Bfrtip',
         'ordering' => false,
-        'stateSave' => true,
+        'pageLength' => 50,
+        'responsive' => true,
+        'stateSave' => false,
         'order' => [[0, 'desc']],
         'buttons' => [
           // Enable Buttons as per your need

@@ -76,7 +76,10 @@ class RiderInvoicesDataTable extends DataTable
       ->addAction(['width' => '120px', 'printable' => false])
       ->parameters([
         'dom' => 'Bfrtip',
-        'stateSave' => true,
+        'stateSave' => false,
+        'ordering' => false,
+        'pageLength' => 50,
+        'responsive' => true,
         'order' => [[0, 'desc']],
         'buttons' => [
           // Enable Buttons as per your need

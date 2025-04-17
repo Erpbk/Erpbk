@@ -31,7 +31,7 @@
         </div>
     </section>
 
-    <div class="content px-3">
+    <div class="content px-0">
 
         <div class="card">
             @include('riders.table')

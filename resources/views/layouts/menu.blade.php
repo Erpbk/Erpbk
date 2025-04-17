@@ -32,7 +32,13 @@
 <li class="menu-item {{ Request::is('riderInvoices*') ? 'active' : '' }}">
   <a href="{{ route('riderInvoices.index') }}" class="menu-link ">
       <i class="menu-icon tf-icons ti ti-file"></i>
-      <div>Rider Invoices</div>
+      <div>Invoices</div>
+  </a>
+</li>
+<li class="menu-item {{ Request::is('riderActivities*') ? 'active' : '' }}">
+  <a href="{{ route('riderActivities.index') }}" class="menu-link ">
+      <i class="menu-icon tf-icons ti ti-bike"></i>
+      <div>Activities</div>
   </a>
 </li>
 @endcan

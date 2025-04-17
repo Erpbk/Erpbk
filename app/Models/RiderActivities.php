@@ -19,7 +19,8 @@ class RiderActivities extends Model
     'rejected_orders',
     'rejected_orders_percentage',
     'login_hr',
-    'date'
+    'date',
+    'delivery_rating'
   ];
 
   protected $casts = [
@@ -28,7 +29,7 @@ class RiderActivities extends Model
     'avg_time' => 'decimal:2',
     'rejected_orders_percentage' => 'decimal:2',
     'login_hr' => 'decimal:2',
-    'date' => 'date'
+    //'date' => 'date'
   ];
 
   public static array $rules = [
