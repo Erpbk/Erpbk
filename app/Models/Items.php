@@ -31,10 +31,10 @@ class Items extends Model
   ];
 
   public static array $rules = [
-    'name' => 'nullable|string|max:255',
+    'name' => 'required|string|max:255',
     'detail' => 'nullable|string|max:500',
-    'price' => 'nullable|numeric',
-    'cost' => 'nullable|numeric',
+    'price' => 'required|numeric',
+    'cost' => 'required|numeric',
     'vat' => 'nullable|numeric',
     'created_at' => 'nullable',
     'updated_at' => 'nullable'
