@@ -76,7 +76,7 @@ class ImportRiderActivities implements ToCollection
             $activity_date = date('Y-m-d', strtotime($row[0]));
 
             $RID = $rider->id;
-            $activity_exist = RiderActivities::where('rider_id', $rider->id)->where('date', $row[0])->first();
+            $activity_exist = RiderActivities::where('rider_id', $rider->id)->where('date', $activity_date)->first();
 
             if (!$activity_exist) {
               $ret = \App\Models\RiderActivities::create([
