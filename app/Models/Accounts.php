@@ -68,4 +68,14 @@ class Accounts extends Model
 
   }
 
+  public static function customDropdown($accountIds)
+  {
+
+    $query = self::select('id', \DB::raw("CONCAT(account_code, '-', name) as full_name"))->whereIn('id', $accountIds)->pluck('full_name', 'id');
+
+
+    return $query;
+
+  }
+
 }

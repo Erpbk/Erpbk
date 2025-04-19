@@ -14,10 +14,15 @@
 {{--                     <button type="button" class="text-white btn btn-success btn-sm btn-flat float-right" data-toggle="modal" data-target="#excel-modal"><i class="fa fa-file-excel"></i> Import Excel</button>
  --}}
  @can('voucher_create')
+ <a class="btn btn-info action-btn show-modal"
+ href="javascript:void(0);" data-size="sm" data-title="Import Voucher" data-action="{{ route('voucher.import') }}" >
+  Import Voucher
+</a>
  @foreach(App\Helpers\General::VoucherType() as $key => $value)
  <a class="show-modal action-btn btn btn-primary" style="margin-right:5px;" href="javascript:void(0);" data-size="xl" data-title="Create {{$value}}"
  data-action="{{ route('vouchers.create',["vt"=>$key]) }}"><i class="fa fa-plus"></i>&nbsp;{{$value}}</a>
  @endforeach
+
 
  @endcan
                     {{-- <div class="dropdown action-btn">
@@ -146,7 +151,7 @@ $(document).ready(function (e) {
         $("#upload-excel").on("submit",function (e){
             e.preventDefault();
             $.ajax({
-                url:"{{ route('voucher.import_excel') }}",
+                url:"{{ route('voucher.import') }}",
                 type: "POST",
                 data:  new FormData(this),
                 contentType: false,

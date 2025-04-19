@@ -8,6 +8,7 @@ use App\Helpers\CommonHelper;
 use App\Http\Requests\CreateVouchersRequest;
 use App\Http\Requests\UpdateVouchersRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Imports\ImportVoucher;
 use App\Imports\VoucherImport;
 use App\Models\Accounts\Transaction;
 use App\Models\Accounts\TransactionAccount;
@@ -381,16 +382,21 @@ class VouchersController extends Controller
 
   }
 
-  public function import_excel(Request $request)
-  {
-    $rules = [
-      'file' => 'required|max:50000|mimes:xlsx'
-    ];
-    $message = [
-      'file.required' => 'Excel File Required'
-    ];
-    $this->validate($request, $rules, $message);
-    Excel::import(new VoucherImport($request->all()), $request->file('file'));
-  }
 
+  public function import(Request $request)
+  {
+    if ($request->isMethod('post')) {
+      $rules = [
+        'file' => 'required|max:50000|mimes:xlsx,csv'
+      ];
+      $message = [
+        'file.required' => 'Excel File Required'
+      ];
+
+      $this->validate($request, $rules, $message);
+      Excel::import(new ImportVoucher(), $request->file('file'));
+    }
+
+    return view('vouchers.import');
+  }
 }

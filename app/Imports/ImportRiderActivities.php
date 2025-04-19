@@ -67,7 +67,7 @@ class ImportRiderActivities implements ToCollection
           $rider = Riders::where('rider_id', $row[1])->first();
 
           if (!$rider) {
-            //throw ValidationException::withMessages(['file' => 'Row(' . $i . ') - Rider ID ' . $row[1] . ' do not match.']);
+            throw ValidationException::withMessages(['file' => 'Row(' . $i . ') - Rider ID ' . $row[1] . ' do not match.']);
           } else {
 
             /* $rider->shift = $this->extractValue($row[2]);
