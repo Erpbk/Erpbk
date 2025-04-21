@@ -55,6 +55,9 @@ class RidersDataTable extends DataTable
       ->addColumn('days', function (Riders $rider) {
         return $rider->activity->count('date') ?? '-';
       })
+      ->addColumn('attendance', function (Riders $rider) {
+        return '<a href="javascript:void(0);" data-action="' . url('riders/job_status/' . $rider->id) . '" data-size="md" data-title="Add Timeline" class="show-modal">' . $rider->attendance . '</a>';
+      })
       ->addColumn('company_contact', function (Riders $rider) {
         if (!$rider->company_contact)
           return 'N/A';
@@ -97,7 +100,7 @@ class RidersDataTable extends DataTable
       ->filterColumn('emirate_hub', function ($query, $keyword) {
         $query->where('emirate_hub', 'LIKE', "%{$keyword}%");
       })
-      ->rawColumns(['name', 'status', 'action', 'company_contact']);
+      ->rawColumns(['name', 'status', 'action', 'company_contact', 'attendance']);
 
     return $dataTable;
   }

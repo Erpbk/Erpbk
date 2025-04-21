@@ -320,10 +320,10 @@ class RidersController extends AppBaseController
       $input['RID'] = $id;
       $input['status_by'] = auth()->user()->id;
       JobStatus::create($input);
-      $rider = Riders::find($id);
-      $rider->job_status = $input['job_status'];
-      $rider->save();
-      return "Job Status updated successfully";
+      /*  $rider = Riders::find($id);
+       $rider->job_status = $input['job_status'];
+       $rider->save(); */
+      return "Timeline added successfully";
     }
     return view('riders.job_status-modal', compact('rider'));
   }

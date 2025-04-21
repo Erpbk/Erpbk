@@ -124,7 +124,7 @@ if(is_numeric(request()->segment(3))){
                        <li class="list-group-item pb-1">
                         <b>Attendance:</b> <span class="float-right">@isset($result){{$result['attendance']??'not-set'}}@endisset</span>
                      </li>
-                         {{-- <li class="list-group-item pb-1 @if(@$result['job_status'] == 1) text-success @else text-danger @endif" >
+                        {{--  <li class="list-group-item pb-1 @if(@$result['job_status'] == 1) text-success @else text-danger @endif" >
                             <b>Job Status:</b> <span class="float-right">
                                 @isset($result)<a href="javascript:void(0);" data-action="{{url('riders/job_status/'.$result['id'])}}" data-title="Change Job Status" class="btn btn-light btn-sm show-modal">Change Status</a>@endisset
                                  @isset($result['job_status']){{App\Helpers\General::JobStatus($result['job_status'])??'not-set'}}@endisset</span>
@@ -158,7 +158,7 @@ if(is_numeric(request()->segment(3))){
       <ul class="nav nav-pills flex-column flex-md-row flex-wrap mb-3 row-gap-2">
         <li class="nav-item"><a class="nav-link @if(is_numeric(request()->segment(2)) ||request()->segment(2)=='create' ) active @endif" href="@isset($result['id']){{route('riders.show',$result['id'])}}@else#@endif"><i class="ti ti-user-check ti-sm me-1_5"></i>Account</a></li>
         @isset($result)
-        {{-- <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='timeline') active @endif" href="{{route('rider.timeline',$result['id'])}}"><i class="ti ti-timeline ti-sm me-1_5"></i>Timeline</a></li> --}}
+        <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='timeline') active @endif" href="{{route('rider.timeline',$result['id'])}}"><i class="ti ti-timeline ti-sm me-1_5"></i>Timeline</a></li>
         <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='rider-document') active @endif" href="{{route('rider.document',$result['id'])}}"><i class="ti ti-file-upload ti-sm me-1_5"></i>Documents</a></li>
         <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='invoices') active @endif" href="{{route('rider.invoices',$result['id'])}}"><i class="ti ti-file-invoice ti-sm me-1_5"></i>Invoices</a></li>
         <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='ledger') active @endif" href="{{route('rider.ledger',$result['id'])}}"><i class="ti ti-file ti-sm me-1_5"></i>Ledger</a></li>
