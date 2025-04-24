@@ -38,7 +38,7 @@ if(is_numeric(request()->segment(3))){
                         if(@$result['image_name']){
                             $image_name = url('storage2/profile/'.$result['image_name']);//Storage::url('app/profile/'.$result['image_name']);
                         }else{
-                            $image_name = asset('public/uploads/default.png');
+                            $image_name = asset('uploads/default.png');
                         }
                     @endphp
                         <img src="{{ $image_name}}" id="output" width="270"  class="profile-user-img img-fluid" />
