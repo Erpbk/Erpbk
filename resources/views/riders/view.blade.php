@@ -17,6 +17,7 @@
 </style>
 @php
 if(is_numeric(request()->segment(3))){
+  session()->put('rider_id',request()->segment(3));
   $riders = App\Models\Riders::find(request()->segment(3));
   }
   if(isset($riders)){
