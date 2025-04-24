@@ -24,6 +24,7 @@
     "maatwebsite/excel": "^3.1",
     "maestroerror/php-heic-to-jpg": "^1.0",
     "spatie/laravel-permission": "^6.0",
+    "unisharp/laravel-filemanager": "*",
     "yajra/laravel-datatables": "^10.0",
     "yajra/laravel-datatables-buttons": "^10.0",
     "yajra/laravel-datatables-html": "^10.0",

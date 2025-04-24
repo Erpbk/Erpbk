@@ -128,6 +128,11 @@ ADD COLUMN `delivery_rating`  decimal(2,1) NULL DEFAULT NULL AFTER `updated_at`;
 
 ALTER TABLE `rider_activities`
 MODIFY COLUMN `payout_type`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' AFTER `d_rider_id`;
+--------------
+
+ALTER TABLE `rider_activities`
+MODIFY COLUMN `delivery_rating`  decimal(4,1) NULL DEFAULT NULL AFTER `updated_at`;
+
 
 
 

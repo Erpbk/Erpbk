@@ -13,6 +13,7 @@ use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -66,6 +67,11 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::get('riders/attendance/{id}', [\App\Http\Controllers\RidersController::class, 'attendance'])->name('rider.attendance');
   Route::get('riders/activities/{id}', [\App\Http\Controllers\RidersController::class, 'activities'])->name('rider.activities');
   Route::get('riders/invoices/{id}', [\App\Http\Controllers\RidersController::class, 'invoices'])->name('rider.invoices');
+  Route::get('riders/file-manager', function () {
+    return view('riders.file-manager');
+  })->name('rider.file-manager');
+
+
 
   Route::resource('riderInvoices', App\Http\Controllers\RiderInvoicesController::class);
   Route::any('rider/invoice-import', [\App\Http\Controllers\RiderInvoicesController::class, 'import'])->name('rider.invoice_import');
@@ -85,12 +91,12 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::resource('garages', App\Http\Controllers\GaragesController::class);
   Route::resource('banks', App\Http\Controllers\BanksController::class);
 
-  Route::resource('vouchers', VouchersController::class);
+  Route::resource('vouchers', \App\Http\Controllers\VouchersController::class);
   Route::any('voucher/import', [\App\Http\Controllers\VouchersController::class, 'import'])->name('voucher.import');
-  Route::get('get_invoice_balance', 'VouchersController@GetInvoiceBalance')->name('get_invoice_balance');
-  Route::get('fetch_invoices/{id}/{vt}', 'VouchersController@fetch_invoices');
+  Route::get('get_invoice_balance', [\App\Http\Controllers\VouchersController::class, 'GetInvoiceBalance'])->name('get_invoice_balance');
+  Route::get('fetch_invoices/{id}/{vt}', [\App\Http\Controllers\VouchersController::class, 'fetch_invoices']);
   /*   Route::any('attach_file/{id}', 'VouchersController@fileUpload'); */
-  Route::any('voucher/attach_file/{id}', [VouchersController::class, 'fileUpload'])->name('voucher.fileupload');
+  Route::any('voucher/attach_file/{id}', [\App\Http\Controllers\VouchersController::class, 'fileUpload'])->name('voucher.fileupload');
 
 
   Route::prefix('settings')->group(function () {
@@ -118,6 +124,12 @@ Route::middleware(['auth', 'web'])->group(function () {
   });
 
 });
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+  \UniSharp\LaravelFilemanager\Lfm::routes();
+});
+/* Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+  Lfm::routes();
+}); */
 
 Route::get('/storage/{folder}/{filename}', [FileController::class, 'show'])->where('filename', '.*');
 Route::get('/storage2/{folder}/{filename}', [FileController::class, 'root'])->where('filename', '.*');
@@ -170,4 +182,4 @@ Route::get('/artisan-storage-unlink', function () {
 
 
 
-Route::resource('riderActivities', App\Http\Controllers\RiderActivitiesController::class);
+
