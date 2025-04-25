@@ -77,23 +77,25 @@ class ImportRiderActivities implements ToCollection
 
             $RID = $rider->id;
             $activity_exist = RiderActivities::where('rider_id', $rider->id)->where('date', $activity_date)->first();
+            $data = [
+              'rider_id' => $RID,
+              'd_rider_id' => $row[1],
+              'date' => $activity_date,
+              'payout_type' => $row[2],
+              'delivered_orders' => $row[12],
+              /* 'ontime_orders' => $row[7], */
+              'ontime_orders_percentage' => number_format($row[13], 2),
+              /* 'avg_time' => $row[9], */
+              'rejected_orders' => $row[10],
+              /* 'rejected_orders_percentage' => $row[11], */
+              'login_hr' => $row[16],
+              'delivery_rating' => str_replace("-", "0", $row[17]),
 
+            ];
             if (!$activity_exist) {
-              $ret = \App\Models\RiderActivities::create([
-                'rider_id' => $RID,
-                'd_rider_id' => $row[1],
-                'date' => $activity_date,
-                'payout_type' => $row[2],
-                'delivered_orders' => $row[12],
-                /* 'ontime_orders' => $row[7], */
-                'ontime_orders_percentage' => number_format($row[13], 2),
-                /* 'avg_time' => $row[9], */
-                'rejected_orders' => $row[10],
-                /* 'rejected_orders_percentage' => $row[11], */
-                'login_hr' => $row[16],
-                'delivery_rating' => str_replace("-", "0", $row[17]),
-
-              ]);
+              $ret = RiderActivities::create($data);
+            } else {
+              $ret = $activity_exist->update($data); // ✅ Update on model instance
             }
           }
 
