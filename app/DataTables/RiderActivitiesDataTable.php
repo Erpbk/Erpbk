@@ -83,6 +83,29 @@ class RiderActivitiesDataTable extends DataTable
 //                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
 //                    ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
         ],
+        'footerCallback' => 'function (row, data, start, end, display) {
+        var api = this.api(), data;
+
+        var intVal = function (i) {
+            return typeof i === "string" ?
+                i.replace(/[\$,]/g, "") * 1 :
+                typeof i === "number" ?
+                    i : 0;
+        };
+
+        var columnsToSum = [4, 6, 7];
+
+        columnsToSum.forEach(function(index) {
+            var pageTotal = api
+                .column(index, { page: "current" })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            $(api.column(index).footer()).html(pageTotal.toFixed(2));
+        });
+    }',
       ]);
   }
 
