@@ -396,7 +396,8 @@ class RidersController extends AppBaseController
 
       Mail::send('emails.general', $data, function ($message) use ($request) {
         $message->to([$request->email_to]);
-        //$message->replyTo([$request->email]);
+        $message->cc([env('ADMIN_CC_EMAIL')]);
+        $message->replyTo([env('ADMIN_CC_EMAIL')]);
         $message->subject($request->email_subject);
         //$message->attachData($pdf->output(), $request->email_subject . '.pdf');
         $message->priority(3);
