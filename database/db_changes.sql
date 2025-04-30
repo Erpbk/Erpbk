@@ -132,8 +132,20 @@ MODIFY COLUMN `payout_type`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_g
 
 ALTER TABLE `rider_activities`
 MODIFY COLUMN `delivery_rating`  decimal(4,1) NULL DEFAULT NULL AFTER `updated_at`;
+-----------------------
 
-
+DROP TABLE IF EXISTS `rider_emails`;
+CREATE TABLE `rider_emails` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `rider_id` bigint(20) DEFAULT NULL,
+  `mail_to` varchar(255) DEFAULT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `status` varchar(20) DEFAULT 'sent',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 
