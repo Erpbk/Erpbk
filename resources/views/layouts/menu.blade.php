@@ -227,3 +227,10 @@
         <p>Rider Activities</p>
     </a>
 </li> --}}
+
+{{-- <li class="nav-item">
+    <a href="{{ route('riderEmails.index') }}" class="nav-link {{ Request::is('riderEmails*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-home"></i>
+        <p>Rider Emails</p>
+    </a>
+</li> --}}

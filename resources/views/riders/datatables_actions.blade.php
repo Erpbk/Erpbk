@@ -8,6 +8,9 @@
     <a href="javascript:void();" data-action="{{route('rider_contract_upload', $id)}}" data-size="md"
     data-title="{{$name . ' (' . $rider_id }}') Contract" class="dropdown-item waves-effect show-modal"><i class="fas fa-file my-1"></i> Contract</a>
 
+    <a href="javascript:void();" data-action="{{route('rider.sendemail', $id)}}" data-size="md"
+    data-title="{{$name . ' (' . $rider_id }}')" class="dropdown-item waves-effect show-modal"><i class="fas fa-envelope my-1"></i> Send Email</a>
+
     <a href="{{ route('riders.edit', $id) }}" class='dropdown-item waves-effect'>
         <i class="fa fa-edit my-1"></i> Edit
     </a>

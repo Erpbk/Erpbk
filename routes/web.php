@@ -67,10 +67,15 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::get('riders/attendance/{id}', [\App\Http\Controllers\RidersController::class, 'attendance'])->name('rider.attendance');
   Route::get('riders/activities/{id}', [\App\Http\Controllers\RidersController::class, 'activities'])->name('rider.activities');
   Route::get('riders/invoices/{id}', [\App\Http\Controllers\RidersController::class, 'invoices'])->name('rider.invoices');
+  Route::any('riders/sendemail/{id}', [\App\Http\Controllers\RidersController::class, 'sendEmail'])->name('rider.sendemail');
+  Route::get('riders/emails/{id}', [\App\Http\Controllers\RidersController::class, 'emails'])->name('rider.emails');
+
+
   Route::get('riders/file-manager', function () {
     return view('riders.file-manager');
   })->name('rider.file-manager');
 
+  Route::resource('riderEmails', App\Http\Controllers\RiderEmailsController::class);
 
 
   Route::resource('riderInvoices', App\Http\Controllers\RiderInvoicesController::class);
@@ -172,6 +177,7 @@ Route::get('/artisan-storage-unlink', function () {
         'create' => 'calculations.create',
         'edit' => 'calculations.edit'
     ]); */
+
 
 
 

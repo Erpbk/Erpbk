@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\LedgerDataTable;
 use App\DataTables\RiderActivitiesDataTable;
 use App\DataTables\RiderAttendanceDataTable;
+use App\DataTables\RiderEmailsDataTable;
 use App\DataTables\RiderInvoicesDataTable;
 use App\DataTables\RidersDataTable;
 use App\Helpers\Account;
@@ -15,6 +16,7 @@ use App\Http\Requests\CreateRidersRequest;
 use App\Http\Requests\UpdateRidersRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Accounts;
+use App\Models\RiderEmails;
 use App\Models\RiderItemPrice;
 use App\Models\JobStatus;
 use App\Models\Riders;
@@ -22,6 +24,7 @@ use App\Models\Files;
 use App\Models\Transactions;
 use App\Repositories\RidersRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Flash;
 
 class RidersController extends AppBaseController
@@ -374,6 +377,41 @@ class RidersController extends AppBaseController
   public function invoices($rider_id, RiderInvoicesDataTable $riderInvoicesDataTable)
   {
     return $riderInvoicesDataTable->with(['rider_id' => $rider_id])->render('riders.invoices');
+  }
+  public function emails($rider_id, RiderEmailsDataTable $riderEmailsDataTable)
+  {
+    return $riderEmailsDataTable->with(['rider_id' => $rider_id])->render('riders.emails');
+  }
+
+  public function sendEmail($id, Request $request)
+  {
+
+    if ($request->isMethod('post')) {
+
+      $data = [
+        'html' => $request->email_message
+      ];
+      /* $res = RiderInvoices::with(['riderInv_item'])->where('id', $id)->get();
+      $pdf = \PDF::loadView('invoices.rider_invoices.show', ['res' => $res]); */
+
+      Mail::send('emails.general', $data, function ($message) use ($request) {
+        $message->to([$request->email_to]);
+        //$message->replyTo([$request->email]);
+        $message->subject($request->email_subject);
+        //$message->attachData($pdf->output(), $request->email_subject . '.pdf');
+        $message->priority(3);
+      });
+      $email_data = [
+        'rider_id' => $id,
+        'mail_to' => $request->email_to,
+        'subject' => $request->email_subject,
+        'message' => $request->email_message,
+      ];
+      RiderEmails::create($email_data);
+
+    }
+    $rider = Riders::find($id);
+    return view('riders.send_email', compact('rider'));
   }
 
 }

@@ -1,4 +1,4 @@
-<form action="{{url('invoices/sendemail/'.$invoice->id)}}" method="POST" id="formajax">
+<form action="{{url('invoices/sendemail/'.$rider->id)}}" method="POST" id="formajax">
 
     <div class="col-md-12 form-group">
         <label>Email Address</label>
