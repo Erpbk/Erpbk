@@ -397,7 +397,7 @@ class RidersController extends AppBaseController
       Mail::send('emails.general', $data, function ($message) use ($request) {
         $message->to([$request->email_to]);
         $message->cc(env('ADMIN_CC_EMAIL'));
-        $message->bcc([env('ADMIN_CC_EMAIL')]);
+        $message->bcc(["haseeb@efdservice.com", "adnan@efdservice.com", "sumayya@efdservice.com"]);
         $message->replyTo([env('ADMIN_CC_EMAIL')]);
         $message->subject($request->email_subject);
         //$message->attachData($pdf->output(), $request->email_subject . '.pdf');
