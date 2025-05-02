@@ -30,7 +30,7 @@ class BikesDataTable extends DataTable
     });
 
     $dataTable->addColumn('company', function (Bikes $row) {
-      return $row->company?->name ?? '-';
+      return $row->LeasingCompany?->name ?? '-';
     });
 
     $dataTable->filterColumn('rider_id', function ($query, $keyword) {
@@ -65,7 +65,7 @@ class BikesDataTable extends DataTable
    */
   public function query(Bikes $model)
   {
-    return $model->newQuery()->with(['company', 'rider']);
+    return $model->newQuery();
   }
 
   /**
@@ -111,7 +111,7 @@ class BikesDataTable extends DataTable
       'rider_name' => ['title' => 'Rider Name'],
       'contract_number',
       'emirates',
-      'company' => ['title' => 'Company'],
+      'company',
     ];
   }
 

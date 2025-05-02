@@ -27,6 +27,10 @@ Best regards,
 {{env('APP_NAME')}}
 </textarea>
     </div>
+    <div class="col-md-6 form-group">
+      <label>Activity Attachment Month</label>
+      <input type="month" name="month" value="{{request('month')??date('Y-m')}}" class="form-control" />
+  </div>
 
     <button type="submit" class="btn btn-primary pull-right mt-3">Send Email</button>
   </form>

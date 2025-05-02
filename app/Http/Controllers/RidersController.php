@@ -8,6 +8,7 @@ use App\DataTables\RiderAttendanceDataTable;
 use App\DataTables\RiderEmailsDataTable;
 use App\DataTables\RiderInvoicesDataTable;
 use App\DataTables\RidersDataTable;
+use App\Exports\MonthlyActivityExport;
 use App\Helpers\Account;
 use App\Helpers\General;
 use App\Helpers\HeadAccount;
@@ -26,6 +27,7 @@ use App\Repositories\RidersRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Flash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RidersController extends AppBaseController
 {
@@ -394,13 +396,19 @@ class RidersController extends AppBaseController
       /* $res = RiderInvoices::with(['riderInv_item'])->where('id', $id)->get();
       $pdf = \PDF::loadView('invoices.rider_invoices.show', ['res' => $res]); */
 
-      Mail::send('emails.general', $data, function ($message) use ($request) {
+      $fileName = $id . "_monthly_activity_{$request->month}.xlsx";
+      $filePath = storage_path("app/public/{$fileName}");
+
+      Excel::store(new MonthlyActivityExport($id, $request->month), "public/{$fileName}");
+
+      Mail::send('emails.general', $data, function ($message) use ($request, $filePath) {
         $message->to([$request->email_to]);
         $message->cc(env('ADMIN_CC_EMAIL'));
         $message->bcc(["haseeb@efdservice.com", "adnan@efdservice.com", "sumayya@efdservice.com"]);
         $message->replyTo([env('ADMIN_CC_EMAIL')]);
         $message->subject($request->email_subject);
         //$message->attachData($pdf->output(), $request->email_subject . '.pdf');
+        $message->attach($filePath);
         $message->priority(3);
       });
       $email_data = [
