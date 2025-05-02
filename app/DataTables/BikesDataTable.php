@@ -46,7 +46,7 @@ class BikesDataTable extends DataTable
     });
 
     $dataTable->filterColumn('company', function ($query, $keyword) {
-      $query->whereHas('company', function ($q) use ($keyword) {
+      $query->whereHas('LeasingCompany', function ($q) use ($keyword) {
         $q->where('name', 'like', "%{$keyword}%");
       });
     });
