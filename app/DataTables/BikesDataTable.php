@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use App\Helpers\Common;
 use App\Models\Bikes;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
@@ -19,6 +20,9 @@ class BikesDataTable extends DataTable
     $dataTable = new EloquentDataTable($query);
     $dataTable->addColumn('rider_id', function (Bikes $row) {
       return $row->rider?->rider_id ?? '-';
+    });
+    $dataTable->addColumn('insurance_expiry', function (Bikes $row) {
+      return Common::DateFormat($row->insurance_expiry) ?? '-';
     });
 
     $dataTable->addColumn('rider_name', function (Bikes $row) {
@@ -104,7 +108,7 @@ class BikesDataTable extends DataTable
   protected function getColumns()
   {
     return [
-      'id',
+      /*  'id', */
       'bike_code',
       'plate',
       'rider_id' => ['title' => 'Rider ID'],
@@ -112,6 +116,7 @@ class BikesDataTable extends DataTable
       'contract_number',
       'emirates',
       'company',
+      'insurance_expiry',
     ];
   }
 
