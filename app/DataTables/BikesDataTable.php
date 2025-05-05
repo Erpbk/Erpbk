@@ -21,8 +21,8 @@ class BikesDataTable extends DataTable
     $dataTable->addColumn('rider_id', function (Bikes $row) {
       return $row->rider?->rider_id ?? '-';
     });
-    $dataTable->addColumn('insurance_expiry', function (Bikes $row) {
-      return Common::DateFormat($row->insurance_expiry) ?? '-';
+    $dataTable->addColumn('expiry_date', function (Bikes $row) {
+      return Common::DateFormat($row->expiry_date) ?? '-';
     });
 
     $dataTable->addColumn('rider_name', function (Bikes $row) {
@@ -109,14 +109,14 @@ class BikesDataTable extends DataTable
   {
     return [
       /*  'id', */
-      'bike_code',
+      'bike_code' => ['title' => 'Code'],
       'plate',
       'rider_id' => ['title' => 'Rider ID'],
       'rider_name' => ['title' => 'Rider Name'],
-      'contract_number',
+      'contract_number' => ['title' => 'Contract#'],
       'emirates',
       'company',
-      'insurance_expiry',
+      'expiry_date' => ['title' => 'Expiry'],
     ];
   }
 

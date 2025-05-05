@@ -45,9 +45,9 @@ class Bikes extends Model
     'traffic_file_number' => 'string',
     'emirates' => 'string',
     'bike_code' => 'string',
-    'registration_date' => 'date',
-    'expiry_date' => 'date',
-    'insurance_expiry' => 'date',
+    /*   'registration_date' => 'date',
+      'expiry_date' => 'date',
+      'insurance_expiry' => 'date', */
     'insurance_co' => 'string',
     'policy_no' => 'string'
   ];
