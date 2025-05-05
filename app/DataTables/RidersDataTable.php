@@ -132,7 +132,13 @@ class RidersDataTable extends DataTable
         'order' => [[0, 'desc']],
         'pageLength' => 100,
         'responsive' => true,
-        'buttons' => [],
+        'buttons' => [// Enable Buttons as per your need
+          //                    ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
+          // ['extend' => 'export', 'className' => 'btn btn-default btn-sm no-corner',],
+          ['extend' => 'excel', 'className' => 'btn btn-success btn-sm no-corner'],
+          //                    ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
+          //                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
+        ],
         'initComplete' => "function () {
                     this.api().columns().every(function () {
                         var column = this;
