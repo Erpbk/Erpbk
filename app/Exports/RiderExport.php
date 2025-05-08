@@ -43,8 +43,8 @@ class RiderExport implements FromCollection, WithHeadings, WithMapping
   {
     return [
       $rider->id,
-      $rider->name ?? '', // prevent null error if rider missing
       $rider->rider_id,
+      $rider->name ?? '', // prevent null error if rider missing
       General::RiderStatus($rider->status),
       $rider->ethnicity,
       $rider->designation,
@@ -59,7 +59,7 @@ class RiderExport implements FromCollection, WithHeadings, WithMapping
       $rider->dob,
       $rider->emirate_id,
       $rider->emirate_exp,
-      $rider->nationality,
+      $rider->country?->name,
       $rider->passport,
       $rider->passport_handover,
       $rider->cdm_deposit_id,
@@ -75,8 +75,8 @@ class RiderExport implements FromCollection, WithHeadings, WithMapping
   {
     return [
       'ID',
-      'Rider Name',
       'Rider ID',
+      'Rider Name',
       'Status',
       'Ethnicity',
       'Designation',

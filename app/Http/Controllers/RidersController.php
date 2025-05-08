@@ -111,12 +111,12 @@ class RidersController extends AppBaseController
    */
   public function show($id)
   {
-    $riders = $this->ridersRepository->find($id);
+    $rider = $this->ridersRepository->find($id);
     // $rider_items = $rider->items;
-    $result = $riders->toArray();
+    $result = $rider->toArray();
     $job_status = JobStatus::where('RID', $id)->orderByDesc('id')->get();
 
-    return view('riders.show_fields', compact('result', 'riders', 'job_status'));
+    return view('riders.show_fields', compact('result', 'rider', 'job_status'));
 
   }
 
