@@ -179,6 +179,43 @@ Route::get('/artisan-storage-unlink', function () {
     ]); */
 
 
+/* Settings section end here */
+/* Settings section start here */
+Route::prefix('settings')->group(function () {
+
+  Route::any('/company', [HomeController::class, 'settings'])->name('settings');
+  Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+  Route::post('/settings/logo', [SettingsController::class, 'updateLogo'])->name('settings.updateLogo');
+  Route::post('/settings', [SettingsController::class, 'store'])->name('settings.store');
+  Route::post('settings/update-favicon', [SettingsController::class, 'updateFavicon'])->name('settings.updateFavicon');
+  Route::resource('departments', App\Http\Controllers\DepartmentsController::class);
+  Route::resource('dropdowns', App\Http\Controllers\DropdownsController::class);
+
+});
+
+
+/* Suppliers section start here */  
+Route::middleware(['auth'])->group(function () {
+  Route::resource('suppliers', SupplierController::class);
+  Route::get('/suppliers/show/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
+  Route::get('/suppliers/ledger/{id}', [SupplierController::class, 'ledger'])->name('suppliers.ledger');
+  Route::get('/suppliers/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
+  Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+  
+  Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+  Route::get('suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
+  Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+  Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+  Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+  Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+  Route::get('suppliers/datatable', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
+});
+/* Suppliers section end here */  
+
+
+
+
+
 
 
 
