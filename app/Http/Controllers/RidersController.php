@@ -9,6 +9,7 @@ use App\DataTables\RiderEmailsDataTable;
 use App\DataTables\RiderInvoicesDataTable;
 use App\DataTables\RidersDataTable;
 use App\Exports\MonthlyActivityExport;
+use App\Exports\RiderExport;
 use App\Helpers\Account;
 use App\Helpers\General;
 use App\Helpers\HeadAccount;
@@ -422,6 +423,12 @@ class RidersController extends AppBaseController
     }
     $rider = Riders::find($id);
     return view('riders.send_email', compact('rider'));
+  }
+
+  public function exportRiders()
+  {
+
+    return Excel::download(new RiderExport(), 'Riders_export_' . now() . '.xlsx');
   }
 
 }
