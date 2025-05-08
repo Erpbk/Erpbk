@@ -11,11 +11,7 @@ use App\Http\Controllers\pages\Page2;
 use App\Http\Controllers\pages\MiscError;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\RtaFineController;
-use App\Http\Controllers\SalikFineController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\VendorController;
+
 
 
 /*
@@ -71,6 +67,16 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::get('riders/attendance/{id}', [\App\Http\Controllers\RidersController::class, 'attendance'])->name('rider.attendance');
   Route::get('riders/activities/{id}', [\App\Http\Controllers\RidersController::class, 'activities'])->name('rider.activities');
   Route::get('riders/invoices/{id}', [\App\Http\Controllers\RidersController::class, 'invoices'])->name('rider.invoices');
+  Route::any('riders/sendemail/{id}', [\App\Http\Controllers\RidersController::class, 'sendEmail'])->name('rider.sendemail');
+  Route::get('riders/emails/{id}', [\App\Http\Controllers\RidersController::class, 'emails'])->name('rider.emails');
+
+
+  Route::get('riders/file-manager', function () {
+    return view('riders.file-manager');
+  })->name('rider.file-manager');
+
+  Route::resource('riderEmails', App\Http\Controllers\RiderEmailsController::class);
+
 
   Route::resource('riderInvoices', App\Http\Controllers\RiderInvoicesController::class);
   Route::any('rider/invoice-import', [\App\Http\Controllers\RiderInvoicesController::class, 'import'])->name('rider.invoice_import');
@@ -90,21 +96,17 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::resource('garages', App\Http\Controllers\GaragesController::class);
   Route::resource('banks', App\Http\Controllers\BanksController::class);
 
-  Route::resource('vouchers', VouchersController::class);
+  Route::resource('vouchers', \App\Http\Controllers\VouchersController::class);
   Route::any('voucher/import', [\App\Http\Controllers\VouchersController::class, 'import'])->name('voucher.import');
-  Route::get('get_invoice_balance', 'VouchersController@GetInvoiceBalance')->name('get_invoice_balance');
-  Route::get('fetch_invoices/{id}/{vt}', 'VouchersController@fetch_invoices');
+  Route::get('get_invoice_balance', [\App\Http\Controllers\VouchersController::class, 'GetInvoiceBalance'])->name('get_invoice_balance');
+  Route::get('fetch_invoices/{id}/{vt}', [\App\Http\Controllers\VouchersController::class, 'fetch_invoices']);
   /*   Route::any('attach_file/{id}', 'VouchersController@fileUpload'); */
-  Route::any('voucher/attach_file/{id}', [VouchersController::class, 'fileUpload'])->name('voucher.fileupload');
+  Route::any('voucher/attach_file/{id}', [\App\Http\Controllers\VouchersController::class, 'fileUpload'])->name('voucher.fileupload');
 
 
   Route::prefix('settings')->group(function () {
 
     Route::any('/company', [HomeController::class, 'settings'])->name('settings');
-    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
-    Route::post('/settings/logo', [SettingsController::class, 'updateLogo'])->name('settings.updateLogo');
-    Route::post('/settings', [SettingsController::class, 'store'])->name('settings.store');
-    Route::post('settings/update-favicon', [SettingsController::class, 'updateFavicon'])->name('settings.updateFavicon');
     Route::resource('departments', App\Http\Controllers\DepartmentsController::class);
     Route::resource('dropdowns', App\Http\Controllers\DropdownsController::class);
 
@@ -127,6 +129,12 @@ Route::middleware(['auth', 'web'])->group(function () {
   });
 
 });
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+  \UniSharp\LaravelFilemanager\Lfm::routes();
+});
+/* Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+  Lfm::routes();
+}); */
 
 Route::get('/storage/{folder}/{filename}', [FileController::class, 'show'])->where('filename', '.*');
 Route::get('/storage2/{folder}/{filename}', [FileController::class, 'root'])->where('filename', '.*');
@@ -171,43 +179,45 @@ Route::get('/artisan-storage-unlink', function () {
     ]); */
 
 
+/* Settings section end here */
+/* Settings section start here */
+Route::prefix('settings')->group(function () {
 
-    Route::prefix('fines')->middleware(['auth'])->group(function () {
-      Route::get('rta', [RtaFineController::class, 'index'])->name('fines.rta.index');
-      Route::get('salik', [SalikFineController::class, 'index'])->name('fines.salik.index');
-  });
-  
-  
-  Route::middleware(['auth'])->group(function () {
-    Route::resource('suppliers', SupplierController::class);
-    Route::get('/suppliers/show/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
-    Route::get('/suppliers/ledger/{id}', [SupplierController::class, 'ledger'])->name('suppliers.ledger');
-    Route::get('/suppliers/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
-    Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
-    
-    Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
-    Route::get('suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
-    Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
-    Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
-    Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
-    Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
-    Route::get('suppliers/datatable', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
+  Route::any('/company', [HomeController::class, 'settings'])->name('settings');
+  Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+  Route::post('/settings/logo', [SettingsController::class, 'updateLogo'])->name('settings.updateLogo');
+  Route::post('/settings', [SettingsController::class, 'store'])->name('settings.store');
+  Route::post('settings/update-favicon', [SettingsController::class, 'updateFavicon'])->name('settings.updateFavicon');
+  Route::resource('departments', App\Http\Controllers\DepartmentsController::class);
+  Route::resource('dropdowns', App\Http\Controllers\DropdownsController::class);
+
 });
 
 
-// Route::middleware(['auth'])->group(function () {
+/* Suppliers section start here */  
+Route::middleware(['auth'])->group(function () {
+  Route::resource('suppliers', SupplierController::class);
+  Route::get('/suppliers/show/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
+  Route::get('/suppliers/ledger/{id}', [SupplierController::class, 'ledger'])->name('suppliers.ledger');
+  Route::get('/suppliers/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
+  Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+  
+  Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+  Route::get('suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
+  Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+  Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+  Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+  Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+  Route::get('suppliers/datatable', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
+});
+/* Suppliers section end here */  
 
-// Route::get('/vendors', [VendorController::class, 'index'])->name('vendors.index');
-// Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
-// Route::post('/vendors', [VendorController::class, 'store'])->name('vendors.store');
-// Route::get('/vendors/{vendor}', [VendorController::class, 'show'])->name('vendors.show');
-// Route::get('/vendors/{vendor}/edit', [VendorController::class, 'edit'])->name('vendors.edit');
-// Route::patch('/vendors/{vendor}', [VendorController::class, 'update'])->name('vendors.update');
-// Route::delete('/vendors/{vendor}', [VendorController::class, 'destroy'])->name('vendors.destroy');
-// Route::get('/vendors/import', [VendorController::class, 'importForm'])->name('vendors.import');
-// });
 
 
 
 
-Route::resource('riderActivities', App\Http\Controllers\RiderActivitiesController::class);
+
+
+
+
+
