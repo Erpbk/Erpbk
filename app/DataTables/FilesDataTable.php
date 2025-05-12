@@ -71,6 +71,7 @@ class FilesDataTable extends DataTable
   {
     return [
 
+
       'file_name',
       /* 'expiry_date',
       'status',

@@ -25,7 +25,7 @@ class FilesController extends AppBaseController
    */
   public function index(FilesDataTable $filesDataTable)
   {
-    abort(404);
+    //abort(404);
     return $filesDataTable->render('files.index');
   }
 
@@ -49,7 +49,7 @@ class FilesController extends AppBaseController
 
       $extension = $input['file_name']->extension();
       $name = $input['type'] . '-' . $input['type_id'] . '-' . time() . '.' . $extension;
-      $input['file_name']->storeAs('rider', $name);
+      $input['file_name']->storeAs('rider/' . $input['type_id'] . '/', $name);
 
       $input['file_name'] = $name;
       $input['file_type'] = $extension;
@@ -59,9 +59,8 @@ class FilesController extends AppBaseController
 
     $files = $this->filesRepository->create($input);
 
-    Flash::success('Files saved successfully.');
+    return response()->json(['message' => 'File uploaded successfully.']);
 
-    return redirect(route('files.index'));
   }
 
   /**
@@ -124,7 +123,7 @@ class FilesController extends AppBaseController
   public function destroy($id)
   {
     $files = $this->filesRepository->find($id);
-    if (file_exists(storage_path('app/rider/' . $files->file_name))) {
+    if (file_exists(storage_path('app/rider/' . $files->type_id . $files->file_name))) {
       unlink(storage_path('app/rider/' . $files->file_name));
 
     }
