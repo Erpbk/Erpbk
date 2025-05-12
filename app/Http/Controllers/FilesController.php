@@ -123,8 +123,8 @@ class FilesController extends AppBaseController
   public function destroy($id)
   {
     $files = $this->filesRepository->find($id);
-    if (file_exists(storage_path('app/rider/' . $files->type_id . $files->file_name))) {
-      unlink(storage_path('app/rider/' . $files->file_name));
+    if (file_exists(storage_path('app/rider/' . $files->type_id . '/' . $files->file_name))) {
+      unlink(storage_path('app/rider/' . $files->type_id . '/' . $files->file_name));
 
     }
 
