@@ -234,3 +234,10 @@
         <p>Rider Emails</p>
     </a>
 </li> --}}
+
+{{-- <li class="nav-item">
+    <a href="{{ route('files.index') }}" class="nav-link {{ Request::is('files*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-home"></i>
+        <p>Files</p>
+    </a>
+</li> --}}

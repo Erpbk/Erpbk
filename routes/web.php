@@ -70,6 +70,7 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::any('riders/sendemail/{id}', [\App\Http\Controllers\RidersController::class, 'sendEmail'])->name('rider.sendemail');
   Route::get('riders/emails/{id}', [\App\Http\Controllers\RidersController::class, 'emails'])->name('rider.emails');
   Route::get('rider/exportRiders', [\App\Http\Controllers\RidersController::class, 'exportRiders'])->name('rider.exportRiders');
+  Route::get('riders/files/{id}', [\App\Http\Controllers\RidersController::class, 'files'])->name('rider.files');
 
 
   Route::get('riders/file-manager', function () {
@@ -195,14 +196,14 @@ Route::prefix('settings')->group(function () {
 });
 
 
-/* Suppliers section start here */  
+/* Suppliers section start here */
 Route::middleware(['auth'])->group(function () {
   Route::resource('suppliers', SupplierController::class);
   Route::get('/suppliers/show/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
   Route::get('/suppliers/ledger/{id}', [SupplierController::class, 'ledger'])->name('suppliers.ledger');
   Route::get('/suppliers/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
   Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
-  
+
   Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
   Route::get('suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
   Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
@@ -211,7 +212,7 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
   Route::get('suppliers/datatable', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
 });
-/* Suppliers section end here */  
+/* Suppliers section end here */
 
 
 
@@ -227,3 +228,5 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+
+Route::resource('files', App\Http\Controllers\FilesController::class);

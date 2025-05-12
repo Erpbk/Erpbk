@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\FilesDataTable;
 use App\DataTables\LedgerDataTable;
 use App\DataTables\RiderActivitiesDataTable;
 use App\DataTables\RiderAttendanceDataTable;
@@ -384,6 +385,11 @@ class RidersController extends AppBaseController
   public function emails($rider_id, RiderEmailsDataTable $riderEmailsDataTable)
   {
     return $riderEmailsDataTable->with(['rider_id' => $rider_id])->render('riders.emails');
+  }
+
+  public function files($rider_id, FilesDataTable $filesDataTable)
+  {
+    return $filesDataTable->with(['rider_id' => $rider_id])->render('riders.document');
   }
 
   public function sendEmail($id, Request $request)
