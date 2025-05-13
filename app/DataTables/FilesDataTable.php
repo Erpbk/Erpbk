@@ -72,7 +72,8 @@ class FilesDataTable extends DataTable
     return [
 
 
-      'file_name',
+      'name',
+      /* 'file_name', */
       /* 'expiry_date',
       'status',
       'notes',

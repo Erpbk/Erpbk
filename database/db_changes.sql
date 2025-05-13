@@ -147,6 +147,13 @@ CREATE TABLE `rider_emails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--------------
+
+ALTER TABLE `files`
+ADD COLUMN `name`  varchar(255) NULL AFTER `file_type`;
+
+
+
 
 
 

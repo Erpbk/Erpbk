@@ -9,6 +9,7 @@ class Files extends Model
   public $table = 'files';
 
   public $fillable = [
+    'name',
     'type',
     'type_id',
     'file_name',
@@ -28,7 +29,8 @@ class Files extends Model
   ];
 
   public static array $rules = [
-    'type' => 'required|boolean',
+    'name' => 'required|string',
+    'file_name' => 'required|boolean',
     'type_id' => 'required',
     /*     'file_name' => 'nullable|string|max:100',
      */ 'expiry_date' => 'nullable',
