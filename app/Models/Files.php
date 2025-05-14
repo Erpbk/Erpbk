@@ -30,7 +30,7 @@ class Files extends Model
 
   public static array $rules = [
     'name' => 'required|string',
-    'file_name' => 'required',
+    'file_name' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
     'type_id' => 'required',
     /*     'file_name' => 'nullable|string|max:100',
      */ 'expiry_date' => 'nullable',
