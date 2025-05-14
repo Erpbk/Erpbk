@@ -30,8 +30,11 @@ class FilesDataTable extends DataTable
   public function query(Files $model)
   {
     $query = $model->newQuery();
-    if ($this->rider_id) {
-      $query->where('type_id', $this->rider_id);
+    if ($this->type_id) {
+      $query->where('type_id', $this->type_id);
+    }
+    if ($this->type) {
+      $query->where('type', $this->type);
     }
     return $query;
   }

@@ -53,5 +53,9 @@ class Files extends Model
   {
     return $this->hasOne(Riders::class, 'id', 'type_id');
   }
+  public function bike()
+  {
+    return $this->hasOne(Bikes::class, 'id', 'type_id');
+  }
 
 }

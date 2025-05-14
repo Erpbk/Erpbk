@@ -9,8 +9,8 @@
             <div class="card-header align-items-center">
               <h5 class="card-action-title mb-0"><i class="ti ti-file-upload ti-lg text-body me-2"></i>Files</h5>
               <a class="btn btn-primary show-modal action-btn"
-                       href="javascript:void(0);" data-action="{{ route('files.create','rider_id='.request()->segment(3)) }}" data-size="sm" data-title="Upload Document">
-                        Add New
+                       href="javascript:void(0);" data-action="{{ route('files.create',['type_id'=>request()->segment(3),'type'=>1]) }}" data-size="sm" data-title="Upload File">
+                        Upload File
                     </a>
             </div>
             <div class="card-body pt-0 px-2">

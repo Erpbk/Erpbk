@@ -1,6 +1,6 @@
 <!-- Type Field -->
-<input type="hidden" name="type" value="1"/>
-<input type="hidden" name="type_id" value="{{request('rider_id')}}"/>
+<input type="hidden" name="type" value="{{request('type')}}"/>
+<input type="hidden" name="type_id" value="{{request('type_id')}}"/>
 
 {{-- <!-- Type Id Field -->
 <div class="form-group col-sm-6">
