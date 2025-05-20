@@ -168,9 +168,9 @@
             <th style="border: 1px solid #000; padding: 5px;">Qty</th>
             <th style="border: 1px solid #000; padding: 5px;">Rate</th>
             <th style="border: 1px solid #000; padding: 5px;">Amount</th>
-            <th style="border: 1px solid #000; padding: 5px;">VAT %</th>
+            {{-- <th style="border: 1px solid #000; padding: 5px;">VAT %</th>
             <th style="border: 1px solid #000; padding: 5px;">VAT Amount</th>
-            <th style="border: 1px solid #000; padding: 5px;">Total</th>
+            <th style="border: 1px solid #000; padding: 5px;">Total</th> --}}
         </tr>
         </thead>
         <tbody>
