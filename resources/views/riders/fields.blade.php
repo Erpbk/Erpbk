@@ -32,9 +32,9 @@
             <!-- Nationality -->
             <div class="form-group col-sm-4">
                 {!! Form::label('nationality', 'Nationality:',['class'=>'required']) !!}
-                {!! Form::select('nationality', 
-                    App\Models\Countries::list()->toArray(), 
-                    null, 
+                {!! Form::select('nationality',
+                    App\Models\Countries::list()->toArray(),
+                    null,
                     [
                         'class' => 'form-control form-select select2',
                         'required',
@@ -45,9 +45,9 @@
             <!-- Ethnicity -->
             <div class="form-group col-sm-4">
                 {!! Form::label('ethnicity', 'Ethnicity:') !!}
-                {!! Form::select('ethnicity', 
-                    Common::Dropdowns('ethnicity'), 
-                    null, 
+                {!! Form::select('ethnicity',
+                    Common::Dropdowns('ethnicity'),
+                    null,
                     [
                         'class' => 'form-select',
                         'placeholder' => 'Select Ethnicity'
@@ -70,6 +70,7 @@
     <div class="card-header bg-primary text-white fs-5 fw-bold p-2">Job Info</div>
     <div class="card-body">
         <div class="row">
+
             <!-- Company Contact -->
             <div class="form-group col-sm-4">
                 {!! Form::label('company_contact', 'Company Contact:') !!}
@@ -85,9 +86,9 @@
             <!-- Designation -->
             <div class="form-group col-sm-4">
                 {!! Form::label('designation', 'Designation:',['class'=>'required']) !!}
-                {!! Form::select('designation', 
-                     Common::Dropdowns('designation'), 
-                    null, 
+                {!! Form::select('designation',
+                     Common::Dropdowns('designation'),
+                    null,
                     [
                         'class' => 'form-select',
                         'placeholder' => 'Select designation',
@@ -120,9 +121,9 @@
             <!-- Fleet Supervisor -->
             <div class="form-group col-sm-4">
                 {!! Form::label('fleet_supervisor', 'Fleet Supervisor:',['class'=>'required']) !!}
-                {!! Form::select('fleet_supervisor', 
-                     Common::Dropdowns('fleet-supervisor'), 
-                    null, 
+                {!! Form::select('fleet_supervisor',
+                     Common::Dropdowns('fleet-supervisor'),
+                    null,
                     [
                         'class' => 'form-select',
                         'placeholder' => 'Select Fleet Supervisor',
@@ -133,9 +134,9 @@
             <!-- Salary Model -->
             <div class="form-group col-sm-4">
                 {!! Form::label('salary_model', 'Salary Model:',['class'=>'required']) !!}
-                {!! Form::select('salary_model', 
-                     Common::Dropdowns('salary-model'), 
-                    null, 
+                {!! Form::select('salary_model',
+                     Common::Dropdowns('salary-model'),
+                    null,
                     [
                         'class' => 'form-select',
                         'placeholder' => 'Select Salary Model',
@@ -146,7 +147,7 @@
             <!-- Emirate Hub -->
             <div class="form-group col-sm-4">
                 {!! Form::label('emirate_hub', 'Emirate Hub:',['class'=>'required']) !!}
-                {!! Form::select('emirate_hub',Common::Dropdowns('emirates-hub'),null, 
+                {!! Form::select('emirate_hub',Common::Dropdowns('emirates-hub'),null,
                     ['class' => 'form-select', 'required']) !!}
             </div>
         </div>
@@ -157,6 +158,11 @@
                 {!! Form::label('rider_reference', 'Rider Reference:',['class'=>'required']) !!}
                 {!! Form::text('rider_reference', null, ['class' => 'form-control', 'required']) !!}
             </div>
+            <div class="form-group col-sm-4">
+              {!! Form::label('VID', 'Vendor:',['class'=>'required']) !!}
+              {!! Form::select('VID',App\Models\Vendors::dropdown(),null,
+                  ['class' => 'form-select', 'required']) !!}
+          </div>
         </div>
     </div>
 </div>
@@ -181,9 +187,9 @@
             <!-- Visa Status -->
             <div class="form-group col-sm-4">
                 {!! Form::label('visa_status', 'Visa Status:') !!}
-                {!! Form::select('visa_status', 
-                    Common::Dropdowns('visa-status'), 
-                    null, 
+                {!! Form::select('visa_status',
+                    Common::Dropdowns('visa-status'),
+                    null,
                     [
                         'class' => 'form-select',
                         'placeholder' => 'Select Visa Status'
@@ -243,9 +249,9 @@
             <!-- Passport Handover -->
             <div class="form-group col-sm-4">
                 {!! Form::label('passport_handover', 'Passport Handover:',['class'=>'required']) !!}
-                {!! Form::select('passport_handover', 
-                     Common::Dropdowns('passport-handover'), 
-                    null, 
+                {!! Form::select('passport_handover',
+                     Common::Dropdowns('passport-handover'),
+                    null,
                     [
                         'class' => 'form-select',
                         'placeholder' => 'Select Passport Handover'
@@ -283,9 +289,9 @@
             <!-- Insurance -->
             <div class="form-group col-sm-4">
                 {!! Form::label('insurance', 'Insurance:') !!}
-                {!! Form::select('insurance', 
-                    Common::Dropdowns('insurance'), 
-                    null, 
+                {!! Form::select('insurance',
+                    Common::Dropdowns('insurance'),
+                    null,
                     [
                         'class' => 'form-select',
                         'placeholder' => 'Select insurance'
@@ -309,9 +315,9 @@
             <!-- Wps -->
             <div class="form-group col-sm-4">
                 {!! Form::label('wps', 'Wps:') !!}
-                {!! Form::select('wps', 
-                     Common::Dropdowns('wps'), 
-                    null, 
+                {!! Form::select('wps',
+                     Common::Dropdowns('wps'),
+                    null,
                     [
                         'class' => 'form-select',
                         'placeholder' => 'Select wps'
@@ -321,9 +327,9 @@
             <!-- C3 Card -->
             <div class="form-group col-sm-4">
                 {!! Form::label('c3_card', 'C3 Card:') !!}
-                {!! Form::select('c3_card', 
-                     Common::Dropdowns('c3-card'), 
-                    null, 
+                {!! Form::select('c3_card',
+                     Common::Dropdowns('c3-card'),
+                    null,
                     [
                         'class' => 'form-select',
                         'placeholder' => 'Select C3 Card'

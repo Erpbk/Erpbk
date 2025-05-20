@@ -22,6 +22,14 @@
   </a>
 </li>
 @endcan
+@can('vendor_view')
+<li class="menu-item {{ Request::is('vendors*') ? 'active' : '' }}">
+  <a href="{{ route('vendors.index') }}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-user-star"></i>
+      <div>Vendors</div>
+  </a>
+</li>
+@endcan
 @can('rider_view')
 <li class="menu-item {{ Request::is('riders*') ? 'active' : '' }}">
   <a href="{{ route('riders.index') }}" class="menu-link">
@@ -241,3 +249,4 @@
         <p>Files</p>
     </a>
 </li> --}}
+

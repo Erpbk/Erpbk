@@ -230,3 +230,5 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::resource('files', App\Http\Controllers\FilesController::class);
+
+Route::resource('vendors', App\Http\Controllers\VendorsController::class);

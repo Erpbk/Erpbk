@@ -131,6 +131,10 @@
                         <td @if(in_array($riderInvoice->rider->status,[3,4,5])) style="color:red;" @endif>{{ App\Helpers\General::RiderStatus($riderInvoice->rider->status) }}</td>
                     </tr>
                     <tr>
+                      <th>Bike:</th>
+                      <td>{{$riderInvoice->rider?->bikes?->plate}}</td>
+                  </tr>
+                    <tr>
                         <th>Working Days:</th>
                         <td>{{$riderInvoice->working_days}}</td>
                     </tr>
@@ -164,6 +168,9 @@
             <th style="border: 1px solid #000; padding: 5px;">Qty</th>
             <th style="border: 1px solid #000; padding: 5px;">Rate</th>
             <th style="border: 1px solid #000; padding: 5px;">Amount</th>
+            <th style="border: 1px solid #000; padding: 5px;">VAT %</th>
+            <th style="border: 1px solid #000; padding: 5px;">VAT Amount</th>
+            <th style="border: 1px solid #000; padding: 5px;">Total</th>
         </tr>
         </thead>
         <tbody>
