@@ -918,8 +918,8 @@ class General
   public static function getAttnActivity($rider_id)
   {
     $attn = RiderAttendance::orderBy('date')->first();
-    $timeline = JobStatus::select('id')->where('RID', $rider_id)->whereDate('created_at', '>=', $attn->date)->first();
-    $emails = RiderEmails::select('id')->where('rider_id', $rider_id)->whereDate('created_at', '>=', $attn->date)->first();
+    $timeline = JobStatus::select('id')->where('RID', $rider_id)->whereDate('created_at', '=', $attn->date)->first();
+    $emails = RiderEmails::select('id')->where('rider_id', $rider_id)->whereDate('created_at', '=', $attn->date)->first();
     return [
       'timeline' => $timeline,
       'emails' => $emails
