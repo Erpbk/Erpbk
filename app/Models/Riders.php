@@ -62,6 +62,7 @@ class Riders extends Model
     'insurance_expiry',
     'policy_no',
     'shift',
+    'vat',
     'attendance'
   ];
 

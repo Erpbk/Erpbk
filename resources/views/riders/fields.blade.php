@@ -163,6 +163,15 @@
               {!! Form::select('VID',App\Models\Vendors::dropdown(),null,
                   ['class' => 'form-select', 'required']) !!}
           </div>
+          <div class="form-group col-sm-4">
+            <label>VAT</label>
+            <div class="form-check">
+              <input type="hidden" name="vat" value="2"/>
+               <input type="checkbox" name="vat" id="vat" class="form-check-input" value="1" @isset($riders) @if($riders->vat == 1) checked @endif @else checked  @endisset/>
+               <label for="vat" class="pt-0">Apply on Invoice</label>
+
+            </div>
+          </div>
         </div>
     </div>
 </div>

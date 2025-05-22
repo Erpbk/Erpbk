@@ -108,7 +108,7 @@
       </div>
       <!--col-->
       <div class="col-md-1 form-group">
-          <label>Tax</label>
+          <label>VAT</label>
           <input type="text" value="{{$item->tax}}" class="form-control form-control tax" name="tax[]" placeholder="0" value="0" onkeyup="calculate_price(this);">
       </div>
       <!--col-->
@@ -147,7 +147,7 @@
           </div>
           <!--col-->
           <div class="col-md-1 form-group">
-              <label>Tax</label>
+              <label>VAT</label>
               <input type="text" class="form-control form-control tax" name="tax[]" placeholder="0" value="0" onkeyup="calculate_price(this);">
           </div>
           <!--col-->

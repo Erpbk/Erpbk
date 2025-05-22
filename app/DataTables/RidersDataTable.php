@@ -56,7 +56,17 @@ class RidersDataTable extends DataTable
         return $rider->activity->count('date') ?? '-';
       })
       ->addColumn('attendance', function (Riders $rider) {
-        return '<a href="javascript:void(0);" data-action="' . url('riders/job_status/' . $rider->id) . '" data-size="md" data-title="Add Timeline" class="show-modal">' . $rider->attendance . '</a>';
+        $attn = General::getAttnActivity($rider->id);
+
+        $job_status = '';
+        if ($attn['timeline']) {
+          $job_status .= '<span class="text-danger cursor-pointer" title="Timeline Added">●</span>&nbsp;';
+        }
+        if ($attn['emails']) {
+          $job_status .= '<span class="text-success cursor-pointer" title="Email Sent">●</span>&nbsp;';
+        }
+        $job_status .= '<a href="javascript:void(0);" data-action="' . url('riders/job_status/' . $rider->id) . '" data-size="md" data-title="Add Timeline" class="show-modal">' . $rider->attendance . '</a>';
+        return $job_status;
       })
       ->addColumn('company_contact', function (Riders $rider) {
         if (!$rider->company_contact)
