@@ -9,6 +9,7 @@ use App\Models\JobStatus;
 use App\Models\RiderAttendance;
 use App\Models\RiderEmails;
 use App\Models\RiderItemPrice;
+use App\Models\Riders;
 use App\Models\RoomType;
 use App\Models\Supervisors;
 use App\Models\TransactionAccount;
@@ -917,9 +918,9 @@ class General
 
   public static function getAttnActivity($rider_id)
   {
-    $attn = RiderAttendance::orderBy('date')->first();
-    $timeline = JobStatus::select('id')->where('RID', $rider_id)->whereDate('created_at', '=', $attn->date)->first();
-    $emails = RiderEmails::select('id')->where('rider_id', $rider_id)->whereDate('created_at', '=', $attn->date)->first();
+    $rider = Riders::find($rider_id);
+    $timeline = JobStatus::select('id')->where('RID', $rider_id)->whereDate('created_at', '=', $rider->attendance_date)->first();
+    $emails = RiderEmails::select('id')->where('rider_id', $rider_id)->whereDate('created_at', '=', $rider->attendance_date)->first();
     return [
       'timeline' => $timeline,
       'emails' => $emails

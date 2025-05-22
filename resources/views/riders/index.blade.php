@@ -15,8 +15,8 @@
                </a>
 
                   <a class="btn btn-success action-btn show-modal me-2"
-                  href="javascript:void(0);" data-size="sm" data-title="Import Rider Attendance" data-action="{{ route('rider.attendance_import') }}" >
-                   Import Attendance
+                  href="javascript:void(0);" data-size="sm" data-title="Import Today Attendance" data-action="{{ route('rider.attendance_import') }}" >
+                   Today Attendance
                </a>
                   @can('rider_create')
                     <a class="btn btn-primary action-btn show-modal me-2"

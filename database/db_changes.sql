@@ -159,7 +159,9 @@ ADD COLUMN `vat`  tinyint(2) NULL DEFAULT 2 AFTER `attendance`;
 ALTER TABLE `rider_invoices`
 ADD COLUMN `vat`  decimal(10,2) NULL DEFAULT 0 AFTER `notes`;
 
-
+------------
+ALTER TABLE `riders`
+ADD COLUMN `attendance_date`  date NULL AFTER `vat`;
 
 
 

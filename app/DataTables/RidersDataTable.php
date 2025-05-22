@@ -60,10 +60,10 @@ class RidersDataTable extends DataTable
 
         $job_status = '';
         if ($attn['timeline']) {
-          $job_status .= '<span class="text-danger cursor-pointer" title="Timeline Added">●</span>&nbsp;';
+          $job_status .= '<a href="' . route('rider.timeline', $rider->id) . '"><span class="text-danger cursor-pointer" title="Timeline Added">●</span></a>&nbsp;';
         }
         if ($attn['emails']) {
-          $job_status .= '<span class="text-success cursor-pointer" title="Email Sent">●</span>&nbsp;';
+          $job_status .= '<a href="' . route('rider.emails', $rider->id) . '"><span class="text-success cursor-pointer" title="Email Sent">●</span></a>&nbsp;';
         }
         $job_status .= '<a href="javascript:void(0);" data-action="' . url('riders/job_status/' . $rider->id) . '" data-size="md" data-title="Add Timeline" class="show-modal">' . $rider->attendance . '</a>';
         return $job_status;

@@ -63,7 +63,8 @@ class Riders extends Model
     'policy_no',
     'shift',
     'vat',
-    'attendance'
+    'attendance',
+    'attendance_date'
   ];
 
   protected $casts = [
