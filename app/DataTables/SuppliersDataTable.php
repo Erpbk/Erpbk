@@ -9,24 +9,24 @@ use Yajra\DataTables\EloquentDataTable;
 
 class SuppliersDataTable extends DataTable
 {
-  
+
   public function dataTable($query)
-    {
-        $dataTable = new EloquentDataTable($query);
+  {
+    $dataTable = new EloquentDataTable($query);
 
-        return $dataTable
-            ->addColumn('action', function ($supplier) {
-                return view('suppliers.datatables_actions', compact('supplier'))->render();
-            });
-    }
+    return $dataTable
+      ->addColumn('action', function ($supplier) {
+        return view('suppliers.datatables_actions', compact('supplier'))->render();
+      });
+  }
 
- 
+
   public function query(Supplier $model)
   {
     return $model->newQuery();
   }
 
-  
+
   public function html()
   {
     return $this->builder()
@@ -45,11 +45,14 @@ class SuppliersDataTable extends DataTable
 //                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
 //                    ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
         ],
+        'language' => [
+          'processing' => '<div class="loading-overlay"><div class="spinner-border text-primary" role="status"></div></div>'
+        ],
       ]);
   }
 
 
-  
+
   /**
    * Get columns.
    *
@@ -63,7 +66,7 @@ class SuppliersDataTable extends DataTable
       'phone',
       'company_name',
       'address',
-      
+
     ];
   }
 

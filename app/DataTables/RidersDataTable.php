@@ -43,19 +43,19 @@ class RidersDataTable extends DataTable
 
         return $name;
       })
-      ->addColumn('bike', function (Riders $rider) {
+      ->editColumn('bike', function (Riders $rider) {
         return $rider->bikes->plate ?? '-';
       })
-      ->addColumn('orders', function (Riders $rider) {
-        return $rider->activity->sum('delivered_orders') ?? '-';
+      ->editColumn('orders_sum', function ($rider) {
+        return $rider->orders_sum ?? '-';
       })
       /*  ->addColumn('hr', function (Riders $rider) {
          return $rider->activity->sum('login_hr') ?? '-';
        }) */
-      ->addColumn('days', function (Riders $rider) {
+      ->editColumn('days', function (Riders $rider) {
         return $rider->activity->count('date') ?? '-';
       })
-      ->addColumn('attendance', function (Riders $rider) {
+      ->editColumn('attendance', function (Riders $rider) {
         $attn = General::getAttnActivity($rider->id);
 
         $job_status = '';
@@ -110,24 +110,39 @@ class RidersDataTable extends DataTable
       ->filterColumn('emirate_hub', function ($query, $keyword) {
         $query->where('emirate_hub', 'LIKE', "%{$keyword}%");
       })
+
       ->rawColumns(['name', 'status', 'action', 'company_contact', 'attendance']);
 
     return $dataTable;
   }
   public function query(Riders $model)
   {
-    return $model->newQuery()->select([
-      'id',
-      'rider_id',
-      'name',
-      'company_contact',
-      'fleet_supervisor',
-      'emirate_hub',
-      'status',
-      'shift',
-      'attendance'
-
-    ]);
+    return $model->newQuery()
+      ->leftJoin('rider_activities', 'riders.id', '=', 'rider_activities.rider_id')
+      ->select([
+        'riders.id',
+        'riders.rider_id',
+        'riders.name',
+        'riders.company_contact',
+        'riders.fleet_supervisor',
+        'riders.emirate_hub',
+        'riders.status',
+        'riders.shift',
+        'riders.attendance',
+        \DB::raw('SUM(rider_activities.delivered_orders) as orders_sum'),
+        \DB::raw('COUNT(rider_activities.date) as days')
+      ])
+      ->groupBy([
+        'riders.id',
+        'riders.rider_id',
+        'riders.name',
+        'riders.company_contact',
+        'riders.fleet_supervisor',
+        'riders.emirate_hub',
+        'riders.status',
+        'riders.shift',
+        'riders.attendance'
+      ]);
   }
 
   public function html()
@@ -140,7 +155,7 @@ class RidersDataTable extends DataTable
         'dom' => 'Bfrtip',
         'stateSave' => false,
         'order' => [[0, 'desc']],
-        'pageLength' => 100,
+        'pageLength' => 50,
         'responsive' => true,
         'buttons' => [// Enable Buttons as per your need
           //                    ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
@@ -162,7 +177,10 @@ class RidersDataTable extends DataTable
                                 });
                         }
                     });
-                }"
+                }",
+        'language' => [
+          'processing' => '<div class="loading-overlay"><div class="spinner-border text-primary" role="status"></div></div>'
+        ],
       ]);
   }
 
@@ -202,8 +220,8 @@ class RidersDataTable extends DataTable
       [
         'data' => 'bike',
         'title' => 'Bike',
-        'searchable' => true,
-        'orderable' => true
+        'searchable' => false,
+        'orderable' => false
       ],
       [
         'data' => 'status',
@@ -224,9 +242,10 @@ class RidersDataTable extends DataTable
         'orderable' => true
       ],
       [
-        'data' => 'orders',
+        'data' => 'orders_sum',
+        'name' => 'orders_sum',
         'title' => 'Orders',
-        'searchable' => true,
+        'searchable' => false,
         'orderable' => true
       ],
       /* [
@@ -238,7 +257,7 @@ class RidersDataTable extends DataTable
       [
         'data' => 'days',
         'title' => 'Days',
-        'searchable' => true,
+        'searchable' => false,
         'orderable' => true
       ]
     ];

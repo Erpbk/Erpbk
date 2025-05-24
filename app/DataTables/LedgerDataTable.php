@@ -156,6 +156,9 @@ class LedgerDataTable extends DataTable
           //['extend' => 'csv', 'className' => 'btn btn-info btn-sm no-corner', 'text' => 'Export to CSV'],
           ['extend' => 'print', 'className' => 'btn btn-primary btn-sm no-corner', 'text' => '<i class="fa fa-print"></i>&nbsp;Print'],
         ],
+        /* 'language' => [
+          'processing' => '<div class="loading-overlay"><div class="spinner-border text-primary" role="status"></div></div>'
+        ], */
       ]);
   }
 

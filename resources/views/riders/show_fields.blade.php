@@ -149,7 +149,7 @@
       </div>
       </div>
   </div>
-</div>
+
 
 <div class="card border">
   <div class="card-header"><b>Visa & Registerations</b></div>

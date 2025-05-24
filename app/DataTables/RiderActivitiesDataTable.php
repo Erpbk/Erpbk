@@ -106,6 +106,9 @@ class RiderActivitiesDataTable extends DataTable
             $(api.column(index).footer()).html(pageTotal.toFixed(2));
         });
     }',
+        'language' => [
+          'processing' => '<div class="loading-overlay"><div class="spinner-border text-primary" role="status"></div></div>'
+        ],
       ]);
   }
 

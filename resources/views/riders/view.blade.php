@@ -24,7 +24,7 @@ if(is_numeric(request()->segment(3))){
       $result = $riders->toArray();
     }
 @endphp
-<div class="row">
+<div class="row" style="">
   <div class="col-xl-3 col-md-3 col-lg-5 order-1 order-md-0">
     <!-- User Card -->
     <div class="card mb-6">
@@ -57,7 +57,7 @@ if(is_numeric(request()->segment(3))){
                     </form>
 
             <div class="user-info text-center">
-              <h5>@isset($result){{$result['name']??'not-set'}}@endisset</h5>
+              <h6>@isset($result){{$result['name']??'not-set'}}@endisset</h6>
               <span class="badge bg-label-primary">@isset($result){{$result['designation']??'not-set'}}@endisset</span>
 
             </div>
@@ -177,7 +177,7 @@ data-title="{{$result['name'] . ' (' . $result['rider_id'] }}')" class="btn btn-
       </ul>
     </div>
 
-    <div class="card mb-5" id="cardBody">
+    <div class="card mb-5" id="cardBody" style="height:660px !important;overflow: auto;">
       @yield('page_content')
     </div>
 
