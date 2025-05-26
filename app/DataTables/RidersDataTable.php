@@ -6,7 +6,7 @@ use App\Helpers\General;
 use App\Models\Riders;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
-
+use Carbon\Carbon;
 class RidersDataTable extends DataTable
 {
   public function dataTable($query)
@@ -117,8 +117,16 @@ class RidersDataTable extends DataTable
   }
   public function query(Riders $model)
   {
+
+
+    $currentMonthStart = Carbon::now()->startOfMonth()->toDateString();
+    $currentMonthEnd = Carbon::now()->endOfMonth()->toDateString();
+
     return $model->newQuery()
-      ->leftJoin('rider_activities', 'riders.id', '=', 'rider_activities.rider_id')
+      ->leftJoin('rider_activities', function ($join) use ($currentMonthStart, $currentMonthEnd) {
+        $join->on('riders.id', '=', 'rider_activities.rider_id')
+          ->whereBetween('rider_activities.date', [$currentMonthStart, $currentMonthEnd]);
+      })
       ->select([
         'riders.id',
         'riders.rider_id',
@@ -143,6 +151,7 @@ class RidersDataTable extends DataTable
         'riders.shift',
         'riders.attendance'
       ]);
+
   }
 
   public function html()
