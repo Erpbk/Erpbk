@@ -4,9 +4,19 @@
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
+          <h5>Fleet Supervisors</h5>
+          <div class="d-flex flex-row">
+
+            @foreach($fleets as $fleet)
+            <div class="mb-2">
+            <a href="{{route('riders.index',['fleet'=>$fleet])}}" class="btn btn-default @if($fleet==request('fleet')) btn-primary @endif btn-sm text-left">{{$fleet}}{{-- <br/>Active:12 &nbsp; Absent:12 --}}</a>
+          </div>
+          @endforeach
+          </div>
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h3>Riders</h3>
+
                 </div>
                 <div class="col-sm-6">
                   <a class="btn btn-info action-btn show-modal"

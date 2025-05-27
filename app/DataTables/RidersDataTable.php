@@ -122,7 +122,7 @@ class RidersDataTable extends DataTable
     $currentMonthStart = Carbon::now()->startOfMonth()->toDateString();
     $currentMonthEnd = Carbon::now()->endOfMonth()->toDateString();
 
-    return $model->newQuery()
+    $query = $model->newQuery()
       ->leftJoin('rider_activities', function ($join) use ($currentMonthStart, $currentMonthEnd) {
         $join->on('riders.id', '=', 'rider_activities.rider_id')
           ->whereBetween('rider_activities.date', [$currentMonthStart, $currentMonthEnd]);
@@ -139,18 +139,22 @@ class RidersDataTable extends DataTable
         'riders.attendance',
         \DB::raw('SUM(rider_activities.delivered_orders) as orders_sum'),
         \DB::raw('COUNT(rider_activities.date) as days')
-      ])
-      ->groupBy([
-        'riders.id',
-        'riders.rider_id',
-        'riders.name',
-        'riders.company_contact',
-        'riders.fleet_supervisor',
-        'riders.emirate_hub',
-        'riders.status',
-        'riders.shift',
-        'riders.attendance'
       ]);
+    if (request('fleet')) {
+      $query->where('fleet_supervisor', request('fleet'));
+    }
+    $query->groupBy([
+      'riders.id',
+      'riders.rider_id',
+      'riders.name',
+      'riders.company_contact',
+      'riders.fleet_supervisor',
+      'riders.emirate_hub',
+      'riders.status',
+      'riders.shift',
+      'riders.attendance'
+    ]);
+    return $query;
 
   }
 
