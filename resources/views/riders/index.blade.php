@@ -9,7 +9,12 @@
 
             @foreach($fleets as $fleet)
             <div class="mb-2">
-            <a href="{{route('riders.index',['fleet'=>$fleet])}}" class="btn btn-default @if($fleet==request('fleet')) btn-primary @endif btn-sm text-left">{{$fleet}}{{-- <br/>Active:12 &nbsp; Absent:12 --}}</a>
+              @php
+                  $riders = app\Models\Riders::select('status')->where('fleet_supervisor',$fleet)->get();
+                  $inactive = $riders->where('status',3)->count();
+                  $active = $riders->where('status',1)->count();
+              @endphp
+            <a href="{{route('riders.index',['fleet'=>$fleet])}}" class="btn btn-default @if($fleet==request('fleet')) btn-primary @endif btn-sm text-left">{{$fleet}}<br/>Active: {{$active}} &nbsp; Inactive: {{$inactive}}</a>
           </div>
           @endforeach
           </div>
