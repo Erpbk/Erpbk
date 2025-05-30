@@ -207,18 +207,27 @@
         </tfoot>
     </table>
     <table style="width: 100%; font-family: sans-serif;text-align: center;border: 1px solid #000; border-collapse: collapse;font-size: 10px;border-top:0px;">
+      <tr>
+        <td style="width:75%;text-align: left;padding:5px;">
+
+      </td>
+      <th style="padding: 5px;text-align: right;">VAT:</th>
+
+      <th style="padding: 5px;text-align: right;">AED {{ \App\Helpers\Account::show_bal_format($riderInvoice->vat) }}</th>
+    </tr>
     <tr>
         <td style="width:75%;text-align: left;padding:5px;">
             <b>Notes</b>
             <br />{{$riderInvoice->notes}}
         </td>
 
+
         <th style="padding: 5px;text-align: right;">Total:</th>
       @php
       //$credit = $sim+$rent+$rta+$fuel+$loan_advance+$maintenance+$cod;
       //$balance = $total-$credit;
       @endphp
-      <th style="padding: 5px;text-align: right;">AED {{ \App\Helpers\Account::show_bal_format($total) }}</th>
+      <th style="padding: 5px;text-align: right;">AED {{ \App\Helpers\Account::show_bal_format($riderInvoice->total_amount) }}</th>
         {{-- <td> --}}
             {{-- <table style="width: 100%; font-family: sans-serif;text-align: center;border: 1px solid #000; border-collapse: collapse;font-size: 10px;border-top:0px;border-right:0px;">
                 @php

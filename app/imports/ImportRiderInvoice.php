@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Helpers\Account;
+use App\Helpers\Common;
 use App\Helpers\General;
 use App\Helpers\HeadAccount;
 use App\Models\Items;
@@ -86,6 +87,7 @@ class ImportRiderInvoice implements ToCollection
 
             if (isset($row[21])) {
 
+
               $ret = RiderInvoices::create([
                 'inv_date' => $invoice_date,
                 'rider_id' => $RID,
@@ -102,6 +104,8 @@ class ImportRiderInvoice implements ToCollection
                 /*  'gaurantee' => $row[30], */
                 'notes' => $row[30],
               ]);
+
+
 
               $j = 3;
               foreach ($items as $item) {
@@ -133,29 +137,22 @@ class ImportRiderInvoice implements ToCollection
                   }
                   $k++;
               } */
-              $total = RiderInvoiceItem::where('inv_id', $ret->id)->sum('amount');
-              RiderInvoices::where('id', $ret->id)->update(['total_amount' => $total]);
-              //accounts entries
-              $rider_amount = RiderInvoiceItem::where('inv_id', $ret->id)->sum('amount');
+
               //$vendor_amount=VendorInvoiceItem::where('inv_id',$ret->id)->sum('amount');
               //$profit=$vendor_amount-$rider_amount;
+              $total = RiderInvoiceItem::where('inv_id', $ret->id)->sum('amount');
+              $vat = 0;
+              if ($rider->vat == 1) {
+                $vat = $total * (Common::getSetting('vat_percentage') / 100);
+                $total = $total + $vat;
+              }
+
+              RiderInvoices::where('id', $ret->id)->update(['total_amount' => $total, 'vat' => $vat]);
+              //accounts entries
+              $rider_amount = RiderInvoiceItem::where('inv_id', $ret->id)->sum('amount');
 
               $trans_code = Account::trans_code();
               $transactionService = new TransactionService();
-
-              $transactionData = [
-                'account_id' => $rider->account_id,
-                'reference_id' => $ret->id,
-                'reference_type' => 'Invoice',
-                'trans_code' => $trans_code,
-                'trans_date' => $invoice_date,
-                'narration' => "Rider Invoice #" . $ret->id . ' - ' . $row[29],
-                //'debit' => $request['dr_amount'][$key] ?? 0,
-                'credit' => $rider_amount ?? 0,
-                'billing_month' => date("Y-m-01", strtotime($row[28])),
-              ];
-              $transactionService->recordTransaction($transactionData);
-
 
               $transactionData = [
                 'account_id' => HeadAccount::SALARY_ACCOUNT, //Salary Account asked to set by Adnan 08-03-2025
@@ -168,6 +165,34 @@ class ImportRiderInvoice implements ToCollection
                 'billing_month' => date("Y-m-01", strtotime($row[28])),
               ];
               $transactionService->recordTransaction($transactionData);
+
+              if ($rider->vat == 1) {
+
+                $transactionData = [
+                  'account_id' => HeadAccount::TAX_ACCOUNT, //VAT Account asked to set by Adnan 08-05-2025
+                  'reference_id' => $ret->id,
+                  'reference_type' => 'Invoice',
+                  'trans_code' => $trans_code,
+                  'trans_date' => $invoice_date,
+                  'narration' => "Rider Invoice #" . $ret->id . ' - ' . $row[29],
+                  'debit' => $vat ?? 0,
+                  'billing_month' => date("Y-m-01", strtotime($row[28])),
+                ];
+                $transactionService->recordTransaction($transactionData);
+              }
+              $transactionData = [
+                'account_id' => $rider->account_id,
+                'reference_id' => $ret->id,
+                'reference_type' => 'Invoice',
+                'trans_code' => $trans_code,
+                'trans_date' => $invoice_date,
+                'narration' => "Rider Invoice #" . $ret->id . ' - ' . $row[29],
+                //'debit' => $request['dr_amount'][$key] ?? 0,
+                'credit' => $total ?? 0,
+                'billing_month' => date("Y-m-01", strtotime($row[28])),
+              ];
+              $transactionService->recordTransaction($transactionData);
+
               // creating Vendor Voucher for Bike rent and Sim charges
               /* if ($row[31]) {
 
