@@ -22,6 +22,9 @@ class RiderActivitiesDataTable extends DataTable
       return Common::DateFormat($row->date);
     });
 
+    $dataTable->editColumn('fleet', function (RiderActivities $row) {
+      return $row->rider->fleet_supervisor ?? '';
+    });
     $dataTable->addColumn('rider_id', function (RiderActivities $row) {
       return $row->rider->name ?? '';
     });
@@ -29,6 +32,11 @@ class RiderActivitiesDataTable extends DataTable
     $dataTable->filterColumn('rider_id', function ($query, $keyword) {
       $query->whereHas('rider', function ($q) use ($keyword) {
         $q->where('name', 'like', "%{$keyword}%");
+      });
+    });
+    $dataTable->filterColumn('fleet', function ($query, $keyword) {
+      $query->whereHas('rider', function ($q) use ($keyword) {
+        $q->where('fleet_supervisor', 'like', "%{$keyword}%");
       });
     });
 
@@ -71,7 +79,7 @@ class RiderActivitiesDataTable extends DataTable
       ->parameters([
         'dom' => 'Bfrtip',
         'stateSave' => false,
-        'ordering' => false,
+        'ordering' => true,
         'pageLength' => 50,
         'responsive' => true,
         'order' => [[0, 'desc']],
@@ -123,7 +131,8 @@ class RiderActivitiesDataTable extends DataTable
       'date' => ['title' => 'Date'],
       'd_rider_id' => ['title' => 'ID'],
       'rider_id' => ['title' => 'Name'],
-      'payout_type' => ['title' => 'Payout'],
+      'fleet' => ['title' => 'Fleet Supr', 'orderable' => false],
+      /*  'payout_type' => ['title' => 'Payout'], */
       'delivered_orders' => ['title' => 'Delivered'],
       /*  'ontime_orders' => ['title' => 'Ontime'], */
       'ontime_orders_percentage' => ['title' => 'Ontime%'],
