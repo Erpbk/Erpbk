@@ -57,6 +57,13 @@ class RiderActivitiesDataTable extends DataTable
       $query->where('rider_id', $this->rider_id);
       $query->where(\DB::raw('DATE_FORMAT(date, "%Y-%m")'), '=', request('month') ?? date('Y-m'));
     }
+
+    if (request('rider_id')) {
+      $query->where('rider_id', request('rider_id'));
+    }
+    if (request('month')) {
+      $query->where(\DB::raw('DATE_FORMAT(date, "%Y-%m")'), '=', request('month') ?? date('Y-m'));
+    }
     //$query->whereMonth('date', date('m'))->whereYear('date', date('Y'));
 
 

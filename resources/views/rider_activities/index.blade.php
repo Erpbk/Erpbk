@@ -15,6 +15,19 @@
                     </a> --}}
                 </div>
             </div>
+            <form action="" method="get">
+    <div class="row mb-3">
+        <div class="col-md-3">
+          {!! Form::select('rider_id', App\Models\Riders::dropdown(null), request('rider_id'), ['class' => 'form-select form-select-sm select2']) !!}
+        </div>
+        <div class="col-md-3">
+            <input type="month" name="month" value="{{request('month')}}" class="form-control" placeholder="Billing Month">
+        </div>
+        <div class="col-md-3">
+            <button id="filter" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
+  </form>
         </div>
     </section>
 
