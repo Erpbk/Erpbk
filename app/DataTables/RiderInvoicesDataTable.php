@@ -63,6 +63,9 @@ class RiderInvoicesDataTable extends DataTable
       $query->where(\DB::raw('DATE_FORMAT(billing_month, "%Y-%m")'), '=', request('month'));
 
     }
+    if (request('rider_id')) {
+      $query->where('rider_id', request('rider_id'));
+    }
 
     return $query;
   }
