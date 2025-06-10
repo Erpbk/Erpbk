@@ -176,3 +176,6 @@ ADD COLUMN `attendance_date`  date NULL AFTER `vat`;
 
 
 
+ALTER TABLE `rider_invoices`
+ADD COLUMN `subtotal`  decimal(10,2) NULL DEFAULT 0 AFTER `vat`;
+

@@ -115,6 +115,8 @@ class RiderInvoicesDataTable extends DataTable
       'billing_month',
       'rider_id' => ['title' => 'Rider'],
       'descriptions',
+      'subtotal',
+      'vat',
       'total_amount'
 
 

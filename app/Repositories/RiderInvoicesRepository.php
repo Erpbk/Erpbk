@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Helpers\Account;
+use App\Helpers\Common;
 use App\Helpers\HeadAccount;
 use App\Models\RiderInvoiceItem;
 use App\Models\RiderInvoices;
@@ -67,7 +68,7 @@ class RiderInvoicesRepository extends BaseRepository
         $dta['qty'] = $request['qty'][$key] ?? 0;
         $dta['rate'] = $request['rate'][$key];
         $dta['amount'] = $request['amount'][$key];
-        $dta['tax'] = $request['tax'][$key];
+        //$dta['tax'] = $request['tax'][$key];
         $dta['discount'] = $request['discount'][$key];
         $dta['inv_id'] = $invoice->id;
         RiderInvoiceItem::create($dta);
@@ -75,13 +76,35 @@ class RiderInvoicesRepository extends BaseRepository
       }
 
     }
-
+    $rider_amount = RiderInvoiceItem::where('inv_id', $invoice->id)->sum('amount');
+    $total = $rider_amount;
+    $vat = 0;
+    if ($invoice->rider->vat == 1) {
+      $vat = $total * (Common::getSetting('vat_percentage') / 100);
+      $total = $total + $vat;
+    }
     $trans_code = Account::trans_code();
     $transactionService = new TransactionService();
 
     if ($id) {
       $trans_code = Transactions::where('reference_type', 'Invoice')->where('reference_id', $id)->value('trans_code');
       $transactionService->deleteTransaction($trans_code);
+    }
+
+
+    if ($invoice->rider->vat == 1) {
+
+      $transactionData = [
+        'account_id' => HeadAccount::TAX_ACCOUNT, //VAT Account asked to set by Adnan 08-05-2025
+        'reference_id' => $invoice->id,
+        'reference_type' => 'Invoice',
+        'trans_code' => $trans_code,
+        'trans_date' => $invoice->inv_date,
+        'narration' => "Rider Invoice #" . $invoice->id . ' - ' . $invoice->descriptions,
+        'debit' => $vat ?? 0,
+        'billing_month' => $invoice->billing_month,
+      ];
+      $transactionService->recordTransaction($transactionData);
     }
 
     $transactionData = [
@@ -92,7 +115,7 @@ class RiderInvoicesRepository extends BaseRepository
       'trans_date' => $invoice->inv_date,
       'narration' => "Rider Invoice #" . $invoice->id . ' - ' . $invoice->descriptions,
       //'debit' => $request['dr_amount'][$key] ?? 0,
-      'credit' => $invoice->total_amount ?? 0,
+      'credit' => $total ?? 0,
       'billing_month' => $invoice->billing_month,
     ];
     $transactionService->recordTransaction($transactionData);
@@ -105,11 +128,16 @@ class RiderInvoicesRepository extends BaseRepository
       'trans_code' => $trans_code,
       'trans_date' => $invoice->inv_date,
       'narration' => "Rider Invoice #" . $invoice->id . ' - ' . $invoice->descriptions,
-      'debit' => $invoice->total_amount ?? 0,
+      'debit' => $rider_amount ?? 0,
       'billing_month' => $invoice->billing_month,
     ];
     $transactionService->recordTransaction($transactionData);
 
+
+    $invoice->total_amount = $total;
+    $invoice->vat = $vat;
+    $invoice->subtotal = $rider_amount;
+    $invoice->save();
 
     return $invoice;
 

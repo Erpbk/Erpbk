@@ -193,6 +193,11 @@ class ImportRiderInvoice implements ToCollection
               ];
               $transactionService->recordTransaction($transactionData);
 
+
+              $ret->total_amount = $total;
+              $ret->subtotal = $rider_amount;
+              $ret->vat = $vat;
+              $ret->save();
               // creating Vendor Voucher for Bike rent and Sim charges
               /* if ($row[31]) {
 
