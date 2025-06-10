@@ -8,13 +8,19 @@ use App\Models\Accounts;
 
 class Supplier extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        'name', 'email', 'phone', 'company_name', 'address', 'account_id'
-    ];
-    public function account()
-{
+  protected $fillable = [
+    'name',
+    'email',
+    'phone',
+    'company_name',
+    'address',
+    'account_id',
+    'status'
+  ];
+  public function account()
+  {
     return $this->belongsTo(Accounts::class, 'account_id');
-}
+  }
 }

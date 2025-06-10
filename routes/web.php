@@ -4,6 +4,8 @@ use App\Http\Controllers\BikesController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LedgerController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\SupplierInvoicesController;
 use App\Http\Controllers\VouchersController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\pages\HomePage;
@@ -198,32 +200,32 @@ Route::prefix('settings')->group(function () {
 
 /* Suppliers section start here */
 Route::middleware(['auth'])->group(function () {
- // Suppliers
- Route::resource('suppliers', SupplierController::class);
- Route::get('/suppliers/show/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
- Route::get('/suppliers/ledger/{id}', [SupplierController::class, 'ledger'])->name('suppliers.ledger'); 
- Route::get('/suppliers/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
- Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+  // Suppliers
+  Route::resource('suppliers', SupplierController::class);
+  Route::get('/suppliers/show/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
+  Route::get('/suppliers/ledger/{id}', [SupplierController::class, 'ledger'])->name('suppliers.ledger');
+  Route::get('/suppliers/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
+  Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
 
- // Suppliers
- Route::resource('suppliers', SupplierController::class);
- Route::get('suppliers/datatable', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
- Route::get('suppliers/document/{id}', [SupplierController::class, 'document'])->name('suppliers.document');
- Route::get('suppliers/files/{id}', [SupplierController::class, 'files'])->name('suppliers.files');
+  // Suppliers
+  Route::resource('suppliers', SupplierController::class);
+  Route::get('suppliers/datatable', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
+  Route::get('suppliers/document/{id}', [SupplierController::class, 'document'])->name('suppliers.document');
+  Route::get('suppliers/files/{id}', [SupplierController::class, 'files'])->name('suppliers.files');
 
- // Supplier invoices
- Route::resource('supplierInvoices', SupplierInvoicesController::class);
- Route::any('/supplier_invoices/import', [SupplierInvoicesController::class, 'import'])->name('supplier_invoices.import'); 
- Route::post('/supplier/invoice/import', [SupplierInvoicesController::class, 'import'])->name('supplier.invoice_import');
- Route::get('/supplier/ledger', [SupplierInvoicesController::class, 'ledger'])->name('supplier.ledger');
- Route::post('/supplier_invoices/send-email/{id}', [SupplierInvoicesController::class, 'sendEmail'])->name('supplier_invoices.send_email');
- Route::put('/supplierInvoices/{id}', [SupplierInvoicesController::class, 'update'])->name('supplierInvoices.update');
- // Route::get('/supplier_invoices/{id}',[SupplierInvoicesController::class, 'edit'])->name('supplier_invoices.edit'); 
- Route::get('supplierInvoices/edit/{id}', [\App\Http\Controllers\SupplierInvoicesController::class, 'edit'])->name('supplierInvoices.edit');
- Route::post('/supplierInvoices/{id}', [SupplierInvoicesController::class, 'update'])->name('supplierInvoices.update');
- Route::get('/supplier_invoices/{id}', [SupplierInvoicesController::class, 'show'])->name('supplierInvoices.show');
- Route::get('/supplierInvoices/create', [SupplierInvoicesController::class, 'create'])->name('supplierInvoices.create');
- Route::post('supplierInvoices', [SupplierInvoicesController::class, 'store'])->name('supplierInvoices.store');
+  // Supplier invoices
+  Route::resource('supplierInvoices', SupplierInvoicesController::class);
+  Route::any('/supplier_invoices/import', [SupplierInvoicesController::class, 'import'])->name('supplier_invoices.import');
+  Route::post('/supplier/invoice/import', [SupplierInvoicesController::class, 'import'])->name('supplier.invoice_import');
+  Route::get('/supplier/ledger', [SupplierInvoicesController::class, 'ledger'])->name('supplier.ledger');
+  Route::post('/supplier_invoices/send-email/{id}', [SupplierInvoicesController::class, 'sendEmail'])->name('supplier_invoices.send_email');
+  Route::put('/supplierInvoices/{id}', [SupplierInvoicesController::class, 'update'])->name('supplierInvoices.update');
+  // Route::get('/supplier_invoices/{id}',[SupplierInvoicesController::class, 'edit'])->name('supplier_invoices.edit');
+  Route::get('supplierInvoices/edit/{id}', [\App\Http\Controllers\SupplierInvoicesController::class, 'edit'])->name('supplierInvoices.edit');
+  Route::post('/supplierInvoices/{id}', [SupplierInvoicesController::class, 'update'])->name('supplierInvoices.update');
+  Route::get('/supplier_invoices/{id}', [SupplierInvoicesController::class, 'show'])->name('supplierInvoices.show');
+  Route::get('/supplierInvoices/create', [SupplierInvoicesController::class, 'create'])->name('supplierInvoices.create');
+  Route::post('supplierInvoices', [SupplierInvoicesController::class, 'store'])->name('supplierInvoices.store');
 });
 
 /* Suppliers section end here */

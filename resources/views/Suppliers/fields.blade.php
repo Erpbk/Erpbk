@@ -33,9 +33,8 @@
 <div class="form-group col-sm-6 mt-3">
     <label>Status</label>
     <div class="form-check">
-        <input type="hidden" name="status" value="Inactive"/>
-        <input type="checkbox" name="status" id="status" class="form-check-input" value="Active" @isset($supplier) @if($supplier->status == 'Active') checked @endif @else checked @endisset/>
+        <input type="hidden" name="status" value="2"/>
+        <input type="checkbox" name="status" id="status" class="form-check-input" value="1" @isset($supplier) @if($supplier->status == 'Active') checked @endif @else checked @endisset/>
         <label for="status" class="pt-0">Is Active</label>
     </div>
 </div>
-       
