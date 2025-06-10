@@ -313,18 +313,19 @@ CREATE TABLE `suppliers` (
 
 -------
 
-CREATE TABLE `invoice_items` (
+CREATE TABLE `supplier_invoices` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `item_id` bigint(20) DEFAULT NULL,
-  `item_des` varchar(255) DEFAULT NULL,
-  `qty` int(11) DEFAULT NULL,
-  `rate` decimal(10,2) DEFAULT NULL,
-  `discount` decimal(10,2) DEFAULT NULL,
-  `tax` decimal(10,2) DEFAULT NULL,
-  `amount` decimal(10,2) DEFAULT NULL,
+  `inv_id` varchar(50) DEFAULT NULL,
+  `inv_date` date DEFAULT NULL,
+  `supplier_id` bigint(20) DEFAULT NULL,
+  `month_invoice` int(11) DEFAULT NULL,
+  `descriptions` text DEFAULT NULL,
+  `total_amount` decimal(10,2) DEFAULT NULL,
+  `billing_month` date DEFAULT NULL,
+  `gaurantee` text DEFAULT NULL,
+  `notes` text DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  `inv_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
