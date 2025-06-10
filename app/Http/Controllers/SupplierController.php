@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\SuppliersDataTable;
+use App\DataTables\FilesDataTable;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Models\Accounts;
@@ -23,6 +24,22 @@ class SupplierController extends AppBaseController
     {
         return $dataTable->render('suppliers.index');
     }
+    
+public function files($supplier_id, FilesDataTable $filesDataTable)
+{
+    $supplier = Supplier::find($supplier_id); // Fetch supplier
+    if (!$supplier) {
+        abort(404, 'Supplier not found');
+    }
+
+    return $filesDataTable
+        ->with([
+            
+            'type_id' => $supplier_id,   // ✅ pass 'type_id'
+        ])
+        ->render('suppliers.document', compact('supplier'));
+}
+
 
     public function create()
     {
@@ -95,6 +112,8 @@ public function show($id)
             'supplier' => $supplier,
             'files' => $files
         ]);
+        
+       
     }
 
 public function edit($id)
@@ -186,7 +205,58 @@ public function edit($id)
                 'dataTable' => $ledgerDataTable
             ]);
     }
+//     public function files($supplier_id, FilesDataTable $filesDataTable)
+//   {
+//     return $filesDataTable->with(['supplier_id' => $supplier_id])->render('suppliers.document');
+//   }
+  
+  public function document($supplier_id)
+{
+    if (request()->post()) {
 
+        foreach (request('documents') as $document) {
 
+            if ($document['expiry_date']) {
+                $data = [];
+                if (isset($document['file_name'])) {
 
+                    $extension = $document['file_name']->extension();
+                    $name = $document['type'] . '-' . $supplier_id . '-' . time() . '.' . $extension;
+                    $document['file_name']->storeAs('supplier', $name);
+
+                    $data['file_name'] = $name;
+                    $data['file_type'] = $extension;
+                }
+
+                $data['type_id'] = $supplier_id;  // Link to supplier
+                $data['type'] = $document['type'];
+                $data['expiry_date'] = $document['expiry_date'];
+
+                $condition = [
+                    'type' => $document['type'],
+                    'type_id' => $supplier_id
+                ];
+
+                Files::updateOrCreate($condition, $data);
+            } else {
+                if (isset($document['file_name'])) {
+                    return response()->json([
+                        'errors' => [
+                            'error' => General::file_types($document['type']) . ' expiry date must be selected.'
+                        ]
+                    ], 422);
+                }
+            }
+        }
+
+        return 1;
+    }
+    
+     $files = Files::where('type_id', $supplier_id)->get();
+     $supplier = Supplier::find($supplier_id);
+
+    return view('suppliers.document', compact('files', 'supplier'));
+  }
 }
+
+

@@ -14,6 +14,9 @@
                     if(request('type') == 2){
                       $type_name = App\Models\Bikes::find(request('type'))?->value('plate')??'';
                     }
+                    if(request('type') == 3){
+                      $type_name = App\Models\Supplier::find(request('type'))?->value('supplier_id')??'';
+                    }
 
                   @endphp
                     <h3>{{$type_name}} Files</h3>
