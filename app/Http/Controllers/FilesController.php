@@ -143,4 +143,4 @@ class FilesController extends AppBaseController
 
     return redirect(route('files.index'));
   }
-}
+} 

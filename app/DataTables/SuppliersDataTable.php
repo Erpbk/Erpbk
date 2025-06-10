@@ -5,28 +5,36 @@ namespace App\DataTables;
 use App\Models\Supplier;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
+use Illuminate\Support\Facades\Route;
+
 
 
 class SuppliersDataTable extends DataTable
 {
-
+  
   public function dataTable($query)
-  {
-    $dataTable = new EloquentDataTable($query);
+    {
+        $dataTable = new EloquentDataTable($query);
 
-    return $dataTable
-      ->addColumn('action', function ($supplier) {
-        return view('suppliers.datatables_actions', compact('supplier'))->render();
-      });
-  }
+        return $dataTable
+            ->addColumn('action', function ($supplier) {
+                return view('suppliers.datatables_actions', compact('supplier'))->render();
+            })
+            ->addColumn('name', function ($supplier) {
+            $name = '<a href="' . route('suppliers.show', $supplier->id) . '">' . e($supplier->name) . '</a><br/>';
+            return $name;
+        })
+        ->rawColumns(['name', 'action']); // ← THIS IS REQUIRED to render HTML
 
+    }
 
+ 
   public function query(Supplier $model)
   {
     return $model->newQuery();
   }
 
-
+  
   public function html()
   {
     return $this->builder()
@@ -45,14 +53,11 @@ class SuppliersDataTable extends DataTable
 //                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
 //                    ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
         ],
-        'language' => [
-          'processing' => '<div class="loading-overlay"><div class="spinner-border text-primary" role="status"></div></div>'
-        ],
       ]);
   }
 
 
-
+  
   /**
    * Get columns.
    *
@@ -66,7 +71,7 @@ class SuppliersDataTable extends DataTable
       'phone',
       'company_name',
       'address',
-
+      
     ];
   }
 

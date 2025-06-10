@@ -26,6 +26,15 @@ class Transactions extends Model
   {
     return $this->hasOne(Vouchers::class, 'trans_code', 'trans_code');
   }
+  
+public function supplierInvoice()
+{
+    return $this->hasOne(SupplierInvoices::class, 'voucher_id');
+}
+
+
+
+
 
 }
 
