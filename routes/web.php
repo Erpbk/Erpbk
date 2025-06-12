@@ -4,6 +4,7 @@ use App\Http\Controllers\BikesController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LedgerController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierInvoicesController;
 use App\Http\Controllers\VouchersController;
@@ -115,6 +116,12 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::resource('dropdowns', App\Http\Controllers\DropdownsController::class);
 
   });
+  Route::prefix('reports')->group(function () {
+    Route::get('/rider_report', [ReportController::class, 'rider_report'])->name('reports.rider_report');
+    Route::post('/rider_report_data', [ReportController::class, 'rider_report_data'])->name('reports.rider_report_data');
+  });
+
+
 
   Route::get('/itmeslist', function () {
     return App\Helpers\General::dropdownitems();
