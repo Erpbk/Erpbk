@@ -105,9 +105,32 @@
 </li>
 @endcan
 
+@canany(['supplier_view']) <!-- Replace with your actual permission(s) -->
+<li class="menu-item {{ Request::is('suppliers*') ? 'open' : '' }}">
+   
+  <a href="javascript:void(0); " class="menu-link menu-toggle">
+    <i class="menu-icon tf-icons ti ti-truck"></i> <!-- You can choose an icon -->
+    <div>Supplier</div>
+  </a>
+  <ul class="menu-sub">
+      
+      <li class="menu-item {{ Request::is('suppliers*') ? 'active' : '' }}">
+      <a href="{{ route('suppliers.index') }}" class="menu-link">
+        <div>Suppliers</div>
+      </a> 
+    </li>
 
+    <li class="menu-item {{ Request::is('supplier-invoices*') ? 'active' : '' }}">
+      <a href="{{ route('supplier_invoices.index') }}" class="menu-link">
+        <div>Supplier Invoices</div>
+      </a>
+    </li>
 
+    <!-- You can add other Supplier submenu items here -->
 
+  </ul>
+</li>
+@endcanany
 
 @canany(['account_view','gn_ledger'])
  <li class="menu-item {{ Request::is('accounts*') ? 'open' : '' }} {">
