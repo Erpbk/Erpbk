@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\BikesController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\FilesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SupplierController;
@@ -94,6 +96,21 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::any('rider/activities-import', [\App\Http\Controllers\RiderActivitiesController::class, 'import'])->name('rider.activities_import');
 
   /* Rider section end here */
+
+
+  Route::resource('riderActivities', App\Http\Controllers\RiderActivitiesController::class);
+
+  Route::resource('supplier_invoices', SupplierInvoicesController::class);
+
+  Route::get('/item/{id}/price', [ItemsController::class, 'getPrice'])->name('item.price');
+
+  Route::get('/get-item-price/{id}', [ItemsController::class, 'getItemPrice'])->name('item.getPrice');
+
+  Route::resource('files', FilesController::class);
+  Route::resource('files', FilesController::class);
+
+  Route::resource('vendors', App\Http\Controllers\VendorsController::class);
+
 
   Route::resource('bikeHistories', App\Http\Controllers\BikeHistoryController::class);
 
@@ -250,15 +267,4 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::resource('riderActivities', App\Http\Controllers\RiderActivitiesController::class);
 
-Route::resource('supplier_invoices', SupplierInvoicesController::class);
-
-Route::get('/item/{id}/price', [ItemController::class, 'getPrice'])->name('item.price');
-
-Route::get('/get-item-price/{id}', [\App\Http\Controllers\ItemsController::class, 'getItemPrice'])->name('item.getPrice');
-
-Route::resource('files', App\Http\Controllers\FilesController::class);
-Route::resource('files', FilesController::class);
-
-Route::resource('vendors', App\Http\Controllers\VendorsController::class);

@@ -54,7 +54,7 @@ $container = (isset($configData['contentLayout']) && $configData['contentLayout'
 
 
       <!-- Content wrapper -->
-      <div class="content-wrapper">
+      <div class="content-wrapper" id="bodyloader">
 
         <!-- Content -->
         @if ($isFlex)
