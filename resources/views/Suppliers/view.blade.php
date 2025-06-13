@@ -13,6 +13,7 @@
             @isset($supplier)
             <li class="nav-item"><a class="nav-link @if(request()->is('suppliers/ledger/' . $supplier->id)) active @endif" href="{{ route('suppliers.ledger', $supplier->id) }}"><i class="ti ti-file ti-sm me-1_5"></i>Ledger</a></li>
             @endisset
+            <li class="nav-item"> <a class="nav-link @if(request()->segment(2) == 'files') active @endif" href="{{ route('suppliers.files', $supplier->id) }}"> <i class="ti ti-file-upload ti-sm me-1_5"></i>Files</a></li>
           </ul>
         </div>
 
