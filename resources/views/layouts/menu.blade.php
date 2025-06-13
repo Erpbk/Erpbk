@@ -107,17 +107,17 @@
 
 @canany(['supplier_view']) <!-- Replace with your actual permission(s) -->
 <li class="menu-item {{ Request::is('suppliers*') ? 'open' : '' }}">
-   
+
   <a href="javascript:void(0); " class="menu-link menu-toggle">
     <i class="menu-icon tf-icons ti ti-truck"></i> <!-- You can choose an icon -->
     <div>Supplier</div>
   </a>
   <ul class="menu-sub">
-      
+
       <li class="menu-item {{ Request::is('suppliers*') ? 'active' : '' }}">
       <a href="{{ route('suppliers.index') }}" class="menu-link">
         <div>Suppliers</div>
-      </a> 
+      </a>
     </li>
 
     <li class="menu-item {{ Request::is('supplier-invoices*') ? 'active' : '' }}">
@@ -170,6 +170,21 @@
   </ul>
 </li>
 @endcan
+<li class="menu-item {{ Request::is('reports*') ? 'open' : '' }} ">
+    <a href="javascript:void(0);" class="menu-link menu-toggle ">
+      <i class="menu-icon tf-icons ti ti-chart-area"></i>
+      <div data-i18n="Front Pages">Reports</div>
+    </a>
+    <ul class="menu-sub">
+
+  <li class="menu-item {{ Request::is('reports*') ? 'active' : '' }}">
+    <a href="{{ route('reports.rider_report') }}" class="menu-link ">
+        <i class="menu-icon tf-icons ti ti-users-group"></i>
+        Rider Report
+    </a>
+    </li>
+  </ul>
+    </li>
 
   @can('user_view')
   <li class="menu-item {{ Request::is('users*') ? 'open' : '' }} {{ Request::is('roles*') ? 'open' : '' }}">

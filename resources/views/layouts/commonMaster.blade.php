@@ -40,7 +40,7 @@ $contentLayout = (isset($container) ? (($container === 'container-xxl') ? "layou
   @vite('resources/js/app.js')
 </head>
 
-<body>
+<body >
 
 <input type="hidden" name="base_url" id="base_url" value="{{ url("/")}}" />
   <!-- Layout Content -->
