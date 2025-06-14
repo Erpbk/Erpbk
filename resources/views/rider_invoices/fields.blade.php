@@ -107,10 +107,10 @@
           <input type="text" value="{{$item->discount}}" class="form-control form-control discount" name="discount[]" placeholder="0" value="0" onkeyup="calculate_price(this);">
       </div>
       <!--col-->
-      <div class="col-md-1 form-group">
+      {{-- <div class="col-md-1 form-group">
           <label>VAT</label>
           <input type="text" value="{{$item->tax}}" class="form-control form-control tax" name="tax[]" placeholder="0" value="0" onkeyup="calculate_price(this);">
-      </div>
+      </div> --}}
       <!--col-->
       <div class="col-md-2 form-group">
           <label>Amount</label>
@@ -146,10 +146,10 @@
               <input type="text" class="form-control form-control discount" name="discount[]" placeholder="0" value="0" onkeyup="calculate_price(this);">
           </div>
           <!--col-->
-          <div class="col-md-1 form-group">
+          {{-- <div class="col-md-1 form-group">
               <label>VAT</label>
               <input type="text" class="form-control form-control tax" name="tax[]" placeholder="0" value="0" onkeyup="calculate_price(this);">
-          </div>
+          </div> --}}
           <!--col-->
           <div class="col-md-2 form-group">
               <label>Amount</label>
@@ -176,6 +176,6 @@
               <label><strong>Sub Total</strong>:</label>
           </div>
           <div class="col-md-2 form-group text-left">
-              <input type="text" name="total_amount" class="form-control form-control" id="sub_total" placeholder="0.00" value="@isset($invoice->total_amount) {{$invoice->total_amount}} @else 0.00 @endisset" readonly>
+              <input type="text" name="total_amount" class="form-control form-control" id="sub_total" placeholder="0.00" value="@isset($invoice->total_amount) {{$invoice->total_amount-$invoice->vat}} @else 0.00 @endisset" readonly>
           </div>
       </div>

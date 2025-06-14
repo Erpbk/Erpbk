@@ -247,7 +247,7 @@
                 <p class="s8" style="padding-top: 1pt;padding-left: 18pt;text-indent: 0pt;text-align: left;">{{@$item->item->detail}}</p>
              </td>
             <td style="border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="1">
-               <p class="s2" style="padding-top: 1pt;text-indent: 0pt;text-align: center;">{{@$item->price}}</p>
+               <p class="s2" style="padding-top: 1pt;text-indent: 0pt;text-align: center;">{{@$item->item->price}}</p>
             </td>
            {{--  <td style="width:88pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
                <p class="s2" style="padding-top: 1pt;text-indent: 0pt;text-align: center;">{{@$item->price}}</p>

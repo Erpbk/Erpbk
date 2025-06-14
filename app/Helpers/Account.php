@@ -145,15 +145,15 @@ class Account
     } else {
       $opening_balance = -$ob_res->OB;
     }
-    $dr = Transactions::where(['trans_acc_id' => $tid, 'dr_cr' => 1])
+    $dr = Transactions::where(['account_id' => $tid])
       ->where(function ($query) use ($date) {
         $query->whereDate('billing_month', '<', $date)/* ->orWhereNull('billing_month') */ ;
-      })->sum('amount');
+      })->sum('debit');
 
-    $cr = Transactions::where(['trans_acc_id' => $tid, 'dr_cr' => 2])
+    $cr = Transactions::where(['account_id' => $tid])
       ->where(function ($query) use ($date) {
         $query->whereDate('billing_month', '<', $date)/* ->orWhereNull('billing_month') */ ;
-      })->sum('amount');
+      })->sum('credit');
 
 
     $ob = $dr - $cr;
@@ -171,15 +171,15 @@ class Account
     } else {
       $opening_balance = -$ob_res->OB;
     }
-    $dr = Transactions::where(['trans_acc_id' => $tid, 'dr_cr' => 1])
+    $dr = Transactions::where(['account_id' => $tid])
       ->where(function ($query) use ($date) {
         $query->whereDate('billing_month', '=', $date)/* ->orWhereNull('billing_month') */ ;
-      })->sum('amount');
+      })->sum('debit');
 
-    $cr = Transactions::where(['trans_acc_id' => $tid, 'dr_cr' => 2])
+    $cr = Transactions::where(['account_id' => $tid])
       ->where(function ($query) use ($date) {
         $query->whereDate('billing_month', '=', $date)/* ->orWhereNull('billing_month') */ ;
-      })->sum('amount');
+      })->sum('debit');
 
 
     $ob = $dr - $cr;

@@ -708,9 +708,9 @@ class General
     $result = [
       1 => 'Active',
       /* 2 => 'Terminated', */
-      3 => 'Inactive',
-      4 => 'Vacation',
-      5 => 'Absconded'
+      3 => 'Inactive'
+      /*  4 => 'Vacation',
+       5 => 'Absconded' */
     ];
 
     if ($status != null) {

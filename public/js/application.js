@@ -62,12 +62,12 @@ function rider_price(g) {
         discount = 0;
         $(g).closest('.row').find('.discount').val(discount);
       }
-      let tax = $(g).closest('.row').find('.tax').val();
+      /* let tax = $(g).closest('.row').find('.tax').val();
       if (tax == '') {
         tax = 0;
         $(g).closest('.row').find('.tax').val(tax);
-      }
-      let amount = Number(qty) * Number(rate) - Number(discount) + Number(tax);
+      } */
+      let amount = Number(qty) * Number(rate) - Number(discount);
 
       $(g).closest('.row').find('.amount').val(amount);
       getTotal();
@@ -79,8 +79,8 @@ function calculate_price(g) {
   let qty = $(g).closest('.row').find('.qty').val();
   let rate = $(g).closest('.row').find('.rate').val();
   let discount = $(g).closest('.row').find('.discount').val();
-  let tax = $(g).closest('.row').find('.tax').val();
-  let amount = Number(qty) * Number(rate) - Number(discount) + Number(tax);
+  //let tax = $(g).closest('.row').find('.tax').val();
+  let amount = Number(qty) * Number(rate) - Number(discount);
 
   $(g).closest('.row').find('.amount').val(amount);
   getTotal();

@@ -22,6 +22,8 @@ class RiderInvoices extends Model
     'month_invoice',
     'descriptions',
     'total_amount',
+    'vat',
+    'subtotal',
     'billing_month',
     'gaurantee',
     'notes'
