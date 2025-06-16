@@ -193,6 +193,10 @@ class Riders extends Model
   {
     return $this->hasOne(JobStatus::class, 'RID', 'id')->orderByDesc('id');
   }
+  public function vendor()
+  {
+    return $this->hasOne(Vendors::class, 'id', 'VID');
+  }
   function account()
   {
     return $this->hasOne(Accounts::class, 'id', 'account_id');

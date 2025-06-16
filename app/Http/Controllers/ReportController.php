@@ -67,6 +67,7 @@ class ReportController extends Controller
       $data .= '<td >' . @$rider->vendor->name . '</td>';
       $data .= '<td >' . @$rider->designation . '</td>';
       $data .= '<td  >' . @$rider->bikes->plate . '</td>';
+      $data .= '<td  >' . $rider->wps . '</td>';
       $data .= '<td >' . General::RiderStatus($rider->status) . '</td>';
 
       $data .= '<td align="right" >' . number_format($opening_balance, 2) . '</td>';
@@ -86,7 +87,7 @@ class ReportController extends Controller
 
 
     $data .= '<tr>';
-    $data .= '<td colspan="6"></td>';
+    $data .= '<td colspan="7"></td>';
     $data .= '<th style="text-align: right">' . number_format($ob_total, 2) . '</th>';
     $data .= '<th style="text-align: right">' . number_format($total, 2) . '</th>';
     $data .= '<th style="text-align: right">' . Account::show_bal($b_total) . '</th>';
