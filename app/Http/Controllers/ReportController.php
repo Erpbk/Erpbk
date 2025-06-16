@@ -52,12 +52,12 @@ class ReportController extends Controller
       $result = $result->where('designation', $request->designation);
     }
     $result = $result->get();
-    $balance = 0.00;
+    //$balance = 0.00;
     foreach ($result as $rider) {
 
-      if (isset($rider->account->id)) {
-        $opening_balance = Account::Monthly_ob($request->billing_month, $rider->account->id);
-        $balance = Account::BillingMonth_Balance($request->billing_month, $rider->account->id);
+      if (isset($rider->account_id)) {
+        $opening_balance = Account::Monthly_ob($request->billing_month, $rider->account_id);
+        $balance = Account::BillingMonth_Balance($request->billing_month, $rider->account_id);
       } else {
         $balance = 0.00;
       }
