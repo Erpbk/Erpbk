@@ -139,22 +139,13 @@ class Account
   }
   public static function Monthly_ob($date, $tid)
   {
-    $ob_res = Accounts::find($tid);
-    if ($ob_res->OB_Type == '1') {
-      $opening_balance = $ob_res->OB;
-    } else {
-      $opening_balance = -$ob_res->OB;
-    }
-    $dr = Transactions::where(['account_id' => $tid])
-      ->where(function ($query) use ($date) {
-        $query->whereDate('billing_month', '<', $date)/* ->orWhereNull('billing_month') */ ;
-      })->sum('debit');
 
-    $cr = Transactions::where(['account_id' => $tid])
-      ->where(function ($query) use ($date) {
-        $query->whereDate('billing_month', '<', $date)/* ->orWhereNull('billing_month') */ ;
-      })->sum('credit');
+    $dr = Transactions::where('account_id', $tid)
+      ->whereDate('billing_month', '<', $date)->sum('debit');
 
+    $cr = Transactions::where('account_id', $tid)
+      ->whereDate('billing_month', '<', $date)
+      ->sum('credit');
 
     $ob = $dr - $cr;
     if ($ob > 0) {
@@ -165,21 +156,12 @@ class Account
   }
   public static function BillingMonth_Balance($date, $tid)
   {
-    $ob_res = Accounts::find($tid);
-    if ($ob_res->OB_Type == '1') {
-      $opening_balance = $ob_res->OB;
-    } else {
-      $opening_balance = -$ob_res->OB;
-    }
+
     $dr = Transactions::where(['account_id' => $tid])
-      ->where(function ($query) use ($date) {
-        $query->whereDate('billing_month', '=', $date)/* ->orWhereNull('billing_month') */ ;
-      })->sum('debit');
+      ->whereDate('billing_month', $date)->sum('debit');
 
     $cr = Transactions::where(['account_id' => $tid])
-      ->where(function ($query) use ($date) {
-        $query->whereDate('billing_month', '=', $date)/* ->orWhereNull('billing_month') */ ;
-      })->sum('debit');
+      ->whereDate('billing_month', $date)->sum('credit');
 
 
     $ob = $dr - $cr;
