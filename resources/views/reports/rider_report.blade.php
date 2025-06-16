@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title','Rider Report')
 @section('content')
 <style>
     .table tr:first-child>td{
@@ -18,7 +19,7 @@
                     <div class="card rounded-0">
                         <!-- /.card-header -->
                         <div class="card-body">
-
+                          <button class="btn btn-sm btn-success  exportToExcel action-btn"><i class="fa fa-file-excel"> Export</i> </button>
                             <form id="form">
                                 <div class="d-flex d-flex-row gap-2">
                                     <div class="col-md-2">
@@ -56,15 +57,16 @@
                                 <!--row-->
                             </form>
                             <br>
-{{--                             <button class="btn btn-xs btn-primary float-right exportToExcel"><i class="fa fa-file-excel"> Export</i> </button>
- --}}                            <table id="table2excel" class="table table-striped table-hover">
+
+                            <table id="table2excel" class="table table-striped table-hover">
                                 <thead>
                                 <tr>
                                     <th>#</th>
                                     <th >Name</th>
                                     <th>Vendor</th>
                                     <th >Designation</th>
-                                    <th >Bike No</th>
+                                    <th >Bike</th>
+                                    <th >WPS</th>
                                     <th>Status</th>
                                     <th style="text-align: right;">Balance Forward</th>
                                     <th style="text-align: right;">Amount</th>
@@ -105,7 +107,7 @@
     </div>
     <!-- /.content-wrapper -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{{ URL::asset('public/export_excel/jquery.table2excel.js') }}"></script>
+    <script src="{{ URL::asset('export_excel/jquery.table2excel.js') }}"></script>
     <script>
         $(function () {
             //Initialize Select2 Elements
@@ -126,8 +128,7 @@
                 }
             })
         }
-    </script>
-    <script>
+
         var jq = $.noConflict();
         jq(document).ready(function(){
             $(".exportToExcel").click(function () {
