@@ -175,9 +175,9 @@ class Account
   public static function show_bal($bal)
   {
     if ($bal > 0) {
-      return number_format(abs($bal), 2) . " DR";
+      return number_format(abs($bal), 2);
     } elseif ($bal < 0) {
-      return '(' . number_format(abs($bal), 2) . ") CR";
+      return '-' . number_format(abs($bal), 2);
     } elseif ($bal == 0) {
       return "0.00";
     }
@@ -187,7 +187,7 @@ class Account
     if ($bal > 0) {
       return number_format(abs($bal), 2);
     } elseif ($bal < 0) {
-      return '(' . number_format(abs($bal), 2) . ")";
+      return '-' . number_format(abs($bal), 2);
     } elseif ($bal == 0) {
       return "0.00";
     }
