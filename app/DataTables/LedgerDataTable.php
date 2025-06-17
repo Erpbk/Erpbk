@@ -47,9 +47,14 @@ class LedgerDataTable extends DataTable
       if (isset($row->voucher->attach_file)) {
         $view_file = '  <a href="' . url('storage/vouchers/' . $row->voucher->attach_file) . '" class="no-print"  target="_blank">View File</a>';
       }
+
       if ($row->reference_type == 'Voucher') {
         $voucher_ID = $row->voucher->voucher_type . '-' . str_pad($row->voucher->id, '4', '0', STR_PAD_LEFT);
-        $voucher_text = '<span class="d-none">' . $voucher_ID . '</span><a href="' . route('vouchers.show', $row->voucher->id) . '" class="no-print" target="_blank">' . $voucher_ID . '</a>';
+        $voucher_text = '<span class="d-none">' . $voucher_ID . '</span><a href="javascript:void(0);" data-title="Voucher # ' . $voucher_ID . '" data-size="xl" data-action="' . route('vouchers.show', $row->voucher->id) . '" class="no-print show-modal" >' . $voucher_ID . '</a>';
+      }
+      if ($row->reference_type == 'Invoice') {
+        $invoice_ID = $row->reference_id;
+        $voucher_text = '<span class="d-none">' . $invoice_ID . '</span><a href="javascript:void(0);" data-title="Invoice # ' . $invoice_ID . '" data-size="xl" data-action="' . route('riderInvoices.show', $invoice_ID) . '" class="no-print show-modal">' . $invoice_ID . '</a>';
       }
 
 
