@@ -54,7 +54,7 @@ class LedgerDataTable extends DataTable
       }
       if ($row->reference_type == 'Invoice') {
         $invoice_ID = $row->reference_id;
-        $voucher_text = '<span class="d-none">' . $invoice_ID . '</span><a href="javascript:void(0);" data-title="Invoice # ' . $invoice_ID . '" data-size="xl" data-action="' . route('riderInvoices.show', $invoice_ID) . '" class="no-print show-modal">RD-' . $invoice_ID . '</a>';
+        $voucher_text = '<span class="d-none">RD-' . $invoice_ID . '</span><a href="javascript:void(0);" data-title="Invoice # ' . $invoice_ID . '" data-size="xl" data-action="' . route('riderInvoices.show', $invoice_ID) . '" class="no-print show-modal">RD-' . $invoice_ID . '</a>';
       }
 
 
@@ -114,11 +114,16 @@ class LedgerDataTable extends DataTable
    */
   private function getOpeningBalance()
   {
-    if (!request('month') || !request('account')) {
+    if (!request('month')) {
       return 0;
     }
 
-    return Transactions::where('account_id', request('account'))
+    if (request('account')) {
+      $account_id = request('account');
+    } else {
+      $account_id = $this->account_id;
+    }
+    return Transactions::where('account_id', $account_id)
       ->whereDate('billing_month', '<', request('month') . '-01')
       ->sum(DB::raw("debit - credit"));
   }
