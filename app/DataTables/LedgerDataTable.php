@@ -54,7 +54,7 @@ class LedgerDataTable extends DataTable
       }
       if ($row->reference_type == 'Invoice') {
         $invoice_ID = $row->reference_id;
-        $voucher_text = '<span class="d-none">' . $invoice_ID . '</span><a href="javascript:void(0);" data-title="Invoice # ' . $invoice_ID . '" data-size="xl" data-action="' . route('riderInvoices.show', $invoice_ID) . '" class="no-print show-modal">' . $invoice_ID . '</a>';
+        $voucher_text = '<span class="d-none">' . $invoice_ID . '</span><a href="javascript:void(0);" data-title="Invoice # ' . $invoice_ID . '" data-size="xl" data-action="' . route('riderInvoices.show', $invoice_ID) . '" class="no-print show-modal">RD-' . $invoice_ID . '</a>';
       }
 
 
