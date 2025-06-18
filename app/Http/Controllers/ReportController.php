@@ -66,6 +66,8 @@ class ReportController extends Controller
       $data .= '<td  >' . @$rider->name . '</td>';
       $data .= '<td >' . @$rider->vendor->name . '</td>';
       $data .= '<td >' . @$rider->designation . '</td>';
+      $data .= '<td >' . @$rider->person_code . '</td>';
+      $data .= '<td >' . @$rider->labor_card_number . '</td>';
       $data .= '<td  >' . @$rider->bikes->plate . '</td>';
       $data .= '<td  >' . $rider->wps . '</td>';
       $data .= '<td >' . General::RiderStatus($rider->status) . '</td>';

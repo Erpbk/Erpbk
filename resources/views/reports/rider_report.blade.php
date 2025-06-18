@@ -65,6 +65,8 @@
                                     <th >Name</th>
                                     <th>Vendor</th>
                                     <th >Designation</th>
+                                    <th >Person Code</th>
+                                    <th >Labor Card</th>
                                     <th >Bike</th>
                                     <th >WPS</th>
                                     <th>Status</th>
