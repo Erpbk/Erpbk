@@ -360,35 +360,21 @@ ALTER TABLE `invoice_items`
 MODIFY COLUMN `created_at`  timestamp NULL DEFAULT CURRENT_TIMESTAMP AFTER `amount`,
 MODIFY COLUMN `updated_at`  timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP AFTER `created_at`;
 
+-------------------
 
 ALTER TABLE `suppliers`
 ADD COLUMN `status`  tinyint(2) NULL DEFAULT 1 AFTER `updated_at`;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+CREATE TABLE `upload_files` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `detail` TEXT NULL,
+  `path` VARCHAR(255) NOT NULL,
+  `uploaded_by` BIGINT UNSIGNED NOT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 ALTER TABLE `rider_invoices`
