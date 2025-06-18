@@ -14,6 +14,14 @@
     </a>
 </li>
 @endcan
+@can('files_view')
+<li class="menu-item {{ Request::is('upload_files*') ? 'active' : '' }}">
+  <a href="{{ route('upload_files.index') }}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-upload"></i>
+      <div>Documents</div>
+  </a>
+</li>
+@endcan
 @can('customer_view')
 <li class="menu-item {{ Request::is('customers*') ? 'active' : '' }}">
   <a href="{{ route('customers.index') }}" class="menu-link">
