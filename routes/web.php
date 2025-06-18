@@ -253,7 +253,16 @@ Route::middleware(['auth'])->group(function () {
 });
 
 /* Suppliers section end here */
-
+Route::middleware('auth')->group(function () {
+    Route::resource('upload_files', UploadFilesController::class);
+    Route::get('/upload_files', [UploadFilesController::class, 'index'])->name('upload_files.index');
+    Route::get('/upload_files/create', [UploadFilesController::class, 'create'])->name('upload_files.create'); 
+    Route::post('/upload_files', [UploadFilesController::class, 'store'])->name('upload_files.store');
+    Route::get('/upload_files/{id}', [UploadFilesController::class, 'show'])->name('upload_files.show');
+    Route::get('/upload_files/{id}/edit', [UploadFilesController::class, 'edit'])->name('upload_files.edit');
+    Route::put('/upload_files/{id}', [UploadFilesController::class, 'update'])->name('upload_files.update');
+    Route::delete('/upload_files/{id}', [UploadFilesController::class, 'destroy'])->name('upload_files.destroy');
+});
 
 
 
