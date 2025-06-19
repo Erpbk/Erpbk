@@ -19,10 +19,40 @@
       <label>Details:</label>
       <p>{{ $file->details }}</p>
     </div>
-    <div class="form-group col-md-12">
-      <div style="text-align:center;"><label>File Preview:</label><br></div>
-      <div style="display:flex; justify-content: center;"><img src="{{ asset('storage/' . $file->path) }}" alt="File" width="50%" height="90%"></div>
-    </div>
+   <div class="form-group col-md-12">
+  <div style="text-align:center;"><label>File Preview:</label><br></div>
+  @php
+    $fileUrl = asset('storage/' . $file->path);
+    $extension = strtolower(pathinfo($file->path, PATHINFO_EXTENSION));
+@endphp
+
+{{-- Inline Preview --}}
+<div class="file-preview mt-4 text-center">
+    @if($extension === 'pdf')
+        <object data="{{ $fileUrl }}" type="application/pdf" width="100%" height="600px">
+            <p>
+                PDF preview not supported by your browser. 
+                <a href="{{ $fileUrl }}" target="_blank">Open PDF</a>
+            </p>
+        </object>
+    @elseif(in_array($extension, ['doc', 'docx']))
+        <iframe 
+            src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}" 
+            width="100%" 
+            height="600px" 
+            frameborder="0">
+        </iframe>
+    @else
+        <p>Preview not available for this file type.</p>
+    @endif
+</div>
+
+{{-- Download Link --}}
+<div class="mt-3 text-center">
+    <a href="{{ $fileUrl }}" class="btn btn-primary" download>Download File</a>
+</div>
+
+</div>
   </div>
 </div>
 @endsection
