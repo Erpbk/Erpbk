@@ -28,7 +28,7 @@
 
 {{-- Inline Preview --}}
 <div class="file-preview mt-4 text-center">
-    @if($extension === 'pdf')
+    @if ($extension === 'pdf')
         <object data="{{ $fileUrl }}" type="application/pdf" width="100%" height="600px">
             <p>
                 PDF preview not supported by your browser. 
@@ -42,6 +42,8 @@
             height="600px" 
             frameborder="0">
         </iframe>
+    @elseif(in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']))
+        <img src="{{ $fileUrl }}" alt="Image Preview" style="max-width: 100%; height: auto; border: 1px solid #ccc; padding: 5px;">
     @else
         <p>Preview not available for this file type.</p>
     @endif
