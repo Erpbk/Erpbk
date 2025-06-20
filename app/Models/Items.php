@@ -19,6 +19,8 @@ class Items extends Model
     'barcode',
     'created_by',
     'updated_by',
+    'customer_id',
+    'supplier_id',
     'status'
   ];
 
@@ -32,6 +34,8 @@ class Items extends Model
 
   public static array $rules = [
     'name' => 'required|string|max:255',
+    'customer_id' => 'required',
+    'supplier_id' => 'required',
     'detail' => 'nullable|string|max:500',
     'price' => 'required|numeric',
     'cost' => 'required|numeric',
@@ -46,4 +50,13 @@ class Items extends Model
     return $query;
 
   }
+  public function customer()
+  {
+    return $this->belongsTo(Customers::class, 'customer_id', 'id');
+  }
+  public function supplier()
+  {
+    return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
+  }
+
 }
