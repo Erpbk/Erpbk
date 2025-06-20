@@ -107,10 +107,10 @@
           <input type="text" value="{{$item->discount}}" class="form-control form-control discount" name="discount[]" placeholder="0" value="0" onkeyup="calculate_price(this);">
       </div>
       <!--col-->
-      {{-- <div class="col-md-1 form-group">
+      <div class="col-md-1 form-group">
           <label>VAT</label>
           <input type="text" value="{{$item->tax}}" class="form-control form-control tax" name="tax[]" placeholder="0" value="0" onkeyup="calculate_price(this);">
-      </div> --}}
+      </div>
       <!--col-->
       <div class="col-md-2 form-group">
           <label>Amount</label>
@@ -146,10 +146,10 @@
               <input type="text" class="form-control form-control discount" name="discount[]" placeholder="0" value="0" onkeyup="calculate_price(this);">
           </div>
           <!--col-->
-          {{-- <div class="col-md-1 form-group">
+          <div class="col-md-1 form-group">
               <label>VAT</label>
               <input type="text" class="form-control form-control tax" name="tax[]" placeholder="0" value="0" onkeyup="calculate_price(this);">
-          </div> --}}
+          </div>
           <!--col-->
           <div class="col-md-2 form-group">
               <label>Amount</label>

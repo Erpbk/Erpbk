@@ -28,6 +28,12 @@ class ItemsDataTable extends DataTable
         }
       })
       ->toJson();
+    $dataTable->addColumn('customer_id', function (Items $items) {
+      return $items?->customer?->name ?? ' - ';
+    });
+    $dataTable->addColumn('supplier_id', function (Items $items) {
+      return $items?->supplier?->name ?? ' - ';
+    });
     $dataTable->rawColumns(['status', 'action']);
     return $dataTable;
   }
@@ -82,6 +88,9 @@ class ItemsDataTable extends DataTable
   protected function getColumns()
   {
     return [
+      'name',
+      'customer_id' => ['title' => 'Customer'],
+      'supplier_id' => ['title' => 'Supplier'],
       'name',
       'price',
       'vat',

@@ -167,6 +167,7 @@
             <th style="border: 1px solid #000; padding: 5px;">Item Description</th>
             <th style="border: 1px solid #000; padding: 5px;">Qty</th>
             <th style="border: 1px solid #000; padding: 5px;">Rate</th>
+            <th style="border: 1px solid #000; padding: 5px;">VAT</th>
             <th style="border: 1px solid #000; padding: 5px;">Amount</th>
             {{-- <th style="border: 1px solid #000; padding: 5px;">VAT %</th>
             <th style="border: 1px solid #000; padding: 5px;">VAT Amount</th>
@@ -177,11 +178,15 @@
         @php
         $total=0;
         $total_qty=0;
+
         @endphp
         @foreach($riderInvoice->items as $key=>$val)
             @php
                 $total+=$val->amount;
                 $total_qty +=$val->qty;
+                 $vat_percentage = Common::getSetting('vat_percentage');
+                $vat_amount = $val->amount*$vat_percentage/100;
+
             @endphp
             <tr>
                 <td style="padding: 5px;border:1px solid">{{ $key+1 }}</td>
@@ -191,6 +196,8 @@
                 </td>
                 <td style="padding: 5px;border:1px solid;text-align: center">{{ $val->qty }}</td>
                 <td style="padding:5px;border:1px solid">{{ $val->rate }}</td>
+
+                <td style="padding:5px;border:1px solid">@if($riderInvoice->vat>0){{ $vat_amount }}@else 0.00 @endif</td>
                 <td style="padding:5px;border:1px solid; text-align: right">{{ $val->amount }}</td>
             </tr>
         @endforeach
@@ -198,7 +205,7 @@
         <tfoot>
 
         <tr style="border-top: 1px solid #000;">
-            <td colspan="1" style="padding: 5px;text-align: left;"></td>
+            <td colspan="2" style="padding: 5px;text-align: left;"></td>
             <td colspan="1" style="padding: 5px;text-align: right;font-weight:bold;">Total Orders:</td>
             <td colspan="1" style="padding: 5px;text-align: center;font-weight:bold;">{{$total_qty}}</td>
             <th style="padding: 5px;text-align: right;">Sub Total:</th>

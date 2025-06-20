@@ -53,4 +53,11 @@ class Customers extends Model
     return $this->hasMany(Transactions::class, 'account_id', 'account_id');
   }
 
+  public static function dropdown()
+  {
+    $query = self::select('id', 'name')->pluck('name', 'id')->prepend('Select', '');
+    return $query;
+
+  }
+
 }

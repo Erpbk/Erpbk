@@ -1,11 +1,19 @@
+<script src="{{ asset('js/modal_custom.js') }}"></script>
+
 <!-- Name Field -->
 <div class="form-group col-sm-12">
     {!! Form::label('name', 'Name:') !!}
     {!! Form::text('name', null, ['class' => 'form-control', 'maxlength' => 255, 'maxlength' => 255]) !!}
 </div>
 
-
-
+<div class="form-group col-sm-6">
+    {!! Form::label('customer_id', 'Customer:') !!}
+{!! Form::select('customer_id', App\Models\Customers::dropdown(), null, ['class' => 'form-control select2']) !!}
+</div>
+<div class="form-group col-sm-6">
+    {!! Form::label('supplier_id', 'Supplier:') !!}
+{!! Form::select('supplier_id', App\Models\Supplier::dropdown(), null, ['class' => 'form-control select2']) !!}
+</div>
 <!-- Price Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('price', 'Price:') !!}
