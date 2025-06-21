@@ -6,20 +6,20 @@
      {{--  <div class="badge bg-white text-dark rounded-pill ms-auto">2</div>  --}}
     </a>
   </li>
+  @can('bank_view')
+<li class="menu-item {{ Request::is('banks') ? 'active' : '' }}">
+  <a href="{{ route('banks.index') }}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-building-bank"></i>
+      <div>Banks</div>
+  </a>
+</li>
+@endcan
 @can('item_view')
   <li class="menu-item {{ Request::is('items*') ? 'active' : '' }}">
     <a href="{{ route('items.index') }}" class="menu-link">
         <i class="menu-icon tf-icons ti ti-notes"></i>
         <div>Items</div>
     </a>
-</li>
-@endcan
-@can('files_view')
-<li class="menu-item {{ Request::is('upload_files*') ? 'active' : '' }}">
-  <a href="{{ route('upload_files.index') }}" class="menu-link">
-      <i class="menu-icon tf-icons ti ti-upload"></i>
-      <div>Documents</div>
-  </a>
 </li>
 @endcan
 @can('customer_view')
@@ -38,6 +38,8 @@
   </a>
 </li>
 @endcan
+
+
 @can('rider_view')
 <li class="menu-item {{ Request::is('riders*') ? 'active' : '' }}">
   <a href="{{ route('riders.index') }}" class="menu-link">
@@ -55,38 +57,6 @@
   <a href="{{ route('riderActivities.index') }}" class="menu-link ">
       <i class="menu-icon tf-icons ti ti-bike"></i>
       <div>Activities</div>
-  </a>
-</li>
-@endcan
-@can('bank_view')
-<li class="menu-item {{ Request::is('banks') ? 'active' : '' }}">
-  <a href="{{ route('banks.index') }}" class="menu-link">
-      <i class="menu-icon tf-icons ti ti-building-bank"></i>
-      <div>Banks</div>
-  </a>
-</li>
-@endcan
-@can('leasing_view')
-<li class="menu-item {{ Request::is('leasingCompanies*') ? 'active' : '' }}">
-  <a href="{{ route('leasingCompanies.index') }}" class="menu-link">
-      <i class="menu-icon tf-icons ti ti-building"></i>
-      <div>Leasing Companies</div>
-  </a>
-</li>
-@endcan
-@can('garage_view')
-<li class="menu-item {{ Request::is('garages*') ? 'active' : '' }}">
-  <a href="{{ route('garages.index') }}" class="menu-link">
-      <i class="menu-icon tf-icons ti ti-parking"></i>
-      <div>Garages</div>
-  </a>
-</li>
-@endcan
-@can('voucher_view')
-<li class="menu-item {{ Request::is('vouchers*') ? 'active' : '' }}">
-  <a href="{{ route('vouchers.index') }}" class="menu-link">
-      <i class="menu-icon tf-icons ti ti-device-sim"></i>
-      <div>Vouchers</div>
   </a>
 </li>
 @endcan
@@ -112,7 +82,47 @@
   </a>
 </li>
 @endcan
+<li class="menu-item ">
+  <a href="#" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-device-sim"></i>
+      <div>Fines</div>
+  </a>
+</li>
+<li class="menu-item ">
+  <a href="#" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-device-sim"></i>
+      <div>Inventory</div>
+  </a>
+</li>
+<li class="menu-item ">
+  <a href="#" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-device-sim"></i>
+      <div>Visa Expense</div>
+  </a>
+</li>
+<li class="menu-item ">
+  <a href="#" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-device-sim"></i>
+      <div>Expenses</div>
+  </a>
+</li>
+@can('leasing_view')
+<li class="menu-item {{ Request::is('leasingCompanies*') ? 'active' : '' }}">
+  <a href="{{ route('leasingCompanies.index') }}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-building"></i>
+      <div>Leasing Companies</div>
+  </a>
+</li>
+@endcan
 
+@can('garage_view')
+<li class="menu-item {{ Request::is('garages*') ? 'active' : '' }}">
+  <a href="{{ route('garages.index') }}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-parking"></i>
+      <div>Garages</div>
+  </a>
+</li>
+@endcan
 @canany(['supplier_view']) <!-- Replace with your actual permission(s) -->
 <li class="menu-item {{ Request::is('suppliers*') ? 'open' : '' }}">
 
@@ -139,6 +149,31 @@
   </ul>
 </li>
 @endcanany
+<li class="menu-item ">
+  <a href="#" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-device-sim"></i>
+      <div>Assets</div>
+  </a>
+</li>
+@can('files_view')
+<li class="menu-item {{ Request::is('upload_files*') ? 'active' : '' }}">
+  <a href="{{ route('upload_files.index') }}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-upload"></i>
+      <div>Documents</div>
+  </a>
+</li>
+@endcan
+@can('voucher_view')
+<li class="menu-item {{ Request::is('vouchers*') ? 'active' : '' }}">
+  <a href="{{ route('vouchers.index') }}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-device-sim"></i>
+      <div>Vouchers</div>
+  </a>
+</li>
+@endcan
+
+
+
 
 @canany(['account_view','gn_ledger'])
  <li class="menu-item {{ Request::is('accounts*') ? 'open' : '' }} {">
