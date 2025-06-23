@@ -41,10 +41,20 @@
 
 
 @can('rider_view')
+<li class="menu-item {{ Request::is('riders*') ? 'open' : '' }}
+ {{ Request::is('riderInvoices*') ? 'open' : '' }}
+ {{ Request::is('riderActivities*') ? 'open' : '' }}
+  {{ Request::is('reports/rider_report*') ? 'open' : '' }}  ">
+  <a href="javascript:void(0);" class="menu-link menu-toggle ">
+    <i class="menu-icon tf-icons ti ti-user-pin"></i>
+    <div data-i18n="Front Pages">Riders</div>
+  </a>
+  <ul class="menu-sub">
+
 <li class="menu-item {{ Request::is('riders*') ? 'active' : '' }}">
   <a href="{{ route('riders.index') }}" class="menu-link">
       <i class="menu-icon tf-icons ti ti-user-pin"></i>
-      <div>Riders</div>
+      <div>Riders List</div>
   </a>
 </li>
 <li class="menu-item {{ Request::is('riderInvoices*') ? 'active' : '' }}">
@@ -58,6 +68,14 @@
       <i class="menu-icon tf-icons ti ti-bike"></i>
       <div>Activities</div>
   </a>
+</li>
+  <li class="menu-item {{ Request::is('reports*') ? 'active' : '' }}">
+    <a href="{{ route('reports.rider_report') }}" class="menu-link ">
+        <i class="menu-icon tf-icons ti ti-users-group"></i>
+        Rider Report
+    </a>
+    </li>
+  </ul>
 </li>
 @endcan
 @can('bike_view')
@@ -176,7 +194,7 @@
 
 
 @canany(['account_view','gn_ledger'])
- <li class="menu-item {{ Request::is('accounts*') ? 'open' : '' }} {">
+ <li class="menu-item {{ Request::is('accounts*') ? 'open' : '' }} ">
   <a href="javascript:void(0);" class="menu-link menu-toggle ">
     <i class="menu-icon tf-icons ti ti-graph"></i>
     <div data-i18n="Front Pages">Accounts</div>
@@ -213,7 +231,7 @@
   </ul>
 </li>
 @endcan
-<li class="menu-item {{ Request::is('reports*') ? 'open' : '' }} ">
+{{-- <li class="menu-item {{ Request::is('reports*') ? 'open' : '' }} ">
     <a href="javascript:void(0);" class="menu-link menu-toggle ">
       <i class="menu-icon tf-icons ti ti-chart-area"></i>
       <div data-i18n="Front Pages">Reports</div>
@@ -227,7 +245,7 @@
     </a>
     </li>
   </ul>
-    </li>
+    </li> --}}
 
   @can('user_view')
   <li class="menu-item {{ Request::is('users*') ? 'open' : '' }} {{ Request::is('roles*') ? 'open' : '' }}">
