@@ -388,5 +388,10 @@ ADD COLUMN `supplier_id`  int(11) NULL DEFAULT NULL AFTER `customer_id`;
 
 ------------
 
+ALTER TABLE `files`
+MODIFY COLUMN `type`  varchar(50) NOT NULL AFTER `id`;
+
+
+update files set type = 'rider' where type = 1;
 
 

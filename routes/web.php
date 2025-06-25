@@ -118,6 +118,9 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::resource('leasingCompanies', App\Http\Controllers\LeasingCompaniesController::class);
   Route::resource('garages', App\Http\Controllers\GaragesController::class);
   Route::resource('banks', App\Http\Controllers\BanksController::class);
+  Route::get('bank/ledger/{id}', [\App\Http\Controllers\BanksController::class, 'ledger'])->name('bank.ledger');
+  Route::get('bank/files/{id}', [\App\Http\Controllers\BanksController::class, 'files'])->name('bank.files');
+
 
   Route::resource('vouchers', \App\Http\Controllers\VouchersController::class);
   Route::any('voucher/import', [\App\Http\Controllers\VouchersController::class, 'import'])->name('voucher.import');

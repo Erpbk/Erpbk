@@ -390,7 +390,7 @@ class RidersController extends AppBaseController
 
   public function files($rider_id, FilesDataTable $filesDataTable)
   {
-    return $filesDataTable->with(['type_id' => $rider_id, 'type' => 1])->render('riders.document');
+    return $filesDataTable->with(['type_id' => $rider_id, 'type' => 'rider'])->render('riders.document');
   }
 
   public function sendEmail($id, Request $request)

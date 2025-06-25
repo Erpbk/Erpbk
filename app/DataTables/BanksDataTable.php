@@ -19,6 +19,10 @@ class BanksDataTable extends DataTable
     $dataTable = new EloquentDataTable($query);
 
     $dataTable->addColumn('action', 'banks.datatables_actions');
+    $dataTable->addColumn('name', function (Banks $banks) {
+      $name = '<a href="' . route('bank.files', $banks->id) . '">' . $banks->name . '</a><br/>';
+      return $name;
+    });
     $dataTable
       ->addColumn('status', function (Banks $banks) {
         if ($banks->status == 1) {
@@ -28,7 +32,7 @@ class BanksDataTable extends DataTable
         }
       })
       ->toJson();
-    $dataTable->rawColumns(['status', 'action']);
+    $dataTable->rawColumns(['status', 'action', 'name']);
     return $dataTable;
   }
 
