@@ -7,6 +7,7 @@ use App\Models\LeasingCompanies;
 use App\Models\Riders;
 use App\Models\Services;
 use App\Models\Settings;
+use App\Models\Transactions;
 
 class Accounts
 {
@@ -74,6 +75,20 @@ class Accounts
       }
       return $row;
     }
+  }
+
+  public static function getBalance($account_id)
+  {
+    $balance = Transactions::where('account_id', $account_id)
+      ->select(
+        \DB::raw('SUM(debit) as total_debit'),
+        \DB::raw('SUM(credit) as total_credit')
+      )
+      ->first();
+
+    $finalBalance = ($balance->total_debit ?? 0) - ($balance->total_credit ?? 0);
+
+    return number_format($finalBalance, 2);
   }
 
 }
