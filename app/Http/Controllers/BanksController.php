@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\BanksDataTable;
+use App\DataTables\FilesDataTable;
+use App\DataTables\LedgerDataTable;
 use App\Helpers\Account;
+use App\Helpers\General;
 use App\Http\Requests\CreateBanksRequest;
 use App\Http\Requests\UpdateBanksRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Accounts;
+use App\Models\Banks;
+use App\Models\Files;
+use App\Models\Transactions;
 use App\Repositories\BanksRepository;
 use Illuminate\Http\Request;
 use Flash;
@@ -155,5 +161,19 @@ class BanksController extends AppBaseController
 
     return response()->json(['message' => 'Bank deleted successfully.']);
 
+  }
+
+  public function ledger($id, LedgerDataTable $ledgerDataTable)
+  {
+    $banks = Banks::find($id);
+    $files = Transactions::where('account_id', $banks->account_id)->get();
+    $account_id = $banks->account_id;
+
+    return $ledgerDataTable->with(['account_id' => $account_id])->render('banks.bank_ledger', compact('files', 'banks'));
+  }
+
+  public function files($id, FilesDataTable $filesDataTable)
+  {
+    return $filesDataTable->with(['type_id' => $id, 'type' => 'bank'])->render('banks.document');
   }
 }

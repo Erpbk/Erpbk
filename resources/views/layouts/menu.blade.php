@@ -7,7 +7,7 @@
     </a>
   </li>
   @can('bank_view')
-<li class="menu-item {{ Request::is('banks') ? 'active' : '' }}">
+<li class="menu-item {{ Request::is('banks') ? 'active' : '' }} {{ Request::is('bank*') ? 'active' : '' }}">
   <a href="{{ route('banks.index') }}" class="menu-link">
       <i class="menu-icon tf-icons ti ti-building-bank"></i>
       <div>Banks</div>
