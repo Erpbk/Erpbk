@@ -13,6 +13,7 @@ use App\Models\Riders;
 use App\Models\RoomType;
 use App\Models\Supervisors;
 use App\Models\TransactionAccount;
+use App\Models\Transactions;
 use App\Models\VendorItemPrice;
 use Carbon\Carbon;
 use DB;
@@ -743,11 +744,18 @@ class General
   }
 
 
-  public static function getBalance($trans_acc_id)
+  public static function getBalance($account_id)
   {
-    $dr = Transaction::where('trans_acc_id', $trans_acc_id)->where('dr_cr', 1)->sum('amount');
-    $cr = Transaction::where('trans_acc_id', $trans_acc_id)->where('dr_cr', 2)->sum('amount');
-    return number_format($cr - $dr, 2);
+    $balance = Transactions::where('account_id', $account_id)
+      ->select(
+        DB::raw('SUM(debit) as total_debit'),
+        DB::raw('SUM(credit) as total_credit')
+      )
+      ->first();
+
+    $finalBalance = ($balance->total_debit ?? 0) - ($balance->total_credit ?? 0);
+
+    return number_format($finalBalance, 2);
   }
 
   public static function BillingMonth($month = null)

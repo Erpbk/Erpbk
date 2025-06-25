@@ -137,7 +137,7 @@ if(is_numeric(request()->segment(3))){
                                 @endisset
                          </li> --}}
                          <li class="list-group-item pb-1 ">
-                            <b>Balance:</b> <span class="float-right">{{-- @isset($rider->account->id){{App\Helpers\Account::show_bal(App\Helpers\Account::Monthly_ob(date('y-m-d'), $rider->account->id))??'not-set'}}@endisset --}}</span>
+                            <b>Balance:</b> <span class="float-right">@isset($result){{App\Helpers\Accounts::getBalance($result['account_id'])}}@endisset</span>
                          </li>
                       </ul>
 
