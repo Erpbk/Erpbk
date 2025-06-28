@@ -57,12 +57,14 @@
       <div>Riders List</div>
   </a>
 </li>
+@can('riderinvoice_view')
 <li class="menu-item {{ Request::is('riderInvoices*') ? 'active' : '' }}">
   <a href="{{ route('riderInvoices.index') }}" class="menu-link ">
       <i class="menu-icon tf-icons ti ti-file"></i>
       <div>Invoices</div>
   </a>
 </li>
+@endcan
 <li class="menu-item {{ Request::is('riderActivities*') ? 'active' : '' }}">
   <a href="{{ route('riderActivities.index') }}" class="menu-link ">
       <i class="menu-icon tf-icons ti ti-bike"></i>

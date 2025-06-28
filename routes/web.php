@@ -58,6 +58,10 @@ Route::middleware(['auth', 'web'])->group(function () {
 
 
   Route::resource('customers', App\Http\Controllers\CustomersController::class);
+  Route::get('customer/ledger/{id}', [\App\Http\Controllers\CustomersController::class, 'ledger'])->name('customer.ledger');
+  Route::get('customer/files/{id}', [\App\Http\Controllers\CustomersController::class, 'files'])->name('customer.files');
+
+
   Route::resource('sims', App\Http\Controllers\SimsController::class);
   /* Rider section starts from here */
 

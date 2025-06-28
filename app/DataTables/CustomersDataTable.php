@@ -18,7 +18,24 @@ class CustomersDataTable extends DataTable
   {
     $dataTable = new EloquentDataTable($query);
 
-    return $dataTable->addColumn('action', 'customers.datatables_actions');
+    $dataTable->addColumn('action', 'customers.datatables_actions');
+
+    $dataTable->addColumn('name', function (Customers $customers) {
+      $name = '<a href="' . route('customer.files', $customers->id) . '">' . $customers->name . '</a><br/>';
+      return $name;
+    });
+    $dataTable
+      ->addColumn('status', function (Customers $customers) {
+        if ($customers->status == 1) {
+          return '<span class="badge  bg-success">Active</span>';
+        } else {
+          return '<span class="badge  bg-danger">Inactive</span>';
+        }
+      })
+      ->toJson();
+
+    $dataTable->rawColumns(['action', 'name', 'status']);
+    return $dataTable;
   }
 
   /**
@@ -70,7 +87,8 @@ class CustomersDataTable extends DataTable
   {
     return [
       'name',
-      'contact_number'
+      'contact_number',
+      'status'
     ];
   }
 
