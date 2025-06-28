@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\CustomersDataTable;
+use App\DataTables\FilesDataTable;
+use App\DataTables\LedgerDataTable;
 use App\Helpers\Account;
 use App\Http\Requests\CreateCustomersRequest;
 use App\Http\Requests\UpdateCustomersRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Accounts;
+use App\Models\Customers;
+use App\Models\Transactions;
 use App\Repositories\CustomersRepository;
 use Illuminate\Http\Request;
 use Flash;
@@ -153,5 +157,19 @@ class CustomersController extends AppBaseController
 
 
     return response()->json(['message' => 'Customer deleted successfully.']);
+  }
+
+  public function ledger($id, LedgerDataTable $ledgerDataTable)
+  {
+    $customers = Customers::find($id);
+    $files = Transactions::where('account_id', $customers->account_id)->get();
+    $account_id = $customers->account_id;
+
+    return $ledgerDataTable->with(['account_id' => $account_id])->render('customers.customer_ledger', compact('files', 'customers'));
+  }
+
+  public function files($id, FilesDataTable $filesDataTable)
+  {
+    return $filesDataTable->with(['type_id' => $id, 'type' => 'customer'])->render('customers.document');
   }
 }

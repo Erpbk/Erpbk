@@ -20,7 +20,7 @@ class Files extends Model
   ];
 
   protected $casts = [
-    'type' => 'boolean',
+    /* 'type' => 'boolean', */
     /*     'file_name' => 'string',
      */ 'expiry_date' => 'date',
     'status' => 'boolean',

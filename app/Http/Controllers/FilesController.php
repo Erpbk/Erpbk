@@ -52,7 +52,7 @@ class FilesController extends AppBaseController
 
       $extension = $input['file_name']->extension();
       $name = $input['type'] . '-' . $input['type_id'] . '-' . time() . '.' . $extension;
-      $input['file_name']->storeAs('rider/' . $input['type_id'] . '/', $name);
+      $input['file_name']->storeAs($input['type'] . '/' . $input['type_id'] . '/', $name);
 
       $input['file_name'] = $name;
       $input['file_type'] = $extension;
@@ -126,8 +126,8 @@ class FilesController extends AppBaseController
   public function destroy($id)
   {
     $files = $this->filesRepository->find($id);
-    if (file_exists(storage_path('app/rider/' . $files->type_id . '/' . $files->file_name))) {
-      unlink(storage_path('app/rider/' . $files->type_id . '/' . $files->file_name));
+    if (file_exists(storage_path('app/' . $files->type . '/' . $files->type_id . '/' . $files->file_name))) {
+      unlink(storage_path('app/' . $files->type . '/' . $files->type_id . '/' . $files->file_name));
 
     }
 
@@ -143,4 +143,4 @@ class FilesController extends AppBaseController
 
     return redirect(route('files.index'));
   }
-} 
+}
