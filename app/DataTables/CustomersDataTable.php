@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use App\Helpers\Accounts;
 use App\Models\Customers;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
@@ -33,7 +34,9 @@ class CustomersDataTable extends DataTable
         }
       })
       ->toJson();
-
+    $dataTable->addColumn('balance', function (Customers $customers) {
+      return Accounts::getBalance($customers->account_id);
+    });
     $dataTable->rawColumns(['action', 'name', 'status']);
     return $dataTable;
   }
@@ -88,6 +91,7 @@ class CustomersDataTable extends DataTable
     return [
       'name',
       'contact_number',
+      'balance',
       'status'
     ];
   }
