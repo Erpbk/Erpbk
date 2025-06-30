@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Transaction;
 use App\Models\LedgerEntry;
 use App\Models\Transactions;
 use Carbon\Carbon;
@@ -11,8 +10,6 @@ class TransactionService
 {
   public function recordTransaction($data)
   {
-    //$entry_id = \Str::uuid();
-    //  transaction structure
     $transactionData = [
       'account_id' => $data['account_id'],
       'reference_id' => $data['reference_id'],
@@ -22,28 +19,36 @@ class TransactionService
       'narration' => $data['narration'],
       'debit' => $data['debit'] ?? 0,
       'credit' => $data['credit'] ?? 0,
-      'billing_month' => $data['billing_month'] ?? now(),
+      'billing_month' => Carbon::parse($data['billing_month'] ?? now())->startOfMonth(),
     ];
 
     // Save transaction
     $transaction = Transactions::create($transactionData);
 
     // Update ledger balances
-    $this->updateLedger($transaction->account_id, $transaction->debit, $transaction->credit, $transaction->billing_month);
+    $this->updateLedger(
+      $transaction->account_id,
+      $transaction->debit,
+      $transaction->credit,
+      $transaction->billing_month
+    );
 
     return $transaction;
   }
 
   protected function updateLedger($accountId, $debit, $credit, $billing_month)
   {
-    //$billing_month = Carbon::today();
+    $billing_month = Carbon::parse($billing_month)->startOfMonth();
+
+    // Find or create this month's ledger
     $ledger = LedgerEntry::where('account_id', $accountId)
       ->where('billing_month', $billing_month)
       ->first();
 
     if (!$ledger) {
-      // Create a new ledger entry for billing_month
+      // Get previous month's closing
       $lastLedger = LedgerEntry::where('account_id', $accountId)
+        ->where('billing_month', '<', $billing_month)
         ->orderBy('billing_month', 'desc')
         ->first();
 
@@ -52,51 +57,70 @@ class TransactionService
       $ledger = LedgerEntry::create([
         'account_id' => $accountId,
         'billing_month' => $billing_month,
-        'debit_balance' => 0,
-        'credit_balance' => 0,
+        'debit_balance' => $debit,
+        'credit_balance' => $credit,
         'opening_balance' => $openingBalance,
-        'closing_balance' => $openingBalance,
+        'closing_balance' => $openingBalance + $debit - $credit,
       ]);
+    } else {
+      // Update debit/credit
+      $ledger->debit_balance += $debit;
+      $ledger->credit_balance += $credit;
+      // DO NOT recalculate opening balance — just update closing
+      $ledger->closing_balance = $ledger->opening_balance + $ledger->debit_balance - $ledger->credit_balance;
+      $ledger->save();
     }
 
-    // Update ledger balances
-    $ledger->debit_balance += $debit;
-    $ledger->credit_balance += $credit;
-    $ledger->closing_balance = $ledger->opening_balance + $ledger->debit_balance - $ledger->credit_balance;
-
-    $ledger->save();
+    // Recalculate all future ledgers from this point
+    $this->recalculateFromMonth($accountId, $billing_month);
   }
+
+
+  protected function recalculateFromMonth($accountId, $fromMonth)
+  {
+    $ledgers = LedgerEntry::where('account_id', $accountId)
+      ->where('billing_month', '>=', $fromMonth)
+      ->orderBy('billing_month')
+      ->get();
+
+    $prevClosing = 0;
+
+    foreach ($ledgers as $ledger) {
+      // Set opening from previous month’s closing
+      $ledger->opening_balance = $prevClosing;
+      $ledger->closing_balance = $ledger->opening_balance + $ledger->debit_balance - $ledger->credit_balance;
+      $ledger->save();
+
+      $prevClosing = $ledger->closing_balance;
+    }
+  }
+
 
   public function deleteTransaction($transactionId)
   {
-    // Find the transaction by ID
     $transactions = Transactions::where('trans_code', $transactionId)->get();
+
     foreach ($transactions as $transaction) {
       if ($transaction) {
-        // Get the related ledger entry
         $ledger = LedgerEntry::where('account_id', $transaction->account_id)
           ->where('billing_month', $transaction->billing_month)
           ->first();
 
         if ($ledger) {
-          // Reverse the effect of the transaction on the ledger
+          // Reverse the transaction
           $ledger->debit_balance -= $transaction->debit;
           $ledger->credit_balance -= $transaction->credit;
           $ledger->closing_balance = $ledger->opening_balance + $ledger->debit_balance - $ledger->credit_balance;
-
-          // Save the updated ledger
           $ledger->save();
 
           // Delete the transaction
           $transaction->delete();
+
+          // Update future ledgers
+          $this->recalculateFromMonth($ledger->account_id, $ledger->billing_month);
+
         }
       }
     }
-
-
   }
 }
-
-
-
-?>

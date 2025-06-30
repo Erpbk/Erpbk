@@ -4,6 +4,7 @@ namespace App\Helpers;
 use App\Models\Banks;
 use App\Models\Customers;
 use App\Models\LeasingCompanies;
+use App\Models\LedgerEntry;
 use App\Models\Riders;
 use App\Models\Services;
 use App\Models\Settings;
@@ -88,6 +89,8 @@ class Accounts
 
     $finalBalance = ($balance->total_debit ?? 0) - ($balance->total_credit ?? 0);
 
+    /* $balance = LedgerEntry::where('account_id', $account_id)->where('billing_month', date('Y-m-01'))->first();
+    $finalBalance = $balance->closing_balance; */
     return number_format($finalBalance, 2);
   }
 
