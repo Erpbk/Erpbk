@@ -64,6 +64,7 @@ class Riders extends Model
     'shift',
     'vat',
     'attendance',
+    'customer_id',
     'attendance_date'
   ];
 
@@ -148,7 +149,8 @@ class Riders extends Model
     'updated_by' => 'nullable',
     'created_at' => 'nullable',
     'updated_at' => 'nullable',
-    'VID' => 'nullable',
+    'VID' => 'required',
+    'customer_id' => 'required',
     'visa_sponsor' => 'nullable|string|max:100',
     'visa_occupation' => 'required|string|max:100',
     'status' => 'nullable',
@@ -196,6 +198,10 @@ class Riders extends Model
   public function vendor()
   {
     return $this->hasOne(Vendors::class, 'id', 'VID');
+  }
+  public function customer()
+  {
+    return $this->hasOne(Customers::class, 'id', 'customer_id');
   }
   function account()
   {
