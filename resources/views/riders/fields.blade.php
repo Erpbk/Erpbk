@@ -159,6 +159,11 @@
                 {!! Form::text('rider_reference', null, ['class' => 'form-control', 'required']) !!}
             </div>
             <div class="form-group col-sm-4">
+              {!! Form::label('customer_id', 'Customer:',['class'=>'required']) !!}
+              {!! Form::select('customer_id',App\Models\Customers::dropdown(),null,
+                  ['class' => 'form-select', 'required']) !!}
+          </div>
+            <div class="form-group col-sm-4">
               {!! Form::label('VID', 'Vendor:',['class'=>'required']) !!}
               {!! Form::select('VID',App\Models\Vendors::dropdown(),null,
                   ['class' => 'form-select', 'required']) !!}

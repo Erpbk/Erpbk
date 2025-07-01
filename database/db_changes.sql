@@ -393,5 +393,10 @@ MODIFY COLUMN `type`  varchar(50) NOT NULL AFTER `id`;
 
 
 update files set type = 'rider' where type = 1;
+----------------
+
+ALTER TABLE `riders`
+ADD COLUMN `customer_id`  int(11) NULL DEFAULT NULL AFTER `attendance_date`;
+
 
 

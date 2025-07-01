@@ -19,11 +19,7 @@
                       <label>Rider Contact</label>
                       <p>{{@$result['personal_contact']}}</p>
                   </div>
-                  <div class="col-md-3 form-group col-3">
-                      <label>Vendor </label>
-                      <p>{{@$rider->vendor->name}}</p>
 
-                  </div>
                   <!--col-->
                   <div class="col-md-3 form-group col-3">
                       <label>Company Contact</label>
@@ -137,9 +133,19 @@
               <p>{{@$result['wps']}}</p>
 
           </div>
-          <div class="col-md-3 form-group col-3">
+          <div class="col-md-6 form-group col-6">
               <label>C3 Card</label>
               <p>{{$result['c3_card']}}</p>
+
+          </div>
+          <div class="col-md-3 form-group col-3">
+                      <label>Vendor </label>
+                      <p>{{@$rider->vendor->name}}</p>
+
+          </div>
+          <div class="col-md-3 form-group col-3">
+              <label>Customer </label>
+              <p>{{@$rider->customer->name}}</p>
 
           </div>
           <div class="col-md-12 form-group col-12">
