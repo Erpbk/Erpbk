@@ -172,7 +172,7 @@
             <label>VAT</label>
             <div class="form-check">
               <input type="hidden" name="vat" value="2"/>
-               <input type="checkbox" name="vat" id="vat" class="form-check-input" value="1" @isset($riders) @if($riders->vat == 1) checked @endif @else checked  @endisset/>
+               <input type="checkbox" name="vat" id="vat" class="form-check-input" value="1" @isset($riders) @if($riders->vat == 1) checked @endif @else   @endisset/>
                <label for="vat" class="pt-0">Apply on Invoice</label>
 
             </div>
