@@ -43,8 +43,14 @@ class RidersDataTable extends DataTable
 
         return $name;
       })
+      ->editColumn('designation', function (Riders $rider) {
+        return $rider->designation ?? '-';
+      })
       ->editColumn('bike', function (Riders $rider) {
         return $rider->bikes->plate ?? '-';
+      })
+      ->editColumn('customer_id', function (Riders $rider) {
+        return $rider->customer->name ?? '-';
       })
       ->editColumn('orders_sum', function ($rider) {
         return $rider->orders_sum ?? '-';
@@ -110,6 +116,11 @@ class RidersDataTable extends DataTable
       ->filterColumn('emirate_hub', function ($query, $keyword) {
         $query->where('emirate_hub', 'LIKE', "%{$keyword}%");
       })
+      ->filterColumn('customer_id', function ($query, $keyword) {
+        $query->whereHas('customer', function ($q) use ($keyword) {
+          $q->where('name', 'like', "%{$keyword}%");
+        });
+      })
 
       ->rawColumns(['name', 'status', 'action', 'company_contact', 'attendance']);
 
@@ -136,6 +147,8 @@ class RidersDataTable extends DataTable
         'riders.emirate_hub',
         'riders.status',
         'riders.shift',
+        'riders.designation',
+        'riders.customer_id',
         'riders.attendance',
         \DB::raw('SUM(rider_activities.delivered_orders) as orders_sum'),
         \DB::raw('COUNT(rider_activities.date) as days')
@@ -152,6 +165,8 @@ class RidersDataTable extends DataTable
       'riders.emirate_hub',
       'riders.status',
       'riders.shift',
+      'riders.designation',
+      'riders.customer_id',
       'riders.attendance'
     ]);
     return $query;
@@ -226,7 +241,19 @@ class RidersDataTable extends DataTable
       ],
       [
         'data' => 'emirate_hub',
-        'title' => 'Emirate Hub',
+        'title' => 'Hub',
+        'searchable' => true,
+        'orderable' => true
+      ],
+      [
+        'data' => 'customer_id',
+        'title' => 'Customer',
+        'searchable' => true,
+        'orderable' => true
+      ],
+      [
+        'data' => 'designation',
+        'title' => 'Desig',
         'searchable' => true,
         'orderable' => true
       ],
