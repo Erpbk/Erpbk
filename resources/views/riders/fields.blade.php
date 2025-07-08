@@ -393,7 +393,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <label>Price</label>
-                                <input type="number" class="form-control" step="any" value="@if(isset($rowItem)){{(int)$rowItem->price}}@endif" name="items[price][]" placeholder="Items Price"/>
+                                <input type="number" class="form-control" step="any" value="@if(isset($rowItem)){{$rowItem->price}}@endif" name="items[price][]" placeholder="Items Price"/>
                             </div>
                             <div class="col-sm-2">
                                 <label></label>
