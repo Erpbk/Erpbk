@@ -62,6 +62,8 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::get('customer/files/{id}', [\App\Http\Controllers\CustomersController::class, 'files'])->name('customer.files');
 
 
+  Route::resource('rtaFines', App\Http\Controllers\RtaFinesController::class);
+
   Route::resource('sims', App\Http\Controllers\SimsController::class);
   /* Rider section starts from here */
 
@@ -271,6 +273,8 @@ Route::middleware('auth')->group(function () {
   Route::put('/upload_files/{id}', [UploadFilesController::class, 'update'])->name('upload_files.update');
   Route::delete('/upload_files/{id}', [UploadFilesController::class, 'destroy'])->name('upload_files.destroy');
 });
+
+
 
 
 

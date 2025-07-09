@@ -80,6 +80,18 @@ class Bikes extends Model
   {
     return self::select('id', 'plate')->pluck('plate', 'id')->prepend('Select', '');
   }
+  public static function riderBikes()
+  {
+    //return self::select('id', \DB::raw("CONCAT(plate, '-', company) as plate_name"))->whereNotNull('rider_id')->pluck('plate_name', 'id')->prepend('Select', '');
+    return self::with('leasingCompany')
+      ->whereNotNull('rider_id')
+      ->get(['id', 'plate', 'company']) // You must fetch the foreign key too
+      ->mapWithKeys(function ($item) {
+        return [$item->id => $item->plate . ' - ' . ($item->leasingCompany->name ?? 'N/A')];
+      })
+      ->prepend('Select', '');
+
+  }
   public function rider()
   {
     return $this->belongsTo(Riders::class, 'rider_id', 'id');

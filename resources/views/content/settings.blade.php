@@ -61,6 +61,14 @@
                   </div>
                 </div>
 
+                <div class="col-md-4 mb-3">
+                  <label class="">RTA Admin Fee</label>
+                  <div class="input-group ">
+                  <input type="number" step="any" name="settings[rta_admin_fee]" class="form-control" value="{{$settings['rta_admin_fee']??''}}" />
+                  <div class="input-group-text">AED</div>
+                  </div>
+                </div>
+
             </div>
             <div class="card-footer" >
               <button type="submit" class="btn btn-primary" style="float:right;">Save Settings</button>
