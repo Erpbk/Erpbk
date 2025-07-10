@@ -31,6 +31,9 @@ class RtaFinesController extends AppBaseController
    */
   public function index(RtaFinesDataTable $rtaFinesDataTable)
   {
+    if (!auth()->user()->hasPermissionTo('rtafine_view')) {
+      abort(403, 'Unauthorized action.');
+    }
     return $rtaFinesDataTable->render('rta_fines.index');
   }
 

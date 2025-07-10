@@ -29,6 +29,7 @@ class FilesController extends AppBaseController
     if (!request('type')) {
       abort(404);
     }
+
     return $filesDataTable->with(['type' => request('type') ?? 1, 'type_id' => request('type_id') ?? 1,])->render('files.index');
   }
 

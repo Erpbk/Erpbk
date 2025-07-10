@@ -398,5 +398,11 @@ update files set type = 'rider' where type = 1;
 ALTER TABLE `riders`
 ADD COLUMN `customer_id`  int(11) NULL DEFAULT NULL AFTER `attendance_date`;
 
+-------------
+
+INSERT INTO `permissions` (`parent_id`, `name`, `guard_name`) VALUES ('77', 'customer_document', 'web');
+INSERT INTO `permissions` (`parent_id`, `name`, `guard_name`) VALUES ('82', 'rider_document', 'web');
+INSERT INTO `permissions` (`parent_id`, `name`, `guard_name`) VALUES ('87', 'bank_document', 'web');
+INSERT INTO `permissions` (`parent_id`, `name`, `guard_name`) VALUES ('107', 'bike_document', 'web');
 
 
