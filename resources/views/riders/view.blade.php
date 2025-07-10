@@ -166,7 +166,7 @@ data-title="{{$result['name'] . ' (' . $result['rider_id'] }}')" class="btn btn-
         <li class="nav-item"><a class="nav-link @if(is_numeric(request()->segment(2)) ||request()->segment(2)=='create' ) active @endif" href="@isset($result['id']){{route('riders.show',$result['id'])}}@else#@endif"><i class="ti ti-user-check ti-sm me-1_5"></i>Account</a></li>
         @isset($result)
         <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='timeline') active @endif" href="{{route('rider.timeline',$result['id'])}}"><i class="ti ti-timeline ti-sm me-1_5"></i>Timeline</a></li>
-@can('files_view')
+@can('rider_document')
         <li class="nav-item"><a class="nav-link @if(request()->segment(2) =='files') active @endif" href="{{route('rider.files',$result['id'])}}"><i class="ti ti-file-upload ti-sm me-1_5"></i>Files</a></li>
 @endcan
         @can('riderinvoice_view')
