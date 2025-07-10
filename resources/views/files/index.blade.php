@@ -2,24 +2,21 @@
 
 @section('title','Files')
 @section('content')
+
+@php
+    $authorized = false;
+    if(request('type') == 'bike' && auth()->user()->can('bike_document')){
+      $authorized = true;
+    }
+
+@endphp
+@if($authorized)
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                  @php
-                  $type_name = '';
-                    if(request('type') == 1){
-                      $type_name = App\Models\Riders::find(request('type'))?->value('name')??'';
-                    }
-                    if(request('type') == 2){
-                      $type_name = App\Models\Bikes::find(request('type'))?->value('plate')??'';
-                    }
-                    if(request('type') == 3){
-                      $type_name = App\Models\Supplier::find(request('type'))?->value('supplier_id')??'';
-                    }
 
-                  @endphp
-                    <h3>{{$type_name}} Files</h3>
+                    <h3>Files</h3>
                 </div>
                 <div class="col-sm-6">
                   <a class="btn btn-default action-btn mx-2"
@@ -46,5 +43,7 @@
             @include('files.table')
         </div>
     </div>
-
+@else
+<div class="alert alert-warning  text-center m-3"><i class="fa fa-warning"></i> You don't have permission. &nbsp;<a href="{{url()->previous() }}"> Go Back</a></div>
+@endif
 @endsection

@@ -5,7 +5,9 @@
     <section class="content">
         <div class="container-fluid mt-3"> --}}
 
+
           <div class=" card-action mb-0">
+            @can('customer_document')
             <div class="card-header align-items-center">
               <h5 class="card-action-title mb-0"><i class="ti ti-file-upload ti-lg text-body me-2"></i>Files</h5>
               <a class="btn btn-primary show-modal action-btn"
@@ -27,6 +29,10 @@
               {!! $dataTable->scripts() !!}
           @endpush
             </div>
+
+             @else
+            <div class="alert alert-warning  text-center m-3"><i class="fa fa-warning"></i> You don't have permission.</div>
+            @endcan
           </div>
 
 

@@ -15,11 +15,12 @@
   <a href="{{ route('bikeHistories.index', ['bike_id'=>$id]) }}" class='dropdown-item waves-effect'>
     <i class="fa fa-list-check"></i>History
   </a>
-
-  <a  href="javascript:void(0);" data-size="sm" data-title="Upload file for Bike # {{$plate}}" data-action="{{ route('files.create',['type_id'=>$id,'type'=>2]) }}" class='dropdown-item waves-effect btn-sm show-modal'>
+@can('bike_document')
+  <a  href="javascript:void(0);" data-size="sm" data-title="Upload file for Bike # {{$plate}}" data-action="{{ route('files.create',['type_id'=>$id,'type'=>'bike']) }}" class='dropdown-item waves-effect btn-sm show-modal'>
     <i class="fa fa-file-upload"></i>Upload File
 </a>
-<a href="{{ route('files.index',['type_id'=>$id,'type'=>2]) }}" class='dropdown-item waves-effect'>
+@endcan
+<a href="{{ route('files.index',['type_id'=>$id,'type'=>'bike']) }}" class='dropdown-item waves-effect'>
   <i class="fa fa-file-lines"></i>Files
 </a>
     @can('item_edit')

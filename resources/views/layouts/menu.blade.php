@@ -102,12 +102,14 @@
   </a>
 </li>
 @endcan
+@can('rtafine_view')
 <li class="menu-item {{ Request::is('rtaFines*') ? 'active' : '' }}">
   <a href="{{ route('rtaFines.index') }}" class="menu-link">
       <i class="menu-icon tf-icons ti ti-file-alert"></i>
       <div>Fines</div>
   </a>
 </li>
+@endcan
 
 
 <li class="menu-item ">
