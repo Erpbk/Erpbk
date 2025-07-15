@@ -6,7 +6,7 @@
         <div class="container-fluid">
           <h5>Fleet Supervisors</h5>
           <div class="d-flex flex-row">
-
+           
             @foreach($fleets as $fleet)
             <div class="mb-2">
               @php
