@@ -3,32 +3,21 @@ $('body').on('click', '.show-modal', function () {
   var title = $(this).data('title');
   var size = $(this).data('size');
   var table = $(this).data('table');
-
+  // Reset modal size classes
+  $('.modal-dialog').removeClass('modal-sm modal-md modal-lg modal-xl');
   if (size) {
     $('.modal-dialog').addClass('modal-' + size);
   }
-
+  $('#modalTopTitle').text(title);
   $('#modalTopbody').load(action, function () {
     unblock();
   });
+
   if (table) {
     $('#dataTableBuilder').DataTable().ajax.reload(null, false);
   }
-  $('#modalTopTitle').text(title);
 
   $('#modalTop').modal('show');
-  block();
-});
-
-$('body').on('click', '.show-offcanvas', function () {
-  var action = $(this).data('action');
-  var title = $(this).data('title');
-  $('.offcanvas-body').load(action, function () {
-    unblock();
-  });
-  $('.offcanvas-title').text(title);
-
-  $('#offcanvasBoth').offcanvas('show');
   block();
 });
 

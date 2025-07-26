@@ -1,86 +1,110 @@
 @extends('layouts.app')
-@section('title','Items')
+
+@section('title','RTA Fines')
 @section('content')
-<div style="display: none;" class="loading-overlay" id="loading-overlay"><div class="spinner-border text-primary" role="status"></div></div>
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h3>Items</h3>
+                    <h3>Rta Accounts</h3>
                 </div>
                 <div class="col-sm-6">
-                    @can('item_create')
                     <a class="btn btn-primary action-btn show-modal"
-                    href="javascript:void(0);" data-size="md" data-title="New Item" data-action="{{ route('items.create') }}">
-                        Add New
+                       href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#createaccount">
+                        Add New Accounts
                     </a>
-                    @endcan
+                    <div class="modal modal-default filtetmodal fade" id="createaccount" tabindex="-1" data-bs-backdrop="static"role="dialog" aria-hidden="true">
+                       <div class="modal-dialog modal-lg modal-slide-top modal-full-top">
+                          <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add New Account</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                             <div class="modal-body" id="searchTopbody">
+                                <form action="{{ route('rtaFines.accountcreate') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label for="name">Name</label>
+                                            <input type="text" name="name" class="form-control" placeholder="Enter Your Account Name" required>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="account_tax">Account Tax</label>
+                                            <input type="number" name="account_tax" class="form-control" placeholder="Enter Your Account Tax" required>
+                                        </div>
+                                        <div class="col-md-12 form-group text-center">
+                                            <button type="submit" class="btn btn-primary pull-right mt-3"><i class="fa fa-filter mx-2"></i> Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
                     <div class="modal modal-default filtetmodal fade" id="searchModal" tabindex="-1" data-bs-backdrop="static"role="dialog" aria-hidden="true">
                        <div class="modal-dialog modal-lg modal-slide-top modal-full-top">
                           <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" >Filter Items</h5>
+                                    <h5 class="modal-title">Filter Fines</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                              <div class="modal-body" id="searchTopbody">
-                                <form id="filterForm" action="{{ route('items.index') }}" method="GET">
+                                <form id="filterForm" action="{{ route('rtaFines.index') }}" method="GET">
                                     <div class="row">
                                         <div class="form-group col-md-4">
-                                            <label for="name">Item Name</label>
-                                            <input type="text" name="name" class="form-control" placeholder="Filter By Item Name" value="{{ request('name') }}">
+                                            <label for="ticket_no">Ticket Number</label>
+                                            <input type="number" name="ticket_no" class="form-control" placeholder="Filter By Ticket Number" value="{{ request('ticket_no') }}">
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label for="code">Code</label>
-                                            <input type="text" name="code" class="form-control" placeholder="Filter By Code" value="{{ request('code') }}">
+                                            <label for="trans_code">Transcation Code</label>
+                                            <input type="text" name="trans_code" class="form-control" placeholder="Filter By Transcation Code" value="{{ request('trans_code') }}">
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label for="customer_id">Filter by Customer</label>
-                                            <select class="form-control " id="customer_id" name="customer_id">
+                                            <label for="trip_date_from">Trip Date From</label>
+                                            <input type="date" name="trip_date_from" class="form-control" placeholder="Filter By Trip Date From" value="{{ request('trip_date_from') }}">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="trip_date_to">Trip Date To</label>
+                                            <input type="date" name="trip_date_to" class="form-control" placeholder="Filter By Trip Date To" value="{{ request('trip_date_to') }}">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="rider_id">Filter by Rider</label>
+                                            <select class="form-control " id="rider_id" name="rider_id">
                                                 @php
-                                                $customerIds = DB::table('items')
-                                                    ->whereNotNull('customer_id')
-                                                    ->where('customer_id', '!=', '')
-                                                    ->pluck('customer_id')
+                                                $riderid = DB::table('rta_fines')
+                                                    ->whereNotNull('rider_id')
+                                                    ->where('rider_id', '!=', '')
+                                                    ->pluck('rider_id')
                                                     ->unique();
-
-                                                $customers = DB::table('customers')
-                                                    ->whereIn('id', $customerIds)
+                                                $riders = DB::table('riders')
+                                                    ->whereIn('id', $riderid)
                                                     ->select('id', 'name')
                                                     ->get();
                                                 @endphp
                                                 <option value="" selected>Select</option>
-                                                @foreach($customers as $customer)
-                                                    <option value="{{ $customer->id }}" {{ request('customer_id') == $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
+                                                @foreach($riders as $rider)
+                                                    <option value="{{ $rider->id }}" {{ request('rider_id') == $rider->id ? 'selected' : '' }}>{{ $rider->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label for="supplier_id">Filter by Supplier</label>
-                                            <select class="form-control " id="supplier_id" name="supplier_id">
+                                            <label for="bike_id">Filter by Bike</label>
+                                            <select class="form-control " id="bike_id" name="bike_id">
                                                 @php
-                                                $supplierid = DB::table('items')
-                                                    ->whereNotNull('supplier_id')
-                                                    ->where('supplier_id', '!=', '')
-                                                    ->pluck('supplier_id')
+                                                $bikeid = DB::table('rta_fines')
+                                                    ->whereNotNull('bike_id')
+                                                    ->where('bike_id', '!=', '')
+                                                    ->pluck('bike_id')
                                                     ->unique();
-
-                                                $suppliers = DB::table('suppliers')
-                                                    ->whereIn('id', $supplierid)
-                                                    ->select('id', 'name')
+                                                $bikes = DB::table('bikes')
+                                                    ->whereIn('id', $bikeid)
+                                                    ->select('id', 'plate')
                                                     ->get();
                                                 @endphp
                                                 <option value="" selected>Select</option>
-                                                @foreach($suppliers as $supplier)
-                                                    <option value="{{ $supplier->id }}" {{ request('supplier_id') == $supplier->id ? 'selected' : '' }}>{{ $supplier->name }}</option>
+                                                @foreach($bikes as $bike)
+                                                    <option value="{{ $bike->id }}" {{ request('bike_id') == $bike->id ? 'selected' : '' }}>{{ $bike->plate }}</option>
                                                 @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="status">Filter by Status</label>
-                                            <select class="form-control " id="status" name="status">
-                                                <option value="" selected>Select</option>
-                                                <option value="1"  {{ request('status') == 1 ? 'selected' : '' }}>Active</option>
-                                                <option value="3" {{ request('status') == 3 ? 'selected' : '' }}>In Active</option>
                                             </select>
                                         </div>
                                         <div class="col-md-12 form-group text-center">
@@ -96,18 +120,20 @@
             </div>
         </div>
     </section>
+
     <div class="content px-3">
         @include('flash::message')
         <div class="clearfix"></div>
+
         <div class="card">
             <div class="card-body table-responsive px-2 py-0"  id="table-data">
-                @include('items.table', ['data' => $data])
+                @include('rta_fines.account_table', ['data' => $data])
             </div>
         </div>
     </div>
-
 @endsection
 @section('page-script')
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
 function confirmDelete(url) {
@@ -126,17 +152,17 @@ function confirmDelete(url) {
     })
 }
 $(document).ready(function () {
-    $('#customer_id').select2({
+    $('#parent_id').select2({
         dropdownParent: $('#searchTopbody'),
-        placeholder: "Filter By Customer",
+        placeholder: "Add Parent Account",
     });
-    $('#supplier_id').select2({
+    $('#rider_id').select2({
         dropdownParent: $('#searchTopbody'),
-        placeholder: "Filter By Supplier",
+        placeholder: "Filter By Rider",
     });
-    $('#status').select2({
+    $('#bike_id').select2({
         dropdownParent: $('#searchTopbody'),
-        placeholder: "Filter By status",
+        placeholder: "Filter By Bike Plate",
     });
 });
 </script>
@@ -156,14 +182,14 @@ $(document).ready(function () {
         let formData = $.param(filteredFields);
 
         $.ajax({
-            url: "{{ route('items.index') }}",
+            url: "{{ route('rtaFines.index') }}",
             type: "GET",
             data: formData,
             success: function (data) {
                 $('#table-data').html(data.tableData);
 
                 // Update URL
-                let newUrl = "{{ route('items.index') }}" + (formData ? '?' + formData : '');
+                let newUrl = "{{ route('rtaFines.index') }}" + (formData ? '?' + formData : '');
                 history.pushState(null, '', newUrl);
 
                 

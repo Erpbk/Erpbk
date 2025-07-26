@@ -23,6 +23,7 @@
   <div style="text-align:center;"><label>File Preview:</label><br></div>
   @php
     $fileUrl = asset('storage/' . $file->path);
+    dd($fileUrl);
     $extension = strtolower(pathinfo($file->path, PATHINFO_EXTENSION));
 @endphp
 

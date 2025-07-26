@@ -53,9 +53,6 @@ class Common
   {
     $html = '';
     $select = '';
-    //$items = Accounts::all(['id', 'name', 'account_parent_id'])->groupBy('account_parent_id');
-
-    // Get categories grouped by parent_id
     if (isset($items[$parentId])) {
       foreach ($items[$parentId] as $item) {
         if ($selected) {

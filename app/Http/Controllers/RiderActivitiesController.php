@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateRiderActivitiesRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Imports\ImportRiderActivities;
 use App\Repositories\RiderActivitiesRepository;
+use App\Models\RiderActivities;
 use Illuminate\Http\Request;
 use Flash;
 use Maatwebsite\Excel\Facades\Excel;
@@ -25,9 +26,45 @@ class RiderActivitiesController extends AppBaseController
   /**
    * Display a listing of the RiderActivities.
    */
-  public function index(RiderActivitiesDataTable $riderActivitiesDataTable)
+  public function index(Request $request)
   {
-    return $riderActivitiesDataTable->render('rider_activities.index');
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = RiderActivities::query()
+        ->orderBy('id', 'desc');
+    if ($request->has('id') && !empty($request->id)) {
+        $query->where('d_rider_id', 'like', '%' . $request->id . '%');
+    }
+    if ($request->has('rider_id') && !empty($request->rider_id)) {
+        $query->where('rider_id', 'like', '%' . $request->rider_id . '%');
+    }
+    if ($request->has('billing_month_from') && !empty($request->billing_month_from)) {
+        $fromDate = \Carbon\Carbon::parse($request->billing_month_from)->startOfMonth();
+        $query->where('date', '>=', $fromDate);
+    }
+
+    if ($request->has('billing_month_to') && !empty($request->billing_month_to)) {
+        $toDate = \Carbon\Carbon::parse($request->billing_month_to)->endOfMonth();
+        $query->where('date', '<=', $toDate);
+    }
+    if ($request->has('payout_type') && !empty($request->payout_type)) {
+        $query->where('payout_type',$request->payout_type);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('rider_activities.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('rider_activities.index', [
+        'data' => $data,
+    ]);
   }
 
 

@@ -7,6 +7,7 @@ use App\Http\Requests\CreateGaragesRequest;
 use App\Http\Requests\UpdateGaragesRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Repositories\GaragesRepository;
+use App\Models\Garages;
 use Illuminate\Http\Request;
 use Flash;
 
@@ -23,13 +24,40 @@ class GaragesController extends AppBaseController
   /**
    * Display a listing of the Garages.
    */
-  public function index(GaragesDataTable $garagesDataTable)
+  public function index(Request $request)
   {
 
     if (!auth()->user()->hasPermissionTo('garage_view')) {
       abort(403, 'Unauthorized action.');
     }
-    return $garagesDataTable->render('garages.index');
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = Garages::query()
+        ->orderBy('id', 'desc');
+    if ($request->has('name') && !empty($request->name)) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+    if ($request->has('contact_person') && !empty($request->contact_person)) {
+        $query->where('contact_person',$request->contact_person);
+    }
+    if ($request->has('status') && !empty($request->status)) {
+        $query->where('status',$request->status);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('garages.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('garages.index', [
+        'data' => $data,
+    ]);
   }
 
 

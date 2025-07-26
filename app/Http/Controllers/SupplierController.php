@@ -20,9 +20,36 @@ use Flash;
 
 class SupplierController extends AppBaseController
 {
-  public function index(SuppliersDataTable $dataTable)
+  public function index(Request $request)
   {
-    return $dataTable->render('suppliers.index');
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = Supplier::query()
+        ->orderBy('id', 'asc');
+    if ($request->has('name') && !empty($request->name)) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+    if ($request->has('company_name') && !empty($request->company_name)) {
+        $query->where('company_name',$request->company_name);
+    }
+    if ($request->has('status') && !empty($request->status)) {
+        $query->where('status',$request->status);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('suppliers.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('suppliers.index', [
+        'data' => $data,
+    ]);
   }
 
   public function files($supplier_id, FilesDataTable $filesDataTable)

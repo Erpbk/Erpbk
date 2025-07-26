@@ -55,16 +55,30 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::any('bikes/assign_rider/{id?}', [BikesController::class, 'assign_rider'])->name('bikes.assign_rider');
   Route::get('bikes/contract/{id?}', [\App\Http\Controllers\BikesController::class, 'contract'])->name('bike.contract');
   Route::any('bikes/contract_upload/{id?}', [\App\Http\Controllers\BikesController::class, 'contract_upload'])->name('bike_contract_upload');
+  Route::get('bikes/delete/{id}', [\App\Http\Controllers\BikesController::class, 'destroy'])->name('bikes.delete');
 
 
   Route::resource('customers', App\Http\Controllers\CustomersController::class);
   Route::get('customer/ledger/{id}', [\App\Http\Controllers\CustomersController::class, 'ledger'])->name('customer.ledger');
   Route::get('customer/files/{id}', [\App\Http\Controllers\CustomersController::class, 'files'])->name('customer.files');
+  Route::get('customers/delete/{id}', [\App\Http\Controllers\CustomersController::class, 'destroy'])->name('customers.delete');
 
 
   Route::resource('rtaFines', App\Http\Controllers\RtaFinesController::class);
+  Route::get('rtaFines/create/{id}', [\App\Http\Controllers\RtaFinesController::class, 'create'])->name('rtaFines.create');
+  Route::any('rtaFines/attach_file/{id}', [\App\Http\Controllers\RtaFinesController::class, 'fileUpload'])->name('rtaFines.fileupload');
+  Route::get('rtaFines/delete/{id}', [\App\Http\Controllers\RtaFinesController::class, 'destroy'])->name('rtaFines.delete');
+
+    Route::post('accountcreate', [\App\Http\Controllers\RtaFinesController::class, 'accountcreate'])->name('rtaFines.accountcreate');
+    Route::post('editaccount', [\App\Http\Controllers\RtaFinesController::class, 'editaccount'])->name('rtaFines.editaccount');
+  Route::get('rtaFines/deleteaccount/{id}', [\App\Http\Controllers\RtaFinesController::class, 'deleteaccount'])->name('rtaFines.deleteaccount');
+  Route::get('rtaFines/tickets/{id}', [\App\Http\Controllers\RtaFinesController::class, 'tickets'])->name('rtaFines.tickets');
+  Route::get('rtaFines/payfine/{id}', [\App\Http\Controllers\RtaFinesController::class, 'payfine'])->name('rtaFines.payfine');
+  Route::get('rtaFines/viewvoucher/{id}', [\App\Http\Controllers\RtaFinesController::class, 'viewvoucher'])->name('rtaFines.viewvoucher');
+  Route::get('rtaFines/getrider/{id}',[\App\Http\Controllers\RtaFinesController::class, 'getrider']);
 
   Route::resource('sims', App\Http\Controllers\SimsController::class);
+  Route::get('sims/delete/{id}', [\App\Http\Controllers\SimsController::class, 'destroy'])->name('sims.delete');
   /* Rider section starts from here */
 
   Route::resource('riders', App\Http\Controllers\RidersController::class);
@@ -75,6 +89,7 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::any('riders/picture_upload/{id?}', [\App\Http\Controllers\RidersController::class, 'picture_upload'])->name('rider_picture_upload');
   Route::any('riders/rider-document/{id}', [\App\Http\Controllers\RidersController::class, 'document'])->name('rider.document');
   Route::get('rider/updateRider', [\App\Http\Controllers\RidersController::class, 'updateRider'])->name('rider.updateRider');
+  Route::get('rider/delete/{id}', [\App\Http\Controllers\RidersController::class, 'destroy'])->name('rider.delete');
   Route::get('riders/ledger/{id}', [\App\Http\Controllers\RidersController::class, 'ledger'])->name('rider.ledger');
   Route::get('riders/attendance/{id}', [\App\Http\Controllers\RidersController::class, 'attendance'])->name('rider.attendance');
   Route::get('riders/activities/{id}', [\App\Http\Controllers\RidersController::class, 'activities'])->name('rider.activities');
@@ -95,6 +110,7 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::resource('riderInvoices', App\Http\Controllers\RiderInvoicesController::class);
   Route::any('rider/invoice-import', [\App\Http\Controllers\RiderInvoicesController::class, 'import'])->name('rider.invoice_import');
   Route::get('search_item_price/{RID}/{itemID}', [\App\Http\Controllers\ItemsController::class, 'search_item_price']);
+  Route::get('riderInvoices/delete/{id}', [\App\Http\Controllers\VendorsController::class, 'destroy'])->name('riderInvoices.delete');
 
   Route::resource('riderAttendances', App\Http\Controllers\RiderAttendanceController::class);
   Route::any('rider/attendance-import', [\App\Http\Controllers\RiderAttendanceController::class, 'import'])->name('rider.attendance_import');
@@ -108,24 +124,30 @@ Route::middleware(['auth', 'web'])->group(function () {
   Route::resource('riderActivities', App\Http\Controllers\RiderActivitiesController::class);
 
   Route::resource('supplier_invoices', SupplierInvoicesController::class);
+  Route::get('supplierInvoices/delete/{id}', [\App\Http\Controllers\SupplierInvoicesController::class, 'destroy'])->name('supplierInvoices.delete');
 
   Route::get('/item/{id}/price', [ItemsController::class, 'getPrice'])->name('item.price');
 
   Route::get('/get-item-price/{id}', [ItemsController::class, 'getItemPrice'])->name('item.getPrice');
+  Route::get('items/delete/{id}', [\App\Http\Controllers\ItemsController::class, 'destroy'])->name('items.delete');
 
   Route::resource('files', FilesController::class);
   Route::resource('files', FilesController::class);
 
   Route::resource('vendors', App\Http\Controllers\VendorsController::class);
 
+  Route::get('vendors/delete/{id}', [\App\Http\Controllers\VendorsController::class, 'destroy'])->name('vendors.delete');
 
   Route::resource('bikeHistories', App\Http\Controllers\BikeHistoryController::class);
 
   Route::resource('leasingCompanies', App\Http\Controllers\LeasingCompaniesController::class);
+  Route::get('leasingCompanies/delete/{id}', [\App\Http\Controllers\LeasingCompaniesController::class, 'destroy'])->name('leasingCompanies.delete');
   Route::resource('garages', App\Http\Controllers\GaragesController::class);
+  Route::get('garages/delete/{id}', [\App\Http\Controllers\GaragesController::class, 'destroy'])->name('garages.delete');
   Route::resource('banks', App\Http\Controllers\BanksController::class);
   Route::get('bank/ledger/{id}', [\App\Http\Controllers\BanksController::class, 'ledger'])->name('bank.ledger');
   Route::get('bank/files/{id}', [\App\Http\Controllers\BanksController::class, 'files'])->name('bank.files');
+  Route::get('bank/delete/{id}', [\App\Http\Controllers\BanksController::class, 'destroy'])->name('bank.delete');
 
 
   Route::resource('vouchers', \App\Http\Controllers\VouchersController::class);
@@ -240,6 +262,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/suppliers/ledger/{id}', [SupplierController::class, 'ledger'])->name('suppliers.ledger');
   Route::get('/suppliers/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
   Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+  Route::get('suppliers/delete/{id}', [\App\Http\Controllers\GaragesController::class, 'destroy'])->name('suppliers.delete');
 
   // Suppliers
   Route::resource('suppliers', SupplierController::class);

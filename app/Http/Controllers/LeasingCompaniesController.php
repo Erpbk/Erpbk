@@ -8,6 +8,7 @@ use App\Http\Requests\CreateLeasingCompaniesRequest;
 use App\Http\Requests\UpdateLeasingCompaniesRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Accounts;
+use App\Models\LeasingCompanies;
 use App\Repositories\LeasingCompaniesRepository;
 use Illuminate\Http\Request;
 use Flash;
@@ -25,13 +26,40 @@ class LeasingCompaniesController extends AppBaseController
   /**
    * Display a listing of the LeasingCompanies.
    */
-  public function index(LeasingCompaniesDataTable $leasingCompaniesDataTable)
+  public function index(Request $request)
   {
 
     if (!auth()->user()->hasPermissionTo('leasing_view')) {
       abort(403, 'Unauthorized action.');
     }
-    return $leasingCompaniesDataTable->render('leasing_companies.index');
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = LeasingCompanies::query()
+        ->orderBy('id', 'desc');
+    if ($request->has('name') && !empty($request->name)) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+    if ($request->has('contact_person') && !empty($request->contact_person)) {
+        $query->where('contact_person',$request->contact_person);
+    }
+    if ($request->has('status') && !empty($request->status)) {
+        $query->where('status',$request->status);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('leasing_companies.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('leasing_companies.index', [
+        'data' => $data,
+    ]);
   }
 
 

@@ -38,9 +38,48 @@ class SupplierInvoicesController extends AppBaseController
     /**
      * Display a listing of the SupplierInvoices.
      */
-    public function index(SupplierInvoicesDataTable $supplierInvoicesDataTable)
+    public function index(Request $request)
     {
-        return $supplierInvoicesDataTable->render('supplier_invoices.index');
+        $perPage = request()->input('per_page', 50);
+        $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+        $perPage = $perPage > 0 ? $perPage : 50;
+        $query = SupplierInvoices::query()
+            ->orderBy('id', 'asc');
+        if ($request->has('inv_id') && !empty($request->inv_id)) {
+            $query->where('inv_id', 'like', '%' . $request->inv_id . '%');
+        }
+
+        if ($request->has('supplier_id') && !empty($request->supplier_id)) {
+            $query->where('supplier_id',$request->supplier_id);
+        }
+        if ($request->filled('inv_date_to')) {
+            $fromDate = \Carbon\Carbon::createFromFormat('Y-d-m', $request->inv_date_to);
+            $query->where('inv_date', '>=', $fromDate);
+        }
+
+        if ($request->filled('inv_date_to')) {
+            $toDate = \Carbon\Carbon::createFromFormat('Y-d-m', $request->inv_date_to);
+            $query->where('inv_date', '<=', $toDate);
+        }
+        if ($request->has('billing_month') && !empty($request->billing_month)) {
+        $billingMonth = \Carbon\Carbon::parse($request->billing_month);
+            $query->whereYear('billing_month', $billingMonth->year)
+                  ->whereMonth('billing_month', $billingMonth->month);
+        }
+        $data = $query->paginate($perPage);
+        if ($request->ajax()) {
+            $tableData = view('supplier_invoices.table', [
+                'data' => $data,
+            ])->render();
+            $paginationLinks = $data->links('pagination')->render();
+            return response()->json([
+                'tableData' => $tableData,
+                'paginationLinks' => $paginationLinks,
+            ]);
+        }
+        return view('supplier_invoices.index', [
+            'data' => $data,
+        ]);
     }
 
     /**

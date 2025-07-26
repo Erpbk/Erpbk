@@ -370,16 +370,10 @@ class VouchersController extends Controller
       $photo = $request->attach_file;
       $docFile = $photo->store('public/vouchers');
       $data['attach_file'] = basename($docFile);
-
       $voucher->attach_file = $data['attach_file'];
       $voucher->save();
-
-
     }
-
     return view('vouchers.attach_file', compact('id', 'voucher'));
-
-
   }
 
 

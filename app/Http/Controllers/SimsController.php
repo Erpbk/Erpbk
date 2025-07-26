@@ -7,6 +7,7 @@ use App\Http\Requests\CreateSimsRequest;
 use App\Http\Requests\UpdateSimsRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Repositories\SimsRepository;
+use App\Models\Sims;
 use Illuminate\Http\Request;
 use Flash;
 
@@ -23,13 +24,43 @@ class SimsController extends AppBaseController
   /**
    * Display a listing of the Sims.
    */
-  public function index(SimsDataTable $simsDataTable)
+  public function index(Request $request)
   {
 
     if (!auth()->user()->hasPermissionTo('sim_view')) {
       abort(403, 'Unauthorized action.');
     }
-    return $simsDataTable->render('sims.index');
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = Sims::query()
+        ->orderBy('id', 'asc');
+    if ($request->has('number') && !empty($request->number)) {
+        $query->where('number', 'like', '%' . $request->number . '%');
+    }
+    if ($request->has('emi') && !empty($request->emi)) {
+        $query->where('emi',$request->emi);
+    }
+    if ($request->has('company') && !empty($request->company)) {
+        $query->where('company',$request->company);
+    }
+    if ($request->has('fleet_supervisor') && !empty($request->fleet_supervisor)) {
+        $query->where('fleet_supervisor',$request->fleet_supervisor);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('sims.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('sims.index', [
+        'data' => $data,
+    ]);
   }
 
 

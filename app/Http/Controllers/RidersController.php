@@ -30,6 +30,7 @@ use App\Repositories\RidersRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Flash;
+use DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class RidersController extends AppBaseController
@@ -45,14 +46,54 @@ class RidersController extends AppBaseController
   /**
    * Display a listing of the Riders.
    */
-  public function index(RidersDataTable $ridersDataTable)
+  public function index(Request $request)
   {
-
-    if (!auth()->user()->hasPermissionTo('rider_view')) {
-      abort(403, 'Unauthorized action.');
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = Riders::query()
+        ->orderBy('id', 'desc');
+    if ($request->has('rider_id') && !empty($request->rider_id)) {
+        $query->where('rider_id', 'like', '%' . $request->rider_id . '%');
     }
-    $fleets = Common::Dropdowns('fleet-supervisor');
-    return $ridersDataTable->render('riders.index', compact('fleets'));
+    if ($request->has('name') && !empty($request->name)) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+    if ($request->has('fleet_supervisor') && !empty($request->fleet_supervisor)) {
+        $query->where('fleet_supervisor',$request->fleet_supervisor);
+    }
+    if ($request->has('hub') && !empty($request->hub)) {
+        $query->where('hub',$request->hub);
+    }
+    if ($request->has('customer_id') && !empty($request->customer_id)) {
+        $query->where('customer_id',$request->customer_id);
+    }
+    if ($request->has('bike') && !empty($request->bike)) {
+        $query->where('bike',$request->bike);
+    }
+    if ($request->has('designation') && !empty($request->designation)) {
+        $query->where('designation',$request->designation);
+    }
+    if ($request->has('attendance') && !empty($request->attendance)) {
+        $query->where('attendance',$request->attendance);
+    }
+    if ($request->has('status') && !empty($request->status)) {
+        $query->where('status', $request->status);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('riders.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('riders.index', [
+        'data' => $data,
+    ]);
   }
 
 
@@ -105,7 +146,8 @@ class RidersController extends AppBaseController
       $riders->save();
 
     }
-    return response()->json(['message' => 'Rider created successfully.']);
+    Flash::error('Rider created successfully.');
+    return redirect()->back();
   }
 
   /**
@@ -194,7 +236,7 @@ class RidersController extends AppBaseController
       return redirect(route('riders.index'));
     }
 
-    //$this->ridersRepository->delete($id);
+    $this->ridersRepository->delete($id);
 
     Flash::success('Riders deleted successfully.');
 
@@ -315,7 +357,9 @@ class RidersController extends AppBaseController
       $rider->image_name = $name;
       $rider->save();
 
-      return response()->json(['message' => 'Profile picture uploaded successfully.']); //redirect(url('rider'))->with('success', $rider->name . '( ' . $rider->rider_id . ' ) Profile Picture uploaded.');
+      Flash::success('Profile picture uploaded successfully.');
+      return redirect()->back();
+      // redirect(url('rider'))->with('success', $rider->name . '( ' . $rider->rider_id . ' ) Profile Picture uploaded.');
     }
   }
 
@@ -361,7 +405,6 @@ class RidersController extends AppBaseController
     }
 
   }
-
   public function ledger($rider_id, LedgerDataTable $ledgerDataTable)
   {
     $rider = Riders::find($rider_id);

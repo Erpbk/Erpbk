@@ -33,9 +33,50 @@ class RiderInvoicesController extends AppBaseController
   /**
    * Display a listing of the RiderInvoices.
    */
-  public function index(RiderInvoicesDataTable $riderInvoicesDataTable)
+  public function index(Request $request)
   {
-    return $riderInvoicesDataTable->render('rider_invoices.index');
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = RiderInvoices::query()
+        ->orderBy('id', 'asc');
+    if ($request->has('id') && !empty($request->id)) {
+        $query->where('id', 'like', '%' . $request->id . '%');
+    }
+    if ($request->has('rider_id') && !empty($request->rider_id)) {
+        $query->where('rider_id', 'like', '%' . $request->rider_id . '%');
+    }
+    if ($request->has('billing_month') && !empty($request->billing_month)) {
+        $billingMonth = \Carbon\Carbon::parse($request->billing_month);
+        $query->whereYear('billing_month', $billingMonth->year)
+              ->whereMonth('billing_month', $billingMonth->month);
+    }
+    if ($request->has('vendor_id') && !empty($request->vendor_id)) {
+        $query->where('vendor_id',$request->vendor_id);
+    }
+    if ($request->has('zone') && !empty($request->zone)) {
+        $query->where('zone',$request->zone);
+    }
+    if ($request->has('performance') && !empty($request->performance)) {
+        $query->where('performance',$request->performance);
+    }
+    if ($request->has('status') && !empty($request->status)) {
+        $query->where('status', $request->status);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('rider_invoices.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('rider_invoices.index', [
+        'data' => $data,
+    ]);
   }
 
 

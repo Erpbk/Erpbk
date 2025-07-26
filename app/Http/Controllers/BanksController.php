@@ -31,13 +31,46 @@ class BanksController extends AppBaseController
   /**
    * Display a listing of the Banks.
    */
-  public function index(BanksDataTable $banksDataTable)
+  public function index(Request $request)
   {
 
     if (!auth()->user()->hasPermissionTo('bank_view')) {
       abort(403, 'Unauthorized action.');
     }
-    return $banksDataTable->render('banks.index');
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = Banks::query()
+        ->orderBy('id', 'asc');
+    if ($request->has('name') && !empty($request->name)) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+    if ($request->has('title') && !empty($request->title)) {
+        $query->where('title',$request->title);
+    }
+    if ($request->has('account_no') && !empty($request->account_no)) {
+        $query->where('account_no',$request->account_no);
+    }
+    if ($request->has('account_type') && !empty($request->account_type)) {
+        $query->where('account_type',$request->account_type);
+    }
+    if ($request->has('status') && !empty($request->status)) {
+        $query->where('status', $request->status);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('banks.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('banks.index', [
+        'data' => $data,
+    ]);
   }
 
 
@@ -77,8 +110,8 @@ class BanksController extends AppBaseController
 
     $banks->account_id = $account->id;
     $banks->save();
-
-    return response()->json(['message' => 'Bank added successfully.']);
+    Flash::success('Bank added successfully.');
+    return redirect()->back();
   }
 
   /**
@@ -121,15 +154,15 @@ class BanksController extends AppBaseController
     $banks = $this->banksRepository->find($id);
 
     if (empty($banks)) {
-
-      return response()->json(['errors' => ['error' => 'Bank not found!']], 422);
+      Flash::error('Bank not found!');
     }
 
     $banks = $this->banksRepository->update($request->all(), $id);
     $banks->account->status = $banks->status;
     $banks->save();
 
-    return response()->json(['message' => 'Bank updated successfully.']);
+    Flash::success('Bank updated successfully.');
+    return redirect()->back();
   }
 
   /**
@@ -142,12 +175,12 @@ class BanksController extends AppBaseController
     $banks = $this->banksRepository->find($id);
 
     if (empty($banks)) {
-      return response()->json(['errors' => ['error' => 'Bank not found!']], 422);
+      Flash::error('Bank not found!');
     }
 
 
     if ($banks->transactions->count() > 0) {
-      return response()->json(['errors' => ['error' => 'Bank have transactions!']], 422);
+      Flash::error('Bank have transactions!');
 
     } else {
 
@@ -155,14 +188,10 @@ class BanksController extends AppBaseController
         $banks->account->delete();
       }
       $this->banksRepository->delete($id);
-
+      Flash::success('Bank deleted successfully.');
     }
-
-
-    return response()->json(['message' => 'Bank deleted successfully.']);
-
+      return redirect(route('banks.index'));
   }
-
   public function ledger($id, LedgerDataTable $ledgerDataTable)
   {
     $banks = Banks::find($id);

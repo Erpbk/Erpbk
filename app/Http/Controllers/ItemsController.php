@@ -25,15 +25,47 @@ class ItemsController extends AppBaseController
   /**
    * Display a listing of the Items.
    */
-  public function index(ItemsDataTable $itemsDataTable)
+  public function index(Request $request)
   {
 
     if (!auth()->user()->hasPermissionTo('item_view')) {
       abort(403, 'Unauthorized action.');
     }
-    return $itemsDataTable->render('items.index');
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = Items::query()
+        ->orderBy('id', 'desc');
+    if ($request->has('name') && !empty($request->name)) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+    if ($request->has('code') && !empty($request->code)) {
+        $query->where('code',$request->code);
+    }
+    if ($request->has('customer_id') && !empty($request->customer_id)) {
+        $query->where('customer_id',$request->customer_id);
+    }
+    if ($request->has('supplier_id') && !empty($request->supplier_id)) {
+        $query->where('supplier_id',$request->supplier_id);
+    }
+    if ($request->has('status') && !empty($request->status)) {
+        $query->where('status', $request->status);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('items.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('items.index', [
+        'data' => $data,
+    ]);
   }
-
 
   /**
    * Show the form for creating a new Items.
@@ -52,7 +84,8 @@ class ItemsController extends AppBaseController
 
     $items = $this->itemsRepository->create($input);
 
-    return response()->json(['message' => 'Item added successfully.']);
+    Flash::success('Item added successfully.');
+    return redirect()->back();
   }
 
   /**
@@ -95,13 +128,12 @@ class ItemsController extends AppBaseController
     $items = $this->itemsRepository->find($id);
 
     if (empty($items)) {
-      return response()->json(['errors' => ['error' => 'Item not found!']], 422);
-
+      Flash::error('Item not found!');
     }
 
     $items = $this->itemsRepository->update($request->all(), $id);
-
-    return response()->json(['message' => 'Item updated successfully.']);
+    Flash::success('Item updated successfully.');
+    return redirect()->back();
 
   }
 
@@ -115,14 +147,13 @@ class ItemsController extends AppBaseController
     $items = $this->itemsRepository->find($id);
 
     if (empty($items)) {
-      return response()->json(['errors' => ['error' => 'Item not found!']], 422);
+      Flash::error('Item not found!');
 
     }
 
     $this->itemsRepository->delete($id);
-
-    return response()->json(['message' => 'Item deleted successfully.']);
-
+    Flash::success('Item deleted successfully.');
+    return redirect()->back();
   }
 
   public function search_item_price($rider_id, $item_id)

@@ -24,6 +24,8 @@ class RtaFines extends Model
     'admin_fee',
     'total_amount',
     'rta_account_id',
+    'attachment',
+    'attachment_path',
     'status'
   ];
 
@@ -51,6 +53,8 @@ class RtaFines extends Model
     'ticket_no' => 'nullable|string|max:50',
     'bike_id' => 'required',
     'rta_account_id' => 'required',
+    'attachment' => 'required',
+    'attachment_path' => 'nullable',
     'plate_no' => 'nullable|string|max:50',
     'detail' => 'nullable|string|max:500',
     'amount' => 'required|numeric',

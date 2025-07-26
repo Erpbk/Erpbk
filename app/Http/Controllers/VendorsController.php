@@ -8,6 +8,7 @@ use App\Http\Requests\CreateVendorsRequest;
 use App\Http\Requests\UpdateVendorsRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Accounts;
+use App\Models\vendors;
 use App\Repositories\VendorsRepository;
 use Illuminate\Http\Request;
 use Flash;
@@ -25,8 +26,36 @@ class VendorsController extends AppBaseController
   /**
    * Display a listing of the Vendors.
    */
-  public function index(VendorsDataTable $vendorsDataTable)
+  public function index(Request $request)
   {
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = vendors::query()
+        ->orderBy('id', 'desc');
+    if ($request->has('name') && !empty($request->name)) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+    if ($request->has('account_id') && !empty($request->account_id)) {
+        $query->where('account_id',$request->account_id);
+    }
+    if ($request->has('status') && !empty($request->status)) {
+        $query->where('status', $request->status);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('vendors.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('vendors.index', [
+        'data' => $data,
+    ]);
     return $vendorsDataTable->render('vendors.index');
   }
 

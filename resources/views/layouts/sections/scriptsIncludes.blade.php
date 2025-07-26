@@ -42,4 +42,5 @@ $menuCollapsed = ($configData['menuCollapsed'] === 'layout-menu-collapsed') ? js
       'controls': <?php echo json_encode($configData['customizerControls']); ?>,
     });
   </script>
+  
 @endif

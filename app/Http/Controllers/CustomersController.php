@@ -29,13 +29,43 @@ class CustomersController extends AppBaseController
   /**
    * Display a listing of the Customers.
    */
-  public function index(CustomersDataTable $customersDataTable)
+  public function index(Request $request)
   {
 
     if (!auth()->user()->hasPermissionTo('customer_view')) {
       abort(403, 'Unauthorized action.');
     }
-    return $customersDataTable->render('customers.index');
+    $perPage = request()->input('per_page', 50);
+    $perPage = is_numeric($perPage) ? (int) $perPage : 50;
+    $perPage = $perPage > 0 ? $perPage : 50;
+    $query = Customers::query()
+        ->orderBy('id', 'asc');
+    if ($request->has('name') && !empty($request->name)) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+    if ($request->has('company_name') && !empty($request->company_name)) {
+        $query->where('company_name',$request->company_name);
+    }
+    if ($request->has('account_id') && !empty($request->account_id)) {
+        $query->where('account_id',$request->account_id);
+    }
+    if ($request->has('status') && !empty($request->status)) {
+        $query->where('status', $request->status);
+    }
+    $data = $query->paginate($perPage);
+    if ($request->ajax()) {
+        $tableData = view('customers.table', [
+            'data' => $data,
+        ])->render();
+        $paginationLinks = $data->links('pagination')->render();
+        return response()->json([
+            'tableData' => $tableData,
+            'paginationLinks' => $paginationLinks,
+        ]);
+    }
+    return view('customers.index', [
+        'data' => $data,
+    ]);
   }
 
 
